@@ -198,6 +198,22 @@ header {
     color: var(--text-main);
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.header-actions .btn-download {
+    padding: 8px 14px;
+    font-size: 13px;
+}
+
 /* Views */
 .view-section {
     display: none;
@@ -631,6 +647,129 @@ header {
     background: var(--primary);
     color: white;
     border-color: var(--primary);
+}
+
+/* Trend modal styles */
+.trend-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.trend-modal.hidden {
+    display: none;
+}
+
+.trend-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.trend-modal-content {
+    position: relative;
+    width: min(980px, 95%);
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.trend-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.trend-modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #0f172a;
+}
+
+.trend-modal-close {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.trend-modal-body {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+    padding: 18px;
+    overflow: hidden;
+}
+
+.trend-modal-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-right: 1px solid #e2e8f0;
+    padding-right: 12px;
+}
+
+.trend-filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.trend-filter-header span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.trend-filter-header .btn-secondary {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.trend-filter-header .btn-secondary:hover {
+    background: #f8fafc;
+}
+
+.trend-modal-legend-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.trend-modal-legend-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #334155;
+}
+
+.trend-modal-chart {
+    position: relative;
+    min-height: 420px;
+}
+
+.trend-modal-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Data Table */

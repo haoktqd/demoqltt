@@ -33,7 +33,7 @@
             <header>
                 <div class="header-left">
                     <h1 id="page-title">Báo cáo Mảng Kinh doanh tại thị trường</h1>
-                    <p>Cập nhật số liệu thời gian thực • Giao diện mô phỏng Tableau</p>
+                    <p>Cập nhật số liệu hàng ngày</p>
                     <div class="header-filter">
                         <label for="market-select">Thị trường:</label>
                         <select id="market-select">
@@ -54,6 +54,9 @@
                         <img src="https://ui-avatars.com/api/?name=DA&background=2563eb&color=fff" alt="User">
                         <span>Chuyên gia Phân tích Dữ liệu</span>
                     </div>
+                    <div class="header-actions">
+                        <button class="btn-download" onclick="openDownloadModal()"><i class="fas fa-download"></i> Tải dữ liệu</button>
+                    </div>
                 </div>
             </header>
 
@@ -61,7 +64,7 @@
             <section id="level1-view" class="view-section active">
                 <div class="section-title">
                     <h2>Chỉ số Quản trị Tập trung (Level 1)</h2>
-                    <p>Kích chuột vào thẻ <strong style="color:var(--primary)">Tiêu dùng thực</strong> để truy xuất dữ liệu phân tích cắt lớp đa chiều.</p>
+                    <p>Kích chuột vào thẻ <strong style="color:var(--primary)">Từng thẻ</strong> để truy xuất dữ liệu phân tích cắt lớp đa chiều.</p>
                 </div>
                 <div class="cards-grid">
                     
@@ -279,7 +282,8 @@
                     </div>
 
                     <!-- Card 7 -->
-                    <div class="card">
+                    <div class="card clickable" onclick="openLevel2('super-app')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-app"><i class="fas fa-rocket"></i></div>
                             <h3>TB super app</h3>
@@ -349,6 +353,11 @@
                     </div>
 
                 </div>
+                <div class="download-section">
+                    <button class="btn-download" onclick="openDownloadModal()">
+                        <i class="fas fa-download"></i> Tải dữ liệu
+                    </button>
+                </div>
             </section>
 
             <!-- Level 2: Detail Drilldown (Tiêu dùng thực) -->
@@ -387,6 +396,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tinh')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tinh"></canvas>
@@ -400,6 +410,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-goicuoc')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-goicuoc"></canvas>
@@ -413,6 +424,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-khuvuc')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-khuvuc"></canvas>
@@ -426,6 +438,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tuoitho')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tuoitho"></canvas>
@@ -439,6 +452,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-kenh')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh"></canvas>
@@ -446,79 +460,6 @@
                     </div>
                 </div>
 
-                <!-- Data Table with Toggles -->
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nhân tố</th>
-                                <th>Ngày</th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>Tiêu dùng thực (Tỉ)</span>
-                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>YoY (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>MoM (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table-body">
-                            <tr>
-                                <td>Hà Nội</td>
-                                <td>2024-03-16</td>
-                                <td>12.5</td>
-                                <td>+5.2%</td>
-                                <td>+2.1%</td>
-                            </tr>
-                            <tr>
-                                <td>TP.HCM</td>
-                                <td>2024-03-16</td>
-                                <td>14.2</td>
-                                <td>+4.8%</td>
-                                <td>+1.9%</td>
-                            </tr>
-                            <tr>
-                                <td>Đà Nẵng</td>
-                                <td>2024-03-16</td>
-                                <td>4.3</td>
-                                <td>+6.1%</td>
-                                <td>+2.5%</td>
-                            </tr>
-                            <tr>
-                                <td>Kênh số/App</td>
-                                <td>2024-03-16</td>
-                                <td>14.5</td>
-                                <td>+8.2%</td>
-                                <td>+3.4%</td>
-                            </tr>
-                            <tr>
-                                <td>Cửa hàng trực tiếp</td>
-                                <td>2024-03-16</td>
-                                <td>12.1</td>
-                                <td>+3.5%</td>
-                                <td>+1.2%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Download Button -->
-                <div class="download-section">
-                    <button class="btn-download" onclick="downloadExcel()">
-                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
-                    </button>
-                </div>
             </section>
 
             <!-- Level 2: Detail Drilldown (Thuê bao) -->
@@ -557,6 +498,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh-thue-bao')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh-thue-bao')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tinh-thue-bao')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tinh-thue-bao"></canvas>
@@ -570,6 +512,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc-thue-bao')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc-thue-bao')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-goicuoc-thue-bao')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-goicuoc-thue-bao"></canvas>
@@ -583,6 +526,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc-thue-bao')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc-thue-bao')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-khuvuc-thue-bao')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-khuvuc-thue-bao"></canvas>
@@ -596,6 +540,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho-thue-bao')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho-thue-bao')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tuoitho-thue-bao')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tuoitho-thue-bao"></canvas>
@@ -609,6 +554,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-kenh-thue-bao')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh-thue-bao"></canvas>
@@ -616,58 +562,6 @@
                     </div>
                 </div>
 
-                <!-- Data Table with Toggles -->
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nhân tố</th>
-                                <th>Ngày</th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>Thuê bao (M)</span>
-                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>YoY (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>MoM (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table-body-thue-bao">
-                            <tr>
-                                <td>Hà Nội</td>
-                                <td>2024-03-16</td>
-                                <td>12.5</td>
-                                <td>+5.2%</td>
-                                <td>+2.1%</td>
-                            </tr>
-                            <tr>
-                                <td>TP.HCM</td>
-                                <td>2024-03-16</td>
-                                <td>14.2</td>
-                                <td>+4.8%</td>
-                                <td>+1.9%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Download Button -->
-                <div class="download-section">
-                    <button class="btn-download" onclick="downloadExcel()">
-                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
-                    </button>
-                </div>
             </section>
 
             <!-- Level 2: Detail Drilldown (Lưu lượng Data) -->
@@ -706,6 +600,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tinh-luu-luong')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tinh-luu-luong"></canvas>
@@ -719,6 +614,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-goicuoc-luu-luong')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-goicuoc-luu-luong"></canvas>
@@ -732,6 +628,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-khuvuc-luu-luong')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-khuvuc-luu-luong"></canvas>
@@ -745,6 +642,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tuoitho-luu-luong')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tuoitho-luu-luong"></canvas>
@@ -758,6 +656,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-kenh-luu-luong')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh-luu-luong"></canvas>
@@ -765,58 +664,6 @@
                     </div>
                 </div>
 
-                <!-- Data Table with Toggles -->
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nhân tố</th>
-                                <th>Ngày</th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>Lưu lượng (GB)</span>
-                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>YoY (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>MoM (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table-body-luu-luong">
-                            <tr>
-                                <td>Hà Nội</td>
-                                <td>2024-03-16</td>
-                                <td>2500</td>
-                                <td>+5.2%</td>
-                                <td>+2.1%</td>
-                            </tr>
-                            <tr>
-                                <td>TP.HCM</td>
-                                <td>2024-03-16</td>
-                                <td>2800</td>
-                                <td>+4.8%</td>
-                                <td>+1.9%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Download Button -->
-                <div class="download-section">
-                    <button class="btn-download" onclick="downloadExcel()">
-                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
-                    </button>
-                </div>
             </section>
 
             <!-- Level 2: Detail Drilldown (Trải nghiệm KH) -->
@@ -855,6 +702,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-nps')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-nps')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-nps')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-nps')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-nps"></canvas>
@@ -868,6 +716,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-resolution')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-resolution')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-resolution')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-resolution')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-resolution"></canvas>
@@ -881,6 +730,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-setup')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-setup')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-setup')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-setup')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-setup"></canvas>
@@ -894,6 +744,7 @@
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-feedback')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-feedback')">YoY</button>
                             <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-feedback')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-feedback')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-feedback"></canvas>
@@ -901,61 +752,184 @@
                     </div>
                 </div>
 
-                <!-- Data Table with Toggles -->
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nhân tố</th>
-                                <th>Ngày</th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>Giá trị (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>YoY (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="toggle-metric">
-                                        <span>MoM (%)</span>
-                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table-body-trai-nghiem">
-                            <tr>
-                                <td>NPS</td>
-                                <td>2024-03-16</td>
-                                <td>45.2</td>
-                                <td>+5.2%</td>
-                                <td>+2.1%</td>
-                            </tr>
-                            <tr>
-                                <td>Xử lý đúng hạn</td>
-                                <td>2024-03-16</td>
-                                <td>92.3</td>
-                                <td>+4.8%</td>
-                                <td>+1.9%</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            </section>
+
+            <!-- Level 2: Detail Drilldown (TB Super App) -->
+            <section id="level2-super-app" class="view-section level2-section hidden">
+                <div class="action-bar">
+                    <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level 1</button>
+                    <h2>Drill-down: Phân tích Cắt lớp TB Super App (Level 2)</h2>
+                </div>
+                
+                <!-- Filter Controls -->
+                <div class="level2-controls">
+                    <div class="control-group">
+                        <label for="date-from-super-app">Từ ngày:</label>
+                        <input type="date" id="date-from-super-app">
+                    </div>
+                    <div class="control-group">
+                        <label for="date-to-super-app">Đến ngày:</label>
+                        <input type="date" id="date-to-super-app">
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-granularity-super-app">Mức chi tiết:</label>
+                        <select id="filter-granularity-super-app">
+                            <option value="daily">Hàng ngày</option>
+                            <option value="weekly">Hàng tuần</option>
+                            <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Download Button -->
-                <div class="download-section">
-                    <button class="btn-download" onclick="downloadExcel()">
-                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
-                    </button>
+                <!-- Enhanced Charts with Metrics -->
+                <div class="charts-grid">
+                    <!-- Chart 1: By Province -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tỉnh/Thành phố</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh-super-app')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh-super-app')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh-super-app')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tinh-super-app')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tinh-super-app"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: By Package -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Gói cước</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc-super-app')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc-super-app')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc-super-app')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-goicuoc-super-app')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-goicuoc-super-app"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: By Region -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Khu vực</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc-super-app')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc-super-app')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc-super-app')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-khuvuc-super-app')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-khuvuc-super-app"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 4: By Subscriber Age -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tuổi thọ TB</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho-super-app')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho-super-app')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho-super-app')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tuoitho-super-app')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tuoitho-super-app"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 5: By Distribution Channel (Full width) -->
+                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                        <h3>Cắt lớp theo Kênh phát triển</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-super-app')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh-super-app')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh-super-app')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-kenh-super-app')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-kenh-super-app"></canvas>
+                        </div>
+                    </div>
                 </div>
+
             </section>
         </main>
     </div>
+    <!-- Trend Modal (shown when user clicks "Xu hướng") -->
+    <div id="trend-modal" class="trend-modal hidden" role="dialog" aria-modal="true" aria-labelledby="trend-modal-title">
+        <div class="trend-modal-backdrop" onclick="closeTrendModal()"></div>
+        <div class="trend-modal-content">
+            <div class="trend-modal-header">
+                <h3 id="trend-modal-title">Biểu đồ xu hướng</h3>
+                <button class="trend-modal-close" onclick="closeTrendModal()" aria-label="Đóng">×</button>
+            </div>
+            <div class="trend-modal-body">
+                <div class="trend-modal-filters">
+                    <div class="trend-filter-header">
+                        <span>Chọn kiểu hiển thị & legend</span>
+                        <button class="btn-secondary" onclick="selectAllTrendLegends(true)">Chọn tất cả</button>
+                        <button class="btn-secondary" onclick="selectAllTrendLegends(false)">Bỏ chọn</button>
+                    </div>
+                    <div class="control-group">
+                        <label for="trend-display-mode">Kiểu hiển thị:</label>
+                        <select id="trend-display-mode" onchange="updateTrendDisplayMode()">
+                            <option value="sum">Tổng (hiện tại + cùng kỳ)</option>
+                            <option value="byCategory">Theo nhân tố (mỗi đường 1 legend)</option>
+                        </select>
+                    </div>
+                    <div id="trend-modal-legend-list" class="trend-modal-legend-list"></div>
+                </div>
+                <div class="trend-modal-chart">
+                    <canvas id="trend-modal-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="trend-modal hidden" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
+        <div class="trend-modal-backdrop" onclick="closeDownloadModal()"></div>
+        <div class="trend-modal-content">
+            <div class="trend-modal-header">
+                <h3 id="download-modal-title">Tải dữ liệu</h3>
+                <button class="trend-modal-close" onclick="closeDownloadModal()" aria-label="Đóng">×</button>
+            </div>
+            <div class="trend-modal-body">
+                <div class="trend-modal-filters">
+                    <div class="trend-filter-header">
+                        <span>Chọn dữ liệu</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="download-date-from">Từ ngày:</label>
+                        <input type="date" id="download-date-from">
+                    </div>
+                    <div class="control-group">
+                        <label for="download-date-to">Đến ngày:</label>
+                        <input type="date" id="download-date-to">
+                    </div>
+                    <div class="control-group">
+                        <label>Chọn trường (Fields):</label>
+                        <div class="trend-modal-legend-list" id="download-field-list">
+                            <label><input type="checkbox" value="factor" checked> Nhân tố</label>
+                            <label><input type="checkbox" value="slice" checked> Loại cắt lớp</label>
+                            <label><input type="checkbox" value="date" checked> Ngày</label>
+                            <label><input type="checkbox" value="tb15c3d" checked> TB 15c3d lũy kế</label>
+                            <label><input type="checkbox" value="luuLuong" checked> Lưu lượng</label>
+                            <label><input type="checkbox" value="tbMoi" checked> TB mới</label>
+                            <label><input type="checkbox" value="duLieu1" checked> Dữ liệu 1</label>
+                            <label><input type="checkbox" value="duLieu2" checked> Dữ liệu 2</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="trend-modal-chart" style="flex-direction: column; justify-content: flex-end;">
+                    <button class="btn-download" onclick="downloadSelectedData()">Tải xuống</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
         // Initialize trend charts when page loads
