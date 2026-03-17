@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viễn thông / Tableau Analytics Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js Data Labels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h2>Data Analytics</h2>
+            </div>
+            <ul class="nav">
+                <li class="active" id="nav-overview"><i class="fas fa-home"></i> Tổng quan</li>
+                <li id="nav-di-dong"><i class="fas fa-money-bill-wave"></i> Di động</li>
+                <li id="nav-cdbr"><i class="fas fa-sim-card"></i> CĐBR</li>
+                <li id="nav-vi-dien-tu"><i class="fas fa-user-plus"></i> Ví điện tử</li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="header-left">
+                    <h1 id="page-title">Báo cáo Mảng Kinh doanh tại thị trường</h1>
+                    <p>Cập nhật số liệu thời gian thực • Giao diện mô phỏng Tableau</p>
+                    <div class="header-filter">
+                        <label for="market-select">Thị trường:</label>
+                        <select id="market-select">
+                            <option value="VTG">VTG</option>
+                            <option value="VTC">VTC</option>
+                            <option value="STL">STL</option>
+                            <option value="VTL">VTL</option>
+                            <option value="MYN">MYN</option>
+                            <option value="VBD">VBD</option>
+                            <option value="MOV">MOV</option>
+                            <option value="VTZ">VTZ</option>
+                            <option value="NCM">NCM</option>
+                            <option value="VTP">VTP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=DA&background=2563eb&color=fff" alt="User">
+                        <span>Chuyên gia Phân tích Dữ liệu</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Level 1: Overview Cards -->
+            <section id="level1-view" class="view-section active">
+                <div class="section-title">
+                    <h2>Chỉ số Quản trị Tập trung (Level 1)</h2>
+                    <p>Kích chuột vào thẻ <strong style="color:var(--primary)">Tiêu dùng thực</strong> để truy xuất dữ liệu phân tích cắt lớp đa chiều.</p>
+                </div>
+                <div class="cards-grid">
+                    
+                    <!-- Card 1 -->
+                    <div class="card clickable" onclick="openLevel2('tieu-dung-thuc')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
+                        <div class="card-top">
+                            <div class="card-icon"><i class="fas fa-money-bill-wave"></i></div>
+                            <h3>Tiêu dùng thực</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Trong tháng -->
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">45.2 Tỉ</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">105.2%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 5.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val positive">▲ 2.1%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <!-- Lũy kế năm -->
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">210.5 Tỉ</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">102.8%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 4.8%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card1" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="card clickable" onclick="openLevel2('thue-bao')">
+                        <div class="card-top">
+                            <div class="card-icon ic-users"><i class="fas fa-mobile-alt"></i></div>
+                            <h3>TB 15c3d tăng thêm</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">12.5 M</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">101.5%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 3.2%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val positive">▲ 0.4%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">12.5 M</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">101.5%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 3.2%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card2" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="card clickable" onclick="openLevel2('thue-bao')">
+                        <div class="card-top">
+                            <div class="card-icon ic-new"><i class="fas fa-user-plus"></i></div>
+                            <h3>TB phát triển mới</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">345 K</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val negative">92.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 8.7%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val negative">▼ -1.2%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">1.2 M</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">104.1%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 12.3%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card3" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="card clickable" onclick="openLevel2('thue-bao')">
+                        <div class="card-top">
+                            <div class="card-icon ic-churn"><i class="fas fa-user-minus"></i></div>
+                            <h3>TB rời mạng</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">124 K</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val warning">98.5%</span></div> <!-- Đối với rời mạng, HTKH thấp có thể là tốt, nhưng giả sử < 100% là vượt rào -->
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val negative">▲ 2.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val positive">▼ -5.3%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">450 K</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">85.2%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▼ -1.8%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card4" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="card clickable" onclick="openLevel2('luu-luong')">
+                        <div class="card-top">
+                            <div class="card-icon ic-data"><i class="fas fa-database"></i></div>
+                            <h3>Lưu lượng data</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">8.4 PB</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">115.3%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 24.5%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val positive">▲ 6.2%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">38.2 PB</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">110.1%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 28.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card5" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="card">
+                        <div class="card-top">
+                            <div class="card-icon ic-channel"><i class="fas fa-network-wired"></i></div>
+                            <h3>Kênh phân phối</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">5,630</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">100.5%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 1.2%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">- 0.0%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">5,630</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">100.5%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 1.2%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card6" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 7 -->
+                    <div class="card">
+                        <div class="card-top">
+                            <div class="card-icon ic-app"><i class="fas fa-rocket"></i></div>
+                            <h3>TB super app</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">4.2 M</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">112.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 45.8%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val positive">▲ 8.3%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">4.2 M</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">112.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 45.8%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card7" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 8 -->
+                    <div class="card clickable" onclick="openLevel2('trai-nghiem')">
+                        <div class="card-top">
+                            <div class="card-icon ic-cx"><i class="fas fa-smile"></i></div>
+                            <h3>Trải nghiệm KH</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-block">
+                                <h4>Trong tháng</h4>
+                                <div class="main-val">94.2%</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">102.1%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 1.4%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val positive">▲ 0.2%</span></div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="stat-block">
+                                <h4>Lũy kế năm</h4>
+                                <div class="main-val">93.8%</div>
+                                <div class="sub-stats">
+                                    <div class="sub-row"><span class="lbl">% HTKH</span> <span class="val positive">101.5%</span></div>
+                                    <div class="sub-row"><span class="lbl">YoY</span> <span class="val positive">▲ 1.1%</span></div>
+                                    <div class="sub-row"><span class="lbl">MoM</span> <span class="val neutral">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-trend">
+                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div style="position: relative; height: 150px; width: 100%;">
+                                <canvas id="trend-card8" class="trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Level 2: Detail Drilldown (Tiêu dùng thực) -->
+            <section id="level2-tieu-dung-thuc" class="view-section level2-section hidden">
+                <div class="action-bar">
+                    <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level 1</button>
+                    <h2>Drill-down: Phân tích Cắt lớp Tiêu dùng thực (Level 2)</h2>
+                </div>
+                
+                <!-- Filter Controls -->
+                <div class="level2-controls">
+                    <div class="control-group">
+                        <label for="date-from">Từ ngày:</label>
+                        <input type="date" id="date-from">
+                    </div>
+                    <div class="control-group">
+                        <label for="date-to">Đến ngày:</label>
+                        <input type="date" id="date-to">
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-granularity">Mức chi tiết:</label>
+                        <select id="filter-granularity">
+                            <option value="daily">Hàng ngày</option>
+                            <option value="weekly">Hàng tuần</option>
+                            <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Enhanced Charts with Metrics -->
+                <div class="charts-grid">
+                    <!-- Chart 1: By Province -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tỉnh/Thành phố</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tinh"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: By Package -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Gói cước</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-goicuoc"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: By Region -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Khu vực</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-khuvuc"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 4: By Subscriber Age -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tuổi thọ TB</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tuoitho"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 5: By Distribution Channel (Full width) -->
+                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                        <h3>Cắt lớp theo Kênh phát triển</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-kenh"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table with Toggles -->
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nhân tố</th>
+                                <th>Ngày</th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>Tiêu dùng thực (Tỉ)</span>
+                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>YoY (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>MoM (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body">
+                            <tr>
+                                <td>Hà Nội</td>
+                                <td>2024-03-16</td>
+                                <td>12.5</td>
+                                <td>+5.2%</td>
+                                <td>+2.1%</td>
+                            </tr>
+                            <tr>
+                                <td>TP.HCM</td>
+                                <td>2024-03-16</td>
+                                <td>14.2</td>
+                                <td>+4.8%</td>
+                                <td>+1.9%</td>
+                            </tr>
+                            <tr>
+                                <td>Đà Nẵng</td>
+                                <td>2024-03-16</td>
+                                <td>4.3</td>
+                                <td>+6.1%</td>
+                                <td>+2.5%</td>
+                            </tr>
+                            <tr>
+                                <td>Kênh số/App</td>
+                                <td>2024-03-16</td>
+                                <td>14.5</td>
+                                <td>+8.2%</td>
+                                <td>+3.4%</td>
+                            </tr>
+                            <tr>
+                                <td>Cửa hàng trực tiếp</td>
+                                <td>2024-03-16</td>
+                                <td>12.1</td>
+                                <td>+3.5%</td>
+                                <td>+1.2%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Download Button -->
+                <div class="download-section">
+                    <button class="btn-download" onclick="downloadExcel()">
+                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
+                    </button>
+                </div>
+            </section>
+
+            <!-- Level 2: Detail Drilldown (Thuê bao) -->
+            <section id="level2-thue-bao" class="view-section level2-section hidden">
+                <div class="action-bar">
+                    <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level 1</button>
+                    <h2>Drill-down: Phân tích Cắt lớp Thuê bao (Level 2)</h2>
+                </div>
+                
+                <!-- Filter Controls -->
+                <div class="level2-controls">
+                    <div class="control-group">
+                        <label for="date-from-thue-bao">Từ ngày:</label>
+                        <input type="date" id="date-from-thue-bao">
+                    </div>
+                    <div class="control-group">
+                        <label for="date-to-thue-bao">Đến ngày:</label>
+                        <input type="date" id="date-to-thue-bao">
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-granularity-thue-bao">Mức chi tiết:</label>
+                        <select id="filter-granularity-thue-bao">
+                            <option value="daily">Hàng ngày</option>
+                            <option value="weekly">Hàng tuần</option>
+                            <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Enhanced Charts with Metrics -->
+                <div class="charts-grid">
+                    <!-- Chart 1: By Province -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tỉnh/Thành phố</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh-thue-bao')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tinh-thue-bao"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: By Package -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Gói cước</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc-thue-bao')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-goicuoc-thue-bao"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: By Region -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Khu vực</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc-thue-bao')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-khuvuc-thue-bao"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 4: By Subscriber Age -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tuổi thọ TB</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho-thue-bao')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tuoitho-thue-bao"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 5: By Distribution Channel (Full width) -->
+                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                        <h3>Cắt lớp theo Kênh phát triển</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-kenh-thue-bao"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table with Toggles -->
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nhân tố</th>
+                                <th>Ngày</th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>Thuê bao (M)</span>
+                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>YoY (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>MoM (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body-thue-bao">
+                            <tr>
+                                <td>Hà Nội</td>
+                                <td>2024-03-16</td>
+                                <td>12.5</td>
+                                <td>+5.2%</td>
+                                <td>+2.1%</td>
+                            </tr>
+                            <tr>
+                                <td>TP.HCM</td>
+                                <td>2024-03-16</td>
+                                <td>14.2</td>
+                                <td>+4.8%</td>
+                                <td>+1.9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Download Button -->
+                <div class="download-section">
+                    <button class="btn-download" onclick="downloadExcel()">
+                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
+                    </button>
+                </div>
+            </section>
+
+            <!-- Level 2: Detail Drilldown (Lưu lượng Data) -->
+            <section id="level2-luu-luong" class="view-section level2-section hidden">
+                <div class="action-bar">
+                    <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level 1</button>
+                    <h2>Drill-down: Phân tích Cắt lớp Lưu lượng Data (Level 2)</h2>
+                </div>
+                
+                <!-- Filter Controls -->
+                <div class="level2-controls">
+                    <div class="control-group">
+                        <label for="date-from-luu-luong">Từ ngày:</label>
+                        <input type="date" id="date-from-luu-luong">
+                    </div>
+                    <div class="control-group">
+                        <label for="date-to-luu-luong">Đến ngày:</label>
+                        <input type="date" id="date-to-luu-luong">
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-granularity-luu-luong">Mức chi tiết:</label>
+                        <select id="filter-granularity-luu-luong">
+                            <option value="daily">Hàng ngày</option>
+                            <option value="weekly">Hàng tuần</option>
+                            <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Enhanced Charts with Metrics -->
+                <div class="charts-grid">
+                    <!-- Chart 1: By Province -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tỉnh/Thành phố</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tinh-luu-luong"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: By Package -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Gói cước</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-goicuoc-luu-luong"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: By Region -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Khu vực</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-khuvuc-luu-luong"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 4: By Subscriber Age -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tuổi thọ TB</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tuoitho-luu-luong"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 5: By Distribution Channel (Full width) -->
+                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                        <h3>Cắt lớp theo Kênh phát triển</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-kenh-luu-luong"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table with Toggles -->
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nhân tố</th>
+                                <th>Ngày</th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>Lưu lượng (GB)</span>
+                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>YoY (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>MoM (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body-luu-luong">
+                            <tr>
+                                <td>Hà Nội</td>
+                                <td>2024-03-16</td>
+                                <td>2500</td>
+                                <td>+5.2%</td>
+                                <td>+2.1%</td>
+                            </tr>
+                            <tr>
+                                <td>TP.HCM</td>
+                                <td>2024-03-16</td>
+                                <td>2800</td>
+                                <td>+4.8%</td>
+                                <td>+1.9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Download Button -->
+                <div class="download-section">
+                    <button class="btn-download" onclick="downloadExcel()">
+                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
+                    </button>
+                </div>
+            </section>
+
+            <!-- Level 2: Detail Drilldown (Trải nghiệm KH) -->
+            <section id="level2-trai-nghiem" class="view-section level2-section hidden">
+                <div class="action-bar">
+                    <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level 1</button>
+                    <h2>Drill-down: Phân tích Cắt lớp Trải nghiệm KH (Level 2)</h2>
+                </div>
+                
+                <!-- Filter Controls -->
+                <div class="level2-controls">
+                    <div class="control-group">
+                        <label for="date-from-trai-nghiem">Từ ngày:</label>
+                        <input type="date" id="date-from-trai-nghiem">
+                    </div>
+                    <div class="control-group">
+                        <label for="date-to-trai-nghiem">Đến ngày:</label>
+                        <input type="date" id="date-to-trai-nghiem">
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-granularity-trai-nghiem">Mức chi tiết:</label>
+                        <select id="filter-granularity-trai-nghiem">
+                            <option value="daily">Hàng ngày</option>
+                            <option value="weekly">Hàng tuần</option>
+                            <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Metrics Overview -->
+                <div class="charts-grid">
+                    <!-- Chart 1: NPS Score -->
+                    <div class="chart-card-enhanced">
+                        <h3>NPS - Net Promoter Score</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-nps')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-nps')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-nps')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-nps"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Ticket Resolution Rate -->
+                    <div class="chart-card-enhanced">
+                        <h3>Tỷ lệ Xử lý Đúng Hạn</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-resolution')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-resolution')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-resolution')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-resolution"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: Call Setup Success Rate -->
+                    <div class="chart-card-enhanced">
+                        <h3>Tỷ lệ Thiết lập Cuộc gọi Thành công</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-setup')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-setup')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-setup')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-setup"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 4: Customer Feedback Trend -->
+                    <div class="chart-card-enhanced">
+                        <h3>Xu hướng Phản ánh KH</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-feedback')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-feedback')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-feedback')">MoM</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-feedback"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table with Toggles -->
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nhân tố</th>
+                                <th>Ngày</th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>Giá trị (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'actual')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>YoY (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'yoy')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="toggle-metric">
+                                        <span>MoM (%)</span>
+                                        <button onclick="toggleTableMetric(event, 'mom')" title="Chuyển đổi chỉ tiêu">⟨⟩</button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body-trai-nghiem">
+                            <tr>
+                                <td>NPS</td>
+                                <td>2024-03-16</td>
+                                <td>45.2</td>
+                                <td>+5.2%</td>
+                                <td>+2.1%</td>
+                            </tr>
+                            <tr>
+                                <td>Xử lý đúng hạn</td>
+                                <td>2024-03-16</td>
+                                <td>92.3</td>
+                                <td>+4.8%</td>
+                                <td>+1.9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Download Button -->
+                <div class="download-section">
+                    <button class="btn-download" onclick="downloadExcel()">
+                        <i class="fas fa-download"></i> Tải xuống dữ liệu Excel
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Initialize trend charts when page loads
+        console.log('Page loaded, checking Chart.js...');
+        
+        function initTrendCharts() {
+            console.log('initTrendCharts called, typeof Chart:', typeof Chart);
+            if (typeof Chart !== 'undefined') {
+                console.log('Chart.js available, rendering trends...');
+                renderTrendCharts();
+            } else {
+                console.warn('Chart.js not ready, retrying in 500ms...');
+                setTimeout(initTrendCharts, 500);
+            }
+        }
+        
+        // Wait for DOM to be fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOMContentLoaded event fired');
+                setTimeout(initTrendCharts, 100);
+            });
+        } else {
+            console.log('DOM already loaded, calling initTrendCharts');
+            setTimeout(initTrendCharts, 100);
+        }
+        
+        // Verify functions are available
+        console.log('openLevel2 available:', typeof openLevel2);
+        console.log('goBack available:', typeof goBack);
+        console.log('renderTrendCharts available:', typeof renderTrendCharts);
+    </script>
+</body>
+</html>
