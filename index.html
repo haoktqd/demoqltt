@@ -931,71 +931,76 @@
     </div>
 
     <!-- Download Modal -->
-    <div id="download-modal" class="trend-modal hidden download-modal" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
-        <div class="trend-modal-backdrop" onclick="closeDownloadModal()"></div>
-        <div class="trend-modal-content">
-            <div class="trend-modal-header">
-                <h3 id="download-modal-title">Tải dữ liệu</h3>
-                <button class="trend-modal-close" onclick="closeDownloadModal()" aria-label="Đóng">×</button>
-            </div>
-            <div class="trend-modal-body download-modal-body">
-                <div class="download-section">
-                    <div class="download-section-header">
-                        <span>Chọn ngày tải dữ liệu: </span>
-                    </div>
-                    <div class="download-grid">
-                        <div class="control-group">
-                            <label for="download-date-from">Từ ngày:</label>
-                            <input type="date" id="download-date-from">
-                        </div>
-                        <div class="control-group">
-                            <label for="download-date-to">Đến ngày:</label>
-                            <input type="date" id="download-date-to">
-                        </div>
-                    </div>
-                </div>
+    <div id="download-modal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeDownloadModal()"></div>
 
-                <div class="download-section">
-                    <div class="download-section-header">
-                        <span>Chọn loại cắt lớp</span>
-                        <div class="download-section-actions">
-                            <button class="btn-secondary" onclick="selectAllDownloadSlices(true)">Chọn tất cả</button>
-                            <button class="btn-secondary" onclick="selectAllDownloadSlices(false)">Bỏ chọn</button>
-                        </div>
-                    </div>
-                    <div id="download-slice-list" class="trend-modal-legend-list">
-                        <label><input type="checkbox" value="kenh"> Kênh phát triển</label>
-                        <label><input type="checkbox" value="tinh"> Tỉnh/Thành phố</label>
-                        <label><input type="checkbox" value="goicuoc"> Gói cước</label>
-                        <label><input type="checkbox" value="tuoitho"> Tuổi thọ</label>
-                        <label><input type="checkbox" value="khuvuc"> Khu vực</label>
-                        <label><input type="checkbox" value="x"> X</label>
-                        <label><input type="checkbox" value="y"> Y</label>
-                    </div>
-                </div>
+    <div class="modal-content">
+        
+        <!-- Header -->
+        <div class="modal-header">
+        <div class="modal-title">
+            <i class="fas fa-download"></i>
+            <h3>Tải dữ liệu phân tích</h3>
+        </div>
+        <button class="modal-close" onclick="closeDownloadModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        </div>
 
-                <div class="download-section">
-                    <div class="download-section-header">
-                        <span>Chọn trường (Fields)</span>
-                        <div class="download-section-actions">
-                            <button class="btn-secondary" onclick="selectAllDownloadFields(true)">Chọn tất cả</button>
-                            <button class="btn-secondary" onclick="selectAllDownloadFields(false)">Bỏ chọn</button>
-                        </div>
-                    </div>
-                    <div class="trend-modal-legend-list" id="download-field-list">
-                        <label><input type="checkbox" value="tb15c3d" checked> TB 15c3d lũy kế</label>
-                        <label><input type="checkbox" value="luuLuong" checked> Lưu lượng</label>
-                        <label><input type="checkbox" value="tbMoi" checked> TB mới</label>
-                        <label><input type="checkbox" value="duLieu1" checked> Dữ liệu 1</label>
-                        <label><input type="checkbox" value="duLieu2" checked> Dữ liệu 2</label>
-                    </div>
-                </div>
+        <!-- Body -->
+        <div class="modal-body">
 
-                <div class="download-footer">
-                    <button class="btn-download" onclick="downloadSelectedData()">Tải xuống</button>
-                </div>
+        <!-- Date -->
+        <div class="modal-section">
+            <h4>📅 Khoảng thời gian</h4>
+            <div class="date-group">
+            <input type="date" id="download-date-from">
+            <span>→</span>
+            <input type="date" id="download-date-to">
             </div>
         </div>
+
+        <!-- Slice -->
+        <div class="modal-section">
+            <div class="section-header">
+            <h4>📊 Loại cắt lớp</h4>
+            <div>
+                <button onclick="selectAllDownloadSlices(true)">Chọn tất cả</button>
+                <button onclick="selectAllDownloadSlices(false)">Bỏ chọn</button>
+            </div>
+            </div>
+            <div id="download-slice-list" class="checkbox-grid"></div>
+        </div>
+
+        <!-- Fields -->
+        <div class="modal-section">
+            <div class="section-header">
+            <h4>📁 Trường dữ liệu</h4>
+            <div>
+                <button onclick="selectAllDownloadFields(true)">Chọn tất cả</button>
+                <button onclick="selectAllDownloadFields(false)">Bỏ chọn</button>
+            </div>
+            </div>
+            <div id="download-field-list" class="checkbox-grid">
+            <label><input type="checkbox" value="tb15c3d" checked> TB 15c3d</label>
+            <label><input type="checkbox" value="luuLuong" checked> Lưu lượng</label>
+            <label><input type="checkbox" value="tbMoi"> TB mới</label>
+            <label><input type="checkbox" value="duLieu1"> Dữ liệu 1</label>
+            <label><input type="checkbox" value="duLieu2"> Dữ liệu 2</label>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeDownloadModal()">Huỷ</button>
+        <button class="btn-primary" onclick="downloadSelectedData()">
+            <i class="fas fa-file-csv"></i> Tải CSV
+        </button>
+        </div>
+
+    </div>
     </div>
 
     <script src="script.js"></script>
