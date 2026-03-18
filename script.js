@@ -23,6 +23,11 @@ function openLevel2(cardId) {
             
             // Render charts when opening level 2
             renderCharts();
+            
+            // Render CX trend charts specifically for trai-nghiem
+            if (cardId === 'trai-nghiem') {
+                setTimeout(renderCXTrendCharts, 500);
+            }
         }, 300);
     }
 }
@@ -57,6 +62,8 @@ function formatNumber(value, decimals = 2) {
 }
 
 // Function to switch chart metrics (Thực hiện, YoY, MoM, Xu hướng)
+let currentMetricsState = {}; // Persist metric selection
+
 function switchChartMetric(button, chartId) {
     const container = button.parentElement;
     const buttons = container.querySelectorAll('.metric-btn');
@@ -68,6 +75,8 @@ function switchChartMetric(button, chartId) {
     button.classList.add('active');
 
     const metric = button.getAttribute('data-metric');
+    currentMetricsState[chartId] = metric; // Save state
+
     console.log(`Switching ${chartId} to ${metric}`);
 
     if (metric === 'trend') {
@@ -76,8 +85,8 @@ function switchChartMetric(button, chartId) {
         return;
     }
 
-    // If switching to a normal metric, re-render base chart
-    chartsInitialized = false; // allow re-rendering the base charts
+    // If switching to a normal metric, re-render charts
+    chartsInitialized = false; 
     renderCharts();
 }
 
@@ -277,6 +286,42 @@ const trendModalConfig = {
             'Đồng Nai': [0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.05],
             'Bình Dương': [0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
         }
+    },
+    'chart-feedback-count': {
+        title: 'Xu hướng - Số lượng Phản ánh',
+        categories: []
+    },
+    'chart-resolution-time': {
+        title: 'Xu hướng - Thời gian Xử lý',
+        categories: []
+    },
+    'chart-feedback-rate': {
+        title: 'Xu hướng - Tỷ lệ Phản ánh',
+        categories: []
+    },
+    'chart-nps': {
+        title: 'Xu hướng - NPS Score',
+        categories: []
+    },
+    'chart-resolution': {
+        title: 'Xu hướng - Tỷ lệ Xử lý Thành công',
+        categories: []
+    },
+    'chart-setup': {
+        title: 'Xu hướng - Tỷ lệ Kết nối Thành công',
+        categories: []
+    },
+    'chart-csat': {
+        title: 'Xu hướng - CSAT',
+        categories: []
+    },
+    'chart-ces': {
+        title: 'Xu hướng - CES',
+        categories: []
+    },
+    'chart-churn-rate': {
+        title: 'Xu hướng - Tỷ lệ Rời Mạng',
+        categories: []
     }
 };
 
@@ -741,6 +786,78 @@ const trendModeData = {
             'Đồng Nai': [0.03, 0.03, 0.03, 0.04, 0.04, 0.04],
             'Bình Dương': [0.04, 0.04, 0.04, 0.05, 0.05, 0.05]
         }
+    },
+    'chart-feedback-count': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [1250, 1320, 1410, 1510, 1620, 1750],
+            previous: [980, 1050, 1120, 1180, 1250, 1330]
+        },
+        categories: {}
+    },
+    'chart-resolution-time': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [3.8, 3.6, 3.4, 3.2, 3.0, 2.8],
+            previous: [4.5, 4.3, 4.1, 3.9, 3.7, 3.5]
+        },
+        categories: {}
+    },
+    'chart-feedback-rate': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [8.5, 8.2, 7.9, 7.6, 7.3, 7.0],
+            previous: [11.2, 10.8, 10.4, 10.0, 9.6, 9.2]
+        },
+        categories: {}
+    },
+    'chart-nps': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [48, 50, 52, 54, 56, 58],
+            previous: [42, 44, 46, 48, 50, 52]
+        },
+        categories: {}
+    },
+    'chart-resolution': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [87.5, 88.2, 89.0, 89.8, 90.5, 91.0],
+            previous: [85.0, 85.5, 86.0, 86.5, 87.0, 87.5]
+        },
+        categories: {}
+    },
+    'chart-setup': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [92.5, 93.0, 93.5, 94.0, 94.5, 95.0],
+            previous: [90.0, 90.5, 91.0, 91.5, 92.0, 92.5]
+        },
+        categories: {}
+    },
+    'chart-csat': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [4.15, 4.20, 4.25, 4.30, 4.35, 4.40],
+            previous: [3.95, 4.00, 4.05, 4.10, 4.15, 4.20]
+        },
+        categories: {}
+    },
+    'chart-ces': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [2.8, 2.7, 2.6, 2.5, 2.4, 2.3],
+            previous: [3.2, 3.1, 3.0, 2.9, 2.8, 2.7]
+        },
+        categories: {}
+    },
+    'chart-churn-rate': {
+        labels: ['2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03'],
+        mandatory: {
+            current: [1.8, 1.7, 1.6, 1.5, 1.4, 1.3],
+            previous: [2.3, 2.2, 2.1, 2.0, 1.9, 1.8]
+        },
+        categories: {}
     }
 };
 
@@ -863,6 +980,9 @@ function renderTrendCharts() {
                                             }
                                         }
                                     }
+                                },
+                                datalabels: {
+                                    display: false
                                 }
                             },
                             scales: {
@@ -908,6 +1028,146 @@ function renderTrendCharts() {
         console.log('Trend charts rendering complete');
     } catch (e) {
         console.error('Error in renderTrendCharts:', e);
+    }
+}
+
+// Render CX trend charts for Level 2 (Trải nghiệm)
+function renderCXTrendCharts() {
+    try {
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js not loaded yet for CX charts, retrying...');
+            setTimeout(renderCXTrendCharts, 500);
+            return;
+        }
+        
+        const chartIds = [
+            'chart-feedback-count',
+            'chart-resolution-time',
+            'chart-feedback-rate',
+            'chart-nps',
+            'chart-resolution',
+            'chart-setup',
+            'chart-csat',
+            'chart-ces',
+            'chart-churn-rate'
+        ];
+        
+        chartIds.forEach((chartId) => {
+            const canvas = document.getElementById(chartId);
+            if (!canvas) {
+                console.warn('Canvas not found:', chartId);
+                return;
+            }
+            
+            // Check if trendModeData has this chart
+            if (!trendModeData[chartId]) {
+                console.warn('No trend data for:', chartId);
+                return;
+            }
+            
+            const trendData = trendModeData[chartId];
+            const ctx = canvas.getContext('2d');
+            
+            // Destroy existing chart instance if it exists
+            if (trendChartInstances[chartId]) {
+                trendChartInstances[chartId].destroy();
+            }
+            
+            trendChartInstances[chartId] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: trendData.labels,
+                    datasets: [
+                        {
+                            label: 'Hiện tại',
+                            data: trendData.mandatory.current,
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.05)',
+                            borderWidth: 2.5,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#2563eb',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 1
+                        },
+                        {
+                            label: 'Năm trước',
+                            data: trendData.mandatory.previous,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.05)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            borderDash: [5, 5],
+                            pointRadius: 2,
+                            pointHoverRadius: 5,
+                            pointBackgroundColor: '#f59e0b',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 8,
+                                font: { size: 11, weight: '500' },
+                                color: '#64748b',
+                                padding: 10,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#e2e8f0',
+                            borderColor: 'rgba(0,0,0,0)',
+                            borderWidth: 0,
+                            padding: 10,
+                            cornerRadius: 6,
+                            displayColors: true,
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    if (context.datasetIndex === 0 && context.dataIndex > 0) {
+                                        const currentValue = context.parsed.y;
+                                        const previousValue = trendData.mandatory.previous[context.dataIndex];
+                                        const change = currentValue - previousValue;
+                                        const pctChange = ((change / previousValue) * 100).toFixed(1);
+                                        return `YoY: ${change > 0 ? '+' : ''}${change.toFixed(1)} (${pctChange > 0 ? '+' : ''}${pctChange}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        datalabels: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: '#f1f5f9', borderColor: '#e2e8f0' },
+                            ticks: { color: '#64748b', font: { size: 11 }, maxTicksLimit: 4 }
+                        },
+                        x: {
+                            display: true,
+                            grid: { display: false, borderColor: '#e2e8f0' },
+                            ticks: { color: '#64748b', font: { size: 10 }, maxRotation: 45, minRotation: 0 }
+                        }
+                    }
+                }
+            });
+            
+            console.log('CX trend chart created for:', chartId);
+        });
+        
+        console.log('CX trend charts rendering complete');
+    } catch (e) {
+        console.error('Error in renderCXTrendCharts:', e);
     }
 }
 
@@ -1000,101 +1260,119 @@ function renderCharts() {
         });
     };
 
+    function getUnitForChart(chartId, defaultUnit) {
+        if (currentMetricsState[chartId] === 'rev') {
+            return 'Tỉ VNĐ'; 
+        }
+        if (chartId.includes('-kenh') && currentKenhMetric === 'thu-nhap-kenh') {
+            return 'Tỉ VNĐ';
+        }
+        return defaultUnit;
+    }
+
     // 1. Chart: Theo Tỉnh/Thành phố (Tiêu dùng thực)
-    createHorizontalBarChart('chart-tinh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [12.5, 14.2, 4.3, 3.8, 3.1, 3.3, 4.0], '#3b82f6', 'Tỉ');
+    createHorizontalBarChart('chart-tinh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [12.5, 14.2, 4.3, 3.8, 3.1, 3.3, 4.0], '#3b82f6', getUnitForChart('chart-tinh', 'Tỉ'));
 
     // 2. Chart: Theo Gói cước (Tiêu dùng thực)
-    createHorizontalBarChart('chart-goicuoc', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [15.2, 8.4, 6.1, 5.3, 4.2, 6.0], '#8b5cf6', 'Tỉ');
+    createHorizontalBarChart('chart-goicuoc', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [15.2, 8.4, 6.1, 5.3, 4.2, 6.0], '#8b5cf6', getUnitForChart('chart-goicuoc', 'Tỉ'));
 
     // 3. Chart: Theo Khu vực (Tiêu dùng thực)
-    createHorizontalBarChart('chart-khuvuc', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [16.8, 18.5, 6.4, 3.5], '#10b981', 'Tỉ');
+    createHorizontalBarChart('chart-khuvuc', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [16.8, 18.5, 6.4, 3.5], '#10b981', getUnitForChart('chart-khuvuc', 'Tỉ'));
 
     // 4. Chart: Theo Tuổi thọ TB (Tiêu dùng thực)
-    createHorizontalBarChart('chart-tuoitho', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [4.2, 5.6, 8.4, 15.3, 11.7], '#f43f5e', 'Tỉ');
+    createHorizontalBarChart('chart-tuoitho', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [4.2, 5.6, 8.4, 15.3, 11.7], '#f43f5e', getUnitForChart('chart-tuoitho', 'Tỉ'));
 
     // 5. Chart: Theo Kênh phát triển (Tiêu dùng thực)
-    createHorizontalBarChart('chart-kenh', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [14.5, 12.1, 8.4, 4.3, 2.5, 3.4], '#f59e0b', 'Tỉ');
+    createHorizontalBarChart('chart-kenh', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [14.5, 12.1, 8.4, 4.3, 2.5, 3.4], '#f59e0b', getUnitForChart('chart-kenh', 'Tỉ'));
 
     // 6. Chart: Theo Vị trí trạm (Tiêu dùng thực)
-    createHorizontalBarChart('chart-tram', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [10.5, 8.2, 6.1, 12.3, 7.9], '#06b6d4', 'Tỉ');
+    createHorizontalBarChart('chart-tram', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [10.5, 8.2, 6.1, 12.3, 7.9], '#06b6d4', getUnitForChart('chart-tram', 'Tỉ'));
 
     // Subscriber (Thuê bao) charts
-    createHorizontalBarChart('chart-tinh-thue-bao', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], '#3b82f6', 'M');
-    createHorizontalBarChart('chart-goicuoc-thue-bao', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', 'M');
-    createHorizontalBarChart('chart-khuvuc-thue-bao', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', 'M');
-    createHorizontalBarChart('chart-tuoitho-thue-bao', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', 'M');
-    createHorizontalBarChart('chart-kenh-thue-bao', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', 'M');
-    createHorizontalBarChart('chart-tram-thue-bao', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', 'M');
+    createHorizontalBarChart('chart-tinh-thue-bao', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], '#3b82f6', getUnitForChart('chart-tinh-thue-bao', 'M'));
+    createHorizontalBarChart('chart-goicuoc-thue-bao', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', getUnitForChart('chart-goicuoc-thue-bao', 'M'));
+    createHorizontalBarChart('chart-khuvuc-thue-bao', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', getUnitForChart('chart-khuvuc-thue-bao', 'M'));
+    createHorizontalBarChart('chart-tuoitho-thue-bao', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', getUnitForChart('chart-tuoitho-thue-bao', 'M'));
+    createHorizontalBarChart('chart-kenh-thue-bao', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', getUnitForChart('chart-kenh-thue-bao', 'M'));
+    createHorizontalBarChart('chart-tram-thue-bao', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', getUnitForChart('chart-tram-thue-bao', 'M'));
 
     // Super App charts
-    createHorizontalBarChart('chart-tinh-super-app', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.8, 2.1, 0.3, 0.2, 0.2, 0.25, 0.35], '#3b82f6', 'M');
-    createHorizontalBarChart('chart-goicuoc-super-app', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [2.2, 1.2, 0.8, 0.6, 0.5, 0.7], '#8b5cf6', 'M');
-    createHorizontalBarChart('chart-khuvuc-super-app', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [2.5, 2.8, 0.5, 0.2], '#10b981', 'M');
-    createHorizontalBarChart('chart-tuoitho-super-app', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.6, 0.8, 1.2, 2.0, 1.8], '#f43f5e', 'M');
-    createHorizontalBarChart('chart-kenh-super-app', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [2.1, 1.8, 1.2, 0.6, 0.3, 0.5], '#f59e0b', 'M');
+    createHorizontalBarChart('chart-tinh-super-app', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.8, 2.1, 0.3, 0.2, 0.2, 0.25, 0.35], '#3b82f6', getUnitForChart('chart-tinh-super-app', 'M'));
+    createHorizontalBarChart('chart-goicuoc-super-app', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [2.2, 1.2, 0.8, 0.6, 0.5, 0.7], '#8b5cf6', getUnitForChart('chart-goicuoc-super-app', 'M'));
+    createHorizontalBarChart('chart-khuvuc-super-app', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [2.5, 2.8, 0.5, 0.2], '#10b981', getUnitForChart('chart-khuvuc-super-app', 'M'));
+    createHorizontalBarChart('chart-tuoitho-super-app', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.6, 0.8, 1.2, 2.0, 1.8], '#f43f5e', getUnitForChart('chart-tuoitho-super-app', 'M'));
+    createHorizontalBarChart('chart-kenh-super-app', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [2.1, 1.8, 1.2, 0.6, 0.3, 0.5], '#f59e0b', getUnitForChart('chart-kenh-super-app', 'M'));
 
     // Data Traffic charts (GB)
-    createHorizontalBarChart('chart-tinh-luu-luong', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [2500, 2800, 950, 820, 670, 740, 890], '#3b82f6', 'GB');
-    createHorizontalBarChart('chart-goicuoc-luu-luong', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [2800, 1600, 1200, 900, 720, 1100], '#8b5cf6', 'GB');
-    createHorizontalBarChart('chart-khuvuc-luu-luong', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [3100, 3300, 1200, 620], '#10b981', 'GB');
-    createHorizontalBarChart('chart-tuoitho-luu-luong', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [780, 940, 1200, 1900, 1600], '#f43f5e', 'GB');
-    createHorizontalBarChart('chart-kenh-luu-luong', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [2900, 2500, 1800, 950, 520, 670], '#f59e0b', 'GB');
-    createHorizontalBarChart('chart-tram-luu-luong', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [2000, 1500, 1200, 2500, 1300], '#06b6d4', 'GB');
+    createHorizontalBarChart('chart-tinh-luu-luong', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [2500, 2800, 950, 820, 670, 740, 890], '#3b82f6', getUnitForChart('chart-tinh-luu-luong', 'GB'));
+    createHorizontalBarChart('chart-goicuoc-luu-luong', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [2800, 1600, 1200, 900, 720, 1100], '#8b5cf6', getUnitForChart('chart-goicuoc-luu-luong', 'GB'));
+    createHorizontalBarChart('chart-khuvuc-luu-luong', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [3100, 3300, 1200, 620], '#10b981', getUnitForChart('chart-khuvuc-luu-luong', 'GB'));
+    createHorizontalBarChart('chart-tuoitho-luu-luong', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [780, 940, 1200, 1900, 1600], '#f43f5e', getUnitForChart('chart-tuoitho-luu-luong', 'GB'));
+    createHorizontalBarChart('chart-kenh-luu-luong', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [2900, 2500, 1800, 950, 520, 670], '#f59e0b', getUnitForChart('chart-kenh-luu-luong', 'GB'));
+    createHorizontalBarChart('chart-tram-luu-luong', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [2000, 1500, 1200, 2500, 1300], '#06b6d4', getUnitForChart('chart-tram-luu-luong', 'GB'));
 
-    // Customer Experience charts (percentage)
-    const createPercentBarChart = (canvasId, labels, data, accentColor) => {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) return;
-
-        new Chart(canvas.getContext('2d'), {
-            type: 'bar',
-            data: { labels, datasets: [{ label: 'Phần trăm', data, backgroundColor: accentColor, borderRadius: 6, barPercentage: 0.6 }] },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                animation: { duration: 1000, easing: 'easeOutQuart' },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleColor: '#f8fafc',
-                        bodyColor: '#e2e8f0',
-                        borderColor: 'rgba(0,0,0,0)',
-                        borderWidth: 0,
-                        padding: 12,
-                        cornerRadius: 8,
-                        displayColors: true,
-                        callbacks: {
-                            label: function(context) { return `Giá trị: ${context.raw}%`; }
-                        }
-                    },
-                    datalabels: {
-                        display: true,
-                        anchor: 'end',
-                        align: 'end',
-                        font: { weight: 'bold', size: 12 },
-                        color: '#1a1a1a',
-                        padding: { right: 8 },
-                        formatter: function(value) { return `${value}%`; }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { color: '#e2e8f0', drawBorder: false, tickLength: 0 },
-                        title: { display: true, text: '%', color: '#64748b', font: { weight: '500' } },
-                        ticks: { padding: 8 }
-                    },
-                    y: { grid: { display: false, drawBorder: false }, ticks: { font: { weight: '500' }, color: '#334155' } }
-                }
-            }
-        });
-    };
-
-    createPercentBarChart('chart-nps', ['NPS trung bình', 'NPS trung bình', 'NPS trung bình'], [45.2, 46.1, 44.8], '#3b82f6');
-    createPercentBarChart('chart-resolution', ['Xử lý đúng hạn', 'Xử lý đúng hạn', 'Xử lý đúng hạn'], [92.3, 91.8, 93.1], '#10b981');
-    createPercentBarChart('chart-setup', ['Thiết lập thành công', 'Thiết lập thành công', 'Thiết lập thành công'], [97.8, 98.1, 97.2], '#f59e0b');
-    createPercentBarChart('chart-feedback', ['Phản ánh tiêu cực', 'Phản ánh tiêu cực', 'Phản ánh tiêu cực'], [12.5, 11.8, 13.1], '#f43f5e');
+    // Distribution Channel (Kênh) charts
+    createHorizontalBarChart('chart-tinh-kenh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [850, 920, 310, 280, 220, 240, 290], '#3b82f6', getUnitForChart('chart-tinh-kenh', 'kênh'));
+    createHorizontalBarChart('chart-loaikenh-kenh', ['Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Điểm bán', 'Kênh số / App', 'Telemarketing', 'Kênh Doanh nghiệp'], [120, 850, 3500, 450, 320, 210], '#8b5cf6', getUnitForChart('chart-loaikenh-kenh', 'kênh'));
+    createHorizontalBarChart('chart-khuvuc-kenh', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1650, 1850, 640, 420], '#10b981', getUnitForChart('chart-khuvuc-kenh', 'kênh'));
+    createHorizontalBarChart('chart-trangthai-kenh', ['Đang hoạt động', 'Tạm ngưng', 'Chờ đóng hồ sơ', 'Hết hạn Hợp đồng'], [4800, 450, 280, 100], '#f43f5e', getUnitForChart('chart-trangthai-kenh', 'kênh'));
+    createHorizontalBarChart('chart-phanhang-kenh', ['Hạng Vàng', 'Hạng Bạc', 'Hạng Đồng', 'Hạng Tiềm năng'], [850, 1200, 2200, 1380], '#f59e0b', getUnitForChart('chart-phanhang-kenh', 'kênh'));
+    createHorizontalBarChart('chart-capquanly-kenh', ['Tập đoàn', 'Tổng công ty', 'Chi nhánh Tỉnh', 'Phòng/Ban Huyện'], [45, 120, 1250, 4215], '#06b6d4', getUnitForChart('chart-capquanly-kenh', 'kênh'));
 
     chartsInitialized = true;
 }
+
+let currentKenhMetric = 'phat-trien';
+function updateKenhMetric(value) {
+    currentKenhMetric = value;
+    chartsInitialized = false;
+    renderCharts();
+    showToast(`Đã chuyển chỉ tiêu sang: ${getKenhMetricName(value)}`);
+}
+
+function getKenhMetricName(value) {
+    const names = {
+        'phat-trien': 'Kênh phát triển thuê bao',
+        'mua-hang': 'Kênh mua hàng',
+        'd2d': 'Kênh D2D',
+        'co-thu-nhap': 'Kênh có thu nhập',
+        'thu-nhap-kenh': 'Thu nhập kênh'
+    };
+    return names[value] || value;
+}
+
+function showToast(message) {
+    // Basic toast logic if exists, or just log
+    console.log(message);
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0f172a;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 9999;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        animation: fadeInOut 3s forwards;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Add animation to CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translate(-50%, 20px); }
+        15% { opacity: 1; transform: translate(-50%, 0); }
+        85% { opacity: 1; transform: translate(-50%, 0); }
+        100% { opacity: 0; transform: translate(-50%, -20px); }
+    }
+`;
+document.head.appendChild(style);
