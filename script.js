@@ -1,4 +1,18 @@
 // Navigation logic between Level 1 and Level 2
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const dashboardContainer = document.querySelector('.dashboard-container');
+
+    if (sidebarToggle && dashboardContainer) {
+        sidebarToggle.addEventListener('click', () => {
+            dashboardContainer.classList.toggle('collapsed');
+            
+            // Trigger a resize event to make sure charts redraw if needed
+            window.dispatchEvent(new Event('resize'));
+        });
+    }
+});
+
 function openLevel2(cardId) {
     // Hide all level 2 sections
     const allLevel2 = document.querySelectorAll('.level2-section');
@@ -917,14 +931,14 @@ function renderTrendCharts() {
                                 {
                                     label: 'Thực hiện hiện tại',
                                     data: trendDatasets[cardKey],
-                                    borderColor: '#2563eb',
-                                    backgroundColor: 'rgba(37, 99, 235, 0.05)',
+                                    borderColor: '#16a34a',
+                                    backgroundColor: 'rgba(22, 163, 74, 0.05)',
                                     borderWidth: 2.5,
                                     fill: false,
                                     tension: 0.3,
                                     pointRadius: 3,
                                     pointHoverRadius: 6,
-                                    pointBackgroundColor: '#2563eb',
+                                    pointBackgroundColor: '#16a34a',
                                     pointBorderColor: '#ffffff',
                                     pointBorderWidth: 1
                                 },

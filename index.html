@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viễn thông / Analytics Dashboard</title>
+    <title>Analytics Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,14 +19,19 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <i class="fas fa-chart-pie"></i>
-                <h2>Data Analytics</h2>
+                <div class="logo-brand">
+                    <i class="fas fa-chart-pie"></i>
+                    <h2>Data Analytics</h2>
+                </div>
+                <button id="sidebar-toggle" class="sidebar-toggle-btn">
+                    <i class="fas fa-indent"></i>
+                </button>
             </div>
             <ul class="nav">
-                <li class="active" id="nav-overview"><i class="fas fa-home"></i> Tổng quan</li>
-                <li id="nav-di-dong"><i class="fas fa-money-bill-wave"></i> Di động</li>
-                <li id="nav-cdbr"><i class="fas fa-sim-card"></i> CĐBR</li>
-                <li id="nav-vi-dien-tu"><i class="fas fa-user-plus"></i> Ví điện tử</li>
+                <li class="active" id="nav-overview"><i class="fas fa-home"></i> <span>Tổng quan</span></li>
+                <li id="nav-di-dong"><i class="fas fa-money-bill-wave"></i> <span>Di động</span></li>
+                <li id="nav-cdbr"><i class="fas fa-sim-card"></i> <span>CĐBR</span></li>
+                <li id="nav-vi-dien-tu"><i class="fas fa-user-plus"></i> <span>Ví điện tử</span></li>
             </ul>
         </aside>
 
@@ -34,7 +39,7 @@
         <main class="main-content">
             <header>
                 <div class="header-left">
-                    <h1 id="page-title">Báo cáo Mảng Kinh doanh tại thị trường</h1>
+                    <h1 id="page-title">Báo cáo Kinh doanh tại thị trường</h1>
                     <p>Cập nhật số liệu hàng ngày</p>
                     <div class="header-filter">
                         <label for="market-select">Thị trường:</label>
@@ -118,6 +123,7 @@
 
                     <!-- Card 2 -->
                     <div class="card clickable" onclick="openLevel2('thue-bao')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-users"><i class="fas fa-mobile-alt"></i></div>
                             <h3>TB 15c3d tăng thêm</h3>
@@ -159,6 +165,7 @@
 
                     <!-- Card 3 -->
                     <div class="card clickable" onclick="openLevel2('thue-bao')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-new"><i class="fas fa-user-plus"></i></div>
                             <h3>TB phát triển mới</h3>
@@ -200,6 +207,7 @@
 
                     <!-- Card 4 -->
                     <div class="card clickable" onclick="openLevel2('thue-bao')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-churn"><i class="fas fa-user-minus"></i></div>
                             <h3>TB rời mạng</h3>
@@ -242,6 +250,7 @@
 
                     <!-- Card 5 -->
                     <div class="card clickable" onclick="openLevel2('luu-luong')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-data"><i class="fas fa-database"></i></div>
                             <h3>Lưu lượng data</h3>
@@ -367,6 +376,7 @@
 
                     <!-- Card 8 -->
                     <div class="card clickable" onclick="openLevel2('trai-nghiem')">
+                        <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-cx"><i class="fas fa-smile"></i></div>
                             <h3>Trải nghiệm KH</h3>
