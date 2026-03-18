@@ -445,8 +445,8 @@
                         </div>
                     </div>
 
-                    <!-- Chart 5: By Distribution Channel (Full width) -->
-                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                    <!-- Chart 5: By Distribution Channel -->
+                    <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Kênh phát triển</h3>
                         <div class="metric-toggle">
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh')">Thực hiện</button>
@@ -456,6 +456,20 @@
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 6: By Station Position -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Vị trí trạm</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tram')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tram')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tram')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tram')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tram"></canvas>
                         </div>
                     </div>
                 </div>
@@ -547,8 +561,8 @@
                         </div>
                     </div>
 
-                    <!-- Chart 5: By Distribution Channel (Full width) -->
-                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                    <!-- Chart 5: By Distribution Channel -->
+                    <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Kênh phát triển</h3>
                         <div class="metric-toggle">
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-thue-bao')">Thực hiện</button>
@@ -558,6 +572,20 @@
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh-thue-bao"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 6: By Station Position -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Vị trí trạm</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tram-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tram-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tram-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tram-thue-bao')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tram-thue-bao"></canvas>
                         </div>
                     </div>
                 </div>
@@ -649,8 +677,8 @@
                         </div>
                     </div>
 
-                    <!-- Chart 5: By Distribution Channel (Full width) -->
-                    <div class="chart-card-enhanced" style="grid-column: span 2;">
+                    <!-- Chart 5: By Distribution Channel -->
+                    <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Kênh phát triển</h3>
                         <div class="metric-toggle">
                             <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">Thực hiện</button>
@@ -660,6 +688,20 @@
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh-luu-luong"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 6: By Station Position -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Vị trí trạm</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual" onclick="switchChartMetric(this, 'chart-tram-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy" onclick="switchChartMetric(this, 'chart-tram-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom" onclick="switchChartMetric(this, 'chart-tram-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-tram-luu-luong')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tram-luu-luong"></canvas>
                         </div>
                     </div>
                 </div>
@@ -889,41 +931,67 @@
     </div>
 
     <!-- Download Modal -->
-    <div id="download-modal" class="trend-modal hidden" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
+    <div id="download-modal" class="trend-modal hidden download-modal" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
         <div class="trend-modal-backdrop" onclick="closeDownloadModal()"></div>
         <div class="trend-modal-content">
             <div class="trend-modal-header">
                 <h3 id="download-modal-title">Tải dữ liệu</h3>
                 <button class="trend-modal-close" onclick="closeDownloadModal()" aria-label="Đóng">×</button>
             </div>
-            <div class="trend-modal-body">
-                <div class="trend-modal-filters">
-                    <div class="trend-filter-header">
-                        <span>Chọn dữ liệu</span>
+            <div class="trend-modal-body download-modal-body">
+                <div class="download-section">
+                    <div class="download-section-header">
+                        <span>Chọn ngày tải dữ liệu: </span>
                     </div>
-                    <div class="control-group">
-                        <label for="download-date-from">Từ ngày:</label>
-                        <input type="date" id="download-date-from">
-                    </div>
-                    <div class="control-group">
-                        <label for="download-date-to">Đến ngày:</label>
-                        <input type="date" id="download-date-to">
-                    </div>
-                    <div class="control-group">
-                        <label>Chọn trường (Fields):</label>
-                        <div class="trend-modal-legend-list" id="download-field-list">
-                            <label><input type="checkbox" value="factor" checked> Nhân tố</label>
-                            <label><input type="checkbox" value="slice" checked> Loại cắt lớp</label>
-                            <label><input type="checkbox" value="date" checked> Ngày</label>
-                            <label><input type="checkbox" value="tb15c3d" checked> TB 15c3d lũy kế</label>
-                            <label><input type="checkbox" value="luuLuong" checked> Lưu lượng</label>
-                            <label><input type="checkbox" value="tbMoi" checked> TB mới</label>
-                            <label><input type="checkbox" value="duLieu1" checked> Dữ liệu 1</label>
-                            <label><input type="checkbox" value="duLieu2" checked> Dữ liệu 2</label>
+                    <div class="download-grid">
+                        <div class="control-group">
+                            <label for="download-date-from">Từ ngày:</label>
+                            <input type="date" id="download-date-from">
+                        </div>
+                        <div class="control-group">
+                            <label for="download-date-to">Đến ngày:</label>
+                            <input type="date" id="download-date-to">
                         </div>
                     </div>
                 </div>
-                <div class="trend-modal-chart" style="flex-direction: column; justify-content: flex-end;">
+
+                <div class="download-section">
+                    <div class="download-section-header">
+                        <span>Chọn loại cắt lớp</span>
+                        <div class="download-section-actions">
+                            <button class="btn-secondary" onclick="selectAllDownloadSlices(true)">Chọn tất cả</button>
+                            <button class="btn-secondary" onclick="selectAllDownloadSlices(false)">Bỏ chọn</button>
+                        </div>
+                    </div>
+                    <div id="download-slice-list" class="trend-modal-legend-list">
+                        <label><input type="checkbox" value="kenh"> Kênh phát triển</label>
+                        <label><input type="checkbox" value="tinh"> Tỉnh/Thành phố</label>
+                        <label><input type="checkbox" value="goicuoc"> Gói cước</label>
+                        <label><input type="checkbox" value="tuoitho"> Tuổi thọ</label>
+                        <label><input type="checkbox" value="khuvuc"> Khu vực</label>
+                        <label><input type="checkbox" value="x"> X</label>
+                        <label><input type="checkbox" value="y"> Y</label>
+                    </div>
+                </div>
+
+                <div class="download-section">
+                    <div class="download-section-header">
+                        <span>Chọn trường (Fields)</span>
+                        <div class="download-section-actions">
+                            <button class="btn-secondary" onclick="selectAllDownloadFields(true)">Chọn tất cả</button>
+                            <button class="btn-secondary" onclick="selectAllDownloadFields(false)">Bỏ chọn</button>
+                        </div>
+                    </div>
+                    <div class="trend-modal-legend-list" id="download-field-list">
+                        <label><input type="checkbox" value="tb15c3d" checked> TB 15c3d lũy kế</label>
+                        <label><input type="checkbox" value="luuLuong" checked> Lưu lượng</label>
+                        <label><input type="checkbox" value="tbMoi" checked> TB mới</label>
+                        <label><input type="checkbox" value="duLieu1" checked> Dữ liệu 1</label>
+                        <label><input type="checkbox" value="duLieu2" checked> Dữ liệu 2</label>
+                    </div>
+                </div>
+
+                <div class="download-footer">
                     <button class="btn-download" onclick="downloadSelectedData()">Tải xuống</button>
                 </div>
             </div>

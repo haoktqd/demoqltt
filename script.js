@@ -287,7 +287,8 @@ const downloadDataset = [
     { factor: 'TP.HCM', slice: 'Tỉnh/Thành phố', date: '2024-03-16', tb15c3d: 14.2, luuLuong: 2800, tbMoi: 140, duLieu1: 63.1, duLieu2: 82.2 },
     { factor: 'Đà Nẵng', slice: 'Tỉnh/Thành phố', date: '2024-03-16', tb15c3d: 4.3, luuLuong: 1200, tbMoi: 42, duLieu1: 29.4, duLieu2: 31.7 },
     { factor: 'Kênh số/App', slice: 'Kênh phát triển', date: '2024-03-16', tb15c3d: 14.5, luuLuong: 3200, tbMoi: 180, duLieu1: 92.8, duLieu2: 104.5 },
-    { factor: 'Cửa hàng trực tiếp', slice: 'Kênh phát triển', date: '2024-03-16', tb15c3d: 12.1, luuLuong: 2700, tbMoi: 150, duLieu1: 79.2, duLieu2: 85.1 }
+    { factor: 'Cửa hàng trực tiếp', slice: 'Kênh phát triển', date: '2024-03-16', tb15c3d: 12.1, luuLuong: 2700, tbMoi: 150, duLieu1: 79.2, duLieu2: 85.1 },
+    { factor: 'xyz', slice: 'abc', date: '2024-03-16', tb15c3d: 12.1, luuLuong: 2700, tbMoi: 150, duLieu1: 79.2, duLieu2: 85.1 }
 ];
 
 let trendModalChartInstance = null;
@@ -351,6 +352,49 @@ function closeTrendModal() {
     currentTrendModalChartId = null;
 }
 
+let downloadSliceState = {};
+
+function renderDownloadSliceFilters() {
+    const container = document.getElementById('download-slice-list');
+    if (!container) return;
+
+    const uniqueSlices = Array.from(new Set(downloadDataset.map(r => r.slice))).sort();
+    // Initialize selection state if not present
+    uniqueSlices.forEach(slice => {
+        if (downloadSliceState[slice] === undefined) {
+            downloadSliceState[slice] = true;
+        }
+    });
+
+    container.innerHTML = '';
+    uniqueSlices.forEach(slice => {
+        const checked = downloadSliceState[slice] ? 'checked' : '';
+        const label = document.createElement('label');
+        label.innerHTML = `
+            <input type="checkbox" ${checked} onchange="toggleDownloadSlice('${slice.replace(/'/g, "\\'")}')">
+            ${slice}
+        `;
+        container.appendChild(label);
+    });
+}
+
+function toggleDownloadSlice(slice) {
+    downloadSliceState[slice] = !downloadSliceState[slice];
+    renderDownloadSliceFilters();
+}
+
+function selectAllDownloadSlices(checked) {
+    Object.keys(downloadSliceState).forEach(slice => {
+        downloadSliceState[slice] = checked;
+    });
+    renderDownloadSliceFilters();
+}
+
+function selectAllDownloadFields(checked) {
+    const fields = Array.from(document.querySelectorAll('#download-field-list input[type=checkbox]'));
+    fields.forEach(f => { f.checked = checked; });
+}
+
 function openDownloadModal() {
     const modal = document.getElementById('download-modal');
     if (!modal) return;
@@ -367,6 +411,7 @@ function openDownloadModal() {
         toInput.value = now.toISOString().slice(0, 10);
     }
 
+    renderDownloadSliceFilters();
     modal.classList.remove('hidden');
 }
 
@@ -387,10 +432,17 @@ function formatCsvValue(value) {
 function downloadSelectedData() {
     const fromInput = document.getElementById('download-date-from');
     const toInput = document.getElementById('download-date-to');
+    const sliceInputs = Array.from(document.querySelectorAll('#download-slice-list input[type=checkbox]'));
     const fieldInputs = Array.from(document.querySelectorAll('#download-field-list input[type=checkbox]'));
 
     const fromDate = fromInput?.value ? new Date(fromInput.value) : null;
     const toDate = toInput?.value ? new Date(toInput.value) : null;
+
+    const selectedSlices = sliceInputs.filter(i => i.checked).map(i => i.value);
+    if (!selectedSlices.length) {
+        alert('Vui lòng chọn ít nhất một loại cắt lớp để tải.');
+        return;
+    }
 
     const selectedFields = fieldInputs.filter(i => i.checked).map(i => i.value);
     if (!selectedFields.length) {
@@ -398,7 +450,11 @@ function downloadSelectedData() {
         return;
     }
 
+    // Always include mandatory fields even if they are not in the checkbox list
+    const finalFields = ['factor', 'slice', 'date', ...selectedFields.filter(f => !['factor', 'slice', 'date'].includes(f))];
+
     const filtered = downloadDataset.filter(row => {
+        if (!selectedSlices.includes(row.slice)) return false;
         if (!fromDate && !toDate) return true;
         const rowDate = new Date(row.date);
         if (fromDate && rowDate < fromDate) return false;
@@ -406,7 +462,7 @@ function downloadSelectedData() {
         return true;
     });
 
-    const header = selectedFields.map(f => {
+    const header = finalFields.map(f => {
         switch (f) {
             case 'factor': return 'Nhân tố';
             case 'slice': return 'Loại cắt lớp';
@@ -420,7 +476,7 @@ function downloadSelectedData() {
         }
     });
 
-    const rows = filtered.map(row => selectedFields.map(field => formatCsvValue(row[field])).join(','));
+    const rows = filtered.map(row => finalFields.map(field => formatCsvValue(row[field])).join(','));
     const csv = [header.join(','), ...rows].join('\n');
 
     const filename = `telecom-data-${new Date().toISOString().slice(0,10)}.csv`;
@@ -952,12 +1008,16 @@ function renderCharts() {
     // 5. Chart: Theo Kênh phát triển (Tiêu dùng thực)
     createHorizontalBarChart('chart-kenh', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [14.5, 12.1, 8.4, 4.3, 2.5, 3.4], '#f59e0b', 'Tỉ');
 
+    // 6. Chart: Theo Vị trí trạm (Tiêu dùng thực)
+    createHorizontalBarChart('chart-tram', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [10.5, 8.2, 6.1, 12.3, 7.9], '#06b6d4', 'Tỉ');
+
     // Subscriber (Thuê bao) charts
     createHorizontalBarChart('chart-tinh-thue-bao', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], '#3b82f6', 'M');
     createHorizontalBarChart('chart-goicuoc-thue-bao', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', 'M');
     createHorizontalBarChart('chart-khuvuc-thue-bao', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', 'M');
     createHorizontalBarChart('chart-tuoitho-thue-bao', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', 'M');
     createHorizontalBarChart('chart-kenh-thue-bao', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', 'M');
+    createHorizontalBarChart('chart-tram-thue-bao', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', 'M');
 
     // Super App charts
     createHorizontalBarChart('chart-tinh-super-app', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.8, 2.1, 0.3, 0.2, 0.2, 0.25, 0.35], '#3b82f6', 'M');
@@ -972,6 +1032,7 @@ function renderCharts() {
     createHorizontalBarChart('chart-khuvuc-luu-luong', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [3100, 3300, 1200, 620], '#10b981', 'GB');
     createHorizontalBarChart('chart-tuoitho-luu-luong', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [780, 940, 1200, 1900, 1600], '#f43f5e', 'GB');
     createHorizontalBarChart('chart-kenh-luu-luong', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [2900, 2500, 1800, 950, 520, 670], '#f59e0b', 'GB');
+    createHorizontalBarChart('chart-tram-luu-luong', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [2000, 1500, 1200, 2500, 1300], '#06b6d4', 'GB');
 
     // Customer Experience charts (percentage)
     const createPercentBarChart = (canvasId, labels, data, accentColor) => {

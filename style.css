@@ -681,6 +681,100 @@ header {
     flex-direction: column;
 }
 
+/* Download modal specific tweaks */
+.download-modal .trend-modal-content {
+    width: 900px;       /* tăng độ rộng */
+    max-width: 95%;     /* responsive */
+}
+
+.download-modal .trend-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 18px 20px;
+}
+
+.download-modal .download-section {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+}
+
+.download-modal .download-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.download-modal .download-section-header span {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 13px;
+}
+
+.download-modal .download-subtitle {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.download-modal .download-section-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.download-modal .download-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    justify-items: start;
+}
+
+.download-modal .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.download-modal .control-group label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.download-modal .trend-modal-legend-list {
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.download-modal .trend-modal-legend-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.download-modal .download-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+}
+
+.download-modal .btn-download {
+    width: 200px;
+    padding: 10px 16px;
+    font-size: 14px;
+
+    display: flex;
+    justify-content: center;   /* 👉 căn ngang */
+    align-items: center;       /* 👉 căn dọc */
+}
+
 .trend-modal-header {
     display: flex;
     align-items: center;
@@ -770,6 +864,21 @@ header {
 .trend-modal-chart canvas {
     width: 100% !important;
     height: 100% !important;
+}
+
+/* Make checklists a bit nicer for download modal */
+.download-modal .trend-modal-legend-list {
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.download-modal .trend-modal-legend-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
 }
 
 /* Data Table */
