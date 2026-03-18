@@ -298,7 +298,6 @@ let currentTrendModalChartId = null;
 function openTrendModal(chartId) {
     const modal = document.getElementById('trend-modal');
     const titleEl = document.getElementById('trend-modal-title');
-    const legendList = document.getElementById('trend-modal-legend-list');
     const displayModeSelect = document.getElementById('trend-display-mode');
 
     const config = trendModalConfig[chartId];
@@ -325,19 +324,10 @@ function openTrendModal(chartId) {
         displayModeSelect.value = trendModalState[chartId].mode || 'sum';
     }
 
-    // Render legend checkboxes
-    legendList.innerHTML = '';
-    config.categories.forEach(category => {
-        const checked = trendModalState[chartId].selectedCategories[category] ? 'checked' : '';
-        const label = document.createElement('label');
-        label.innerHTML = `
-            <input type="checkbox" ${checked} onchange="toggleTrendLegend('${chartId}', '${category.replace(/'/g, "\\'")}')">
-            ${category}
-        `;
-        legendList.appendChild(label);
-    });
-
+    // Render the chart
     renderTrendModalChart(chartId);
+    
+    // Open the main modal
     modal.classList.remove('hidden');
 }
 
@@ -350,6 +340,48 @@ function closeTrendModal() {
     const modal = document.getElementById('trend-modal');
     modal.classList.add('hidden');
     currentTrendModalChartId = null;
+}
+
+// Render legend checkboxes in popup
+function renderTrendLegendPopup() {
+    if (!currentTrendModalChartId) return;
+    
+    const popupList = document.getElementById('trend-legend-popup-list');
+    const config = trendModalConfig[currentTrendModalChartId];
+    
+    if (!config || !popupList) return;
+    
+    // Render legend checkboxes in popup
+    popupList.innerHTML = '';
+    config.categories.forEach(category => {
+        const checked = trendModalState[currentTrendModalChartId].selectedCategories[category] ? 'checked' : '';
+        const label = document.createElement('label');
+        label.innerHTML = `
+            <input type="checkbox" ${checked} onchange="toggleTrendLegend('${currentTrendModalChartId}', '${category.replace(/'/g, "\\'")}')">
+            ${category}
+        `;
+        popupList.appendChild(label);
+    });
+}
+
+// Legend popup functions
+function openTrendLegendPopup() {
+    if (!currentTrendModalChartId) return;
+    
+    const popup = document.getElementById('trend-legend-popup');
+    if (!popup) return;
+    
+    // Render legend checkboxes in popup
+    renderTrendLegendPopup();
+    
+    popup.classList.remove('hidden');
+}
+
+function closeTrendLegendPopup() {
+    const popup = document.getElementById('trend-legend-popup');
+    if (popup) {
+        popup.classList.add('hidden');
+    }
 }
 
 let downloadSliceState = {};
@@ -481,7 +513,12 @@ function selectAllTrendLegends(checked) {
     config.categories.forEach(category => {
         trendModalState[currentTrendModalChartId].selectedCategories[category] = checked;
     });
-    openTrendModal(currentTrendModalChartId); // re-render checkboxes + chart
+    
+    // Re-render popup legend checkboxes to reflect changes
+    renderTrendLegendPopup();
+    
+    // Re-render the chart with updated selections
+    renderTrendModalChart(currentTrendModalChartId);
 }
 
 function toggleTrendLegend(chartId, category) {
@@ -842,11 +879,13 @@ function renderTrendCharts() {
                                     }
                                 },
                                 x: {
+                                    display: false,
                                     grid: {
                                         display: false,
                                         borderColor: '#e2e8f0'
                                     },
                                     ticks: {
+                                        display: false,
                                         color: '#64748b',
                                         font: { size: 10 },
                                         maxRotation: 45,

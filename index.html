@@ -909,23 +909,47 @@
             </div>
             <div class="trend-modal-body">
                 <div class="trend-modal-filters">
-                    <div class="trend-filter-header">
-                        <span>Chọn kiểu hiển thị & legend</span>
-                        <button class="btn-secondary" onclick="selectAllTrendLegends(true)">Chọn tất cả</button>
-                        <button class="btn-secondary" onclick="selectAllTrendLegends(false)">Bỏ chọn</button>
-                    </div>
+                    <!-- Chọn kiểu hiển thị -->
                     <div class="control-group">
-                        <label for="trend-display-mode">Kiểu hiển thị:</label>
+                        <label for="trend-display-mode">Chọn kiểu hiển thị:</label>
                         <select id="trend-display-mode" onchange="updateTrendDisplayMode()">
                             <option value="sum">Tổng (hiện tại + cùng kỳ)</option>
                             <option value="byCategory">Theo nhân tố (mỗi đường 1 legend)</option>
                         </select>
                     </div>
-                    <div id="trend-modal-legend-list" class="trend-modal-legend-list"></div>
+                    
+                    <!-- Chọn legend button -->
+                    <div class="control-group">
+                        <label>Chọn legend:</label>
+                        <button class="btn-legend-select" onclick="openTrendLegendPopup()">
+                            <i class="fas fa-list"></i> Chọn các legend mong muốn
+                        </button>
+                    </div>
                 </div>
                 <div class="trend-modal-chart">
                     <canvas id="trend-modal-canvas"></canvas>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Legend Popup Modal -->
+    <div id="trend-legend-popup" class="trend-legend-popup hidden">
+        <div class="trend-legend-popup-backdrop" onclick="closeTrendLegendPopup()"></div>
+        <div class="trend-legend-popup-content">
+            <div class="trend-legend-popup-header">
+                <h4>Chọn các legend mong muốn</h4>
+                <button class="trend-legend-popup-close" onclick="closeTrendLegendPopup()" aria-label="Đóng">×</button>
+            </div>
+            <div class="trend-legend-popup-body">
+                <div class="trend-legend-popup-buttons">
+                    <button class="btn-secondary" onclick="selectAllTrendLegends(true)">Chọn tất cả</button>
+                    <button class="btn-secondary" onclick="selectAllTrendLegends(false)">Bỏ chọn</button>
+                </div>
+                <div id="trend-legend-popup-list" class="trend-legend-popup-list"></div>
+            </div>
+            <div class="trend-legend-popup-footer">
+                <button class="btn-primary" onclick="closeTrendLegendPopup()">Xong</button>
             </div>
         </div>
     </div>
