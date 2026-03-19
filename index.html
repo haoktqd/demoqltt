@@ -33,13 +33,19 @@
                 <li id="nav-cdbr"><i class="fas fa-sim-card"></i> <span>CĐBR</span></li>
                 <li id="nav-vi-dien-tu"><i class="fas fa-user-plus"></i> <span>Ví điện tử</span></li>
             </ul>
+            <div class="sidebar-user">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=DA&background=2563eb&color=fff" alt="User">
+                    <span>Chuyên gia</span>
+                </div>
+            </div>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
             <header>
                 <div class="header-left">
-                    <h1 id="page-title">Báo cáo Kinh doanh tại thị trường</h1>
+                    <h1 id="page-title">Báo cáo Kinh doanh thị trường</h1>
                     <p>Cập nhật số liệu hàng ngày</p>
                     <div class="header-filter">
                         <label for="market-select">Thị trường:</label>
@@ -57,11 +63,10 @@
                     </div>
                 </div>
                 <div class="header-right">
-                    <div class="user-profile">
-                        <img src="https://ui-avatars.com/api/?name=DA&background=2563eb&color=fff" alt="User">
-                        <span>Chuyên gia Phân tích Dữ liệu</span>
-                    </div>
                     <div class="header-actions">
+                        <button class="btn-ai-chat" onclick="alert('Tính năng AI Chat đang được phát triển')">
+                            <i class="fas fa-sparkles"></i> AI Chat
+                        </button>
                         <button class="btn-download" onclick="openDownloadModal()"><i class="fas fa-download"></i> Tải
                             dữ liệu</button>
                     </div>
@@ -114,7 +119,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div class="trend-label">Xu hướng 18 tháng (Tiêu dùng thực)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card1" class="trend-chart"></canvas>
                             </div>
@@ -198,7 +203,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div class="trend-label">Xu hướng 18 tháng (TB phát triển mới)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card3" class="trend-chart"></canvas>
                             </div>
@@ -241,7 +246,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div class="trend-label">Xu hướng 18 tháng (TB rời mạng)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card4" class="trend-chart"></canvas>
                             </div>
@@ -283,7 +288,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div class="trend-label">Xu hướng 18 tháng (Lưu lượng data)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card5" class="trend-chart"></canvas>
                             </div>
@@ -325,7 +330,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng (kênh có phát triển TB)</div>
+                            <div class="trend-label">Xu hướng 18 tháng (Kênh phát triển TB)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card6" class="trend-chart"></canvas>
                             </div>
@@ -367,7 +372,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div class="trend-label">Xu hướng 18 tháng (TB super app)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card7" class="trend-chart"></canvas>
                             </div>
@@ -482,7 +487,8 @@
                                 onclick="switchChartMetric(this, 'chart-cat-lop-tieu-dung')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
                                 onclick="switchChartMetric(this, 'chart-cat-lop-tieu-dung')">MoM</button>
-                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-cat-lop-tieu-dung')">Xu
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-cat-lop-tieu-dung')">Xu
                                 hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
