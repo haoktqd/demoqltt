@@ -1372,8 +1372,16 @@ function getKenhMetricName(value) {
 }
 
 let currentThueBaoMetric = 'phat-trien-moi';
+let currentThueBao15c3dMetric = 'tang-them';
 function updateThueBaoMetric(value) {
     currentThueBaoMetric = value;
+    chartsInitialized = false;
+    renderCharts();
+    showToast(`Đã chuyển chỉ tiêu sang: ${getThueBaoMetricName(value)}`);
+}
+
+function updateThueBao15c3dMetric(value) {
+    currentThueBao15c3dMetric = value;
     chartsInitialized = false;
     renderCharts();
     showToast(`Đã chuyển chỉ tiêu sang: ${getThueBaoMetricName(value)}`);
@@ -1383,7 +1391,9 @@ function getThueBaoMetricName(value) {
     const names = {
         'phat-trien-moi': 'TB phát triển mới',
         'dat-15c3d': 'TB phát triển mới đạt 15c3d trong tháng',
-        'ty-le-dat-15c3d': 'Tỷ lệ TB mới đạt 15c3d'
+        'ty-le-dat-15c3d': 'Tỷ lệ TB mới đạt 15c3d',
+        'tang-them': 'TB 15c3d tăng thêm',
+        'luy-ke': 'TB 15c3d lũy kế'
     };
     return names[value] || value;
 }
