@@ -126,11 +126,11 @@
                         <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-users"><i class="fas fa-mobile-alt"></i></div>
-                            <h3>TB 15c3d tăng thêm</h3>
+                            <h3>TB 15c3d</h3>
                         </div>
                         <div class="card-body">
                             <div class="stat-block">
-                                <h4>Trong tháng</h4>
+                                <h4>Trong tháng (tăng thêm)</h4>
                                 <div class="main-val">12.5 M</div>
                                 <div class="sub-stats">
                                     <div class="sub-row"><span class="lbl">% HTKH</span> <span
@@ -143,7 +143,7 @@
                             </div>
                             <div class="divider"></div>
                             <div class="stat-block">
-                                <h4>Lũy kế năm</h4>
+                                <h4>Lũy kế năm (tăng thêm)</h4>
                                 <div class="main-val">12.5 M</div>
                                 <div class="sub-stats">
                                     <div class="sub-row"><span class="lbl">% HTKH</span> <span
@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <div class="card-trend">
-                            <div class="trend-label">Xu hướng 18 tháng</div>
+                            <div class="trend-label">Xu hướng 18 tháng (TB lũy kế)</div>
                             <div style="position: relative; height: 150px; width: 100%;">
                                 <canvas id="trend-card2" class="trend-chart"></canvas>
                             </div>
@@ -164,7 +164,7 @@
                     </div>
 
                     <!-- Card 3 -->
-                    <div class="card clickable" onclick="openLevel2('thue-bao')">
+                    <div class="card clickable" onclick="openLevel2('tb-phat-trien-moi')">
                         <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-new"><i class="fas fa-user-plus"></i></div>
@@ -472,7 +472,25 @@
                         </div>
                     </div>
 
-                    <!-- Chart 2: By Package -->
+                    <!-- Chart 2: By Consumption Layer -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp tiêu dùng</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-cat-lop-tieu-dung')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-cat-lop-tieu-dung')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-cat-lop-tieu-dung')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-cat-lop-tieu-dung')">Xu
+                                hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-cat-lop-tieu-dung"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: By Package -->
                     <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Gói cước</h3>
                         <div class="metric-toggle">
@@ -490,7 +508,7 @@
                         </div>
                     </div>
 
-                    <!-- Chart 3: By Region -->
+                    <!-- Chart 4: By Region -->
                     <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Khu vực</h3>
                         <div class="metric-toggle">
@@ -508,7 +526,7 @@
                         </div>
                     </div>
 
-                    <!-- Chart 4: By Subscriber Age -->
+                    <!-- Chart 5: By Subscriber Age -->
                     <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Tuổi thọ TB</h3>
                         <div class="metric-toggle">
@@ -526,7 +544,7 @@
                         </div>
                     </div>
 
-                    <!-- Chart 5: By Distribution Channel -->
+                    <!-- Chart 6: By Distribution Channel -->
                     <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Kênh phát triển</h3>
                         <div class="metric-toggle">
@@ -544,7 +562,7 @@
                         </div>
                     </div>
 
-                    <!-- Chart 6: By Station Position -->
+                    <!-- Chart 7: By Station Position -->
                     <div class="chart-card-enhanced">
                         <h3>Cắt lớp theo Vị trí trạm</h3>
                         <div class="metric-toggle">
@@ -700,6 +718,155 @@
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tram-thue-bao"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Level 2: Detail Drilldown (TB phát triển mới) -->
+            <section id="level2-tb-phat-trien-moi" class="view-section level2-section hidden">
+                <div class="action-bar">
+                    <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level
+                        1</button>
+                    <h2>Drill-down: Phân tích Cắt lớp TB phát triển mới (Level 2)</h2>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="level2-controls">
+                    <div class="control-group">
+                        <label for="date-from-tb-phat-trien-moi">Từ ngày:</label>
+                        <input type="date" id="date-from-tb-phat-trien-moi">
+                    </div>
+                    <div class="control-group">
+                        <label for="date-to-tb-phat-trien-moi">Đến ngày:</label>
+                        <input type="date" id="date-to-tb-phat-trien-moi">
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-granularity-tb-phat-trien-moi">Mức chi tiết:</label>
+                        <select id="filter-granularity-tb-phat-trien-moi">
+                            <option value="daily">Hàng ngày</option>
+                            <option value="weekly">Hàng tuần</option>
+                            <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-metric-tb-phat-trien-moi">Lựa chọn chỉ tiêu:</label>
+                        <select id="filter-metric-tb-phat-trien-moi" onchange="updateThueBaoMetric(this.value)">
+                            <option value="phat-trien-moi">TB phát triển mới</option>
+                            <option value="dat-15c3d">TB phát triển mới đạt 15c3d trong tháng</option>
+                            <option value="ty-le-dat-15c3d">Tỷ lệ TB mới đạt 15c3d</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Enhanced Charts with Metrics -->
+                <div class="charts-grid">
+                    <!-- Chart 1: By Province -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tỉnh/Thành phố</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-tinh-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-tinh-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-tinh-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-tinh-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tinh-tb-phat-trien-moi"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: By Package -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Gói cước</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-goicuoc-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-goicuoc-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-goicuoc-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-goicuoc-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-goicuoc-tb-phat-trien-moi"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 3: By Region -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Khu vực</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-khuvuc-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-khuvuc-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-khuvuc-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-khuvuc-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-khuvuc-tb-phat-trien-moi"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 4: By Subscriber Age -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Tuổi thọ TB</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-tuoitho-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-tuoitho-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-tuoitho-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-tuoitho-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tuoitho-tb-phat-trien-moi"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 5: By Distribution Channel -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Kênh phát triển</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-kenh-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-kenh-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-kenh-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-kenh-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-kenh-tb-phat-trien-moi"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 6: By Station Position -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Vị trí trạm</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-tram-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-tram-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-tram-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-tram-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-tram-tb-phat-trien-moi"></canvas>
                         </div>
                     </div>
                 </div>
@@ -993,9 +1160,9 @@
                     <div class="control-group">
                         <label for="filter-metric-kenh">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-kenh" onchange="updateKenhMetric(this.value)">
-                            <option value="phat-trien">Kênh phát triển thuê bao</option>
-                            <option value="mua-hang">Kênh mua hàng</option>
-                            <option value="d2d">Kênh D2D</option>
+                            <option value="phat-trien">Kênh phát triển TB</option>
+                            <option value="mua-hang">Kênh điểm bán hoạt động</option>
+                            <option value="d2d">Kênh D2D hoạt động</option>
                             <option value="co-thu-nhap">Kênh có thu nhập</option>
                             <option value="thu-nhap-kenh">Thu nhập kênh</option>
                         </select>
@@ -1084,43 +1251,23 @@
                         </div>
                     </div>
 
-                    <!-- Chart 5: By Performance Tier -->
+                    <!-- Chart 5: By Channel Code -->
                     <div class="chart-card-enhanced">
-                        <h3>Cắt lớp theo Phân hạng kênh</h3>
+                        <h3>Cắt lớp theo Mã kênh</h3>
                         <div class="metric-toggle">
                             <button class="metric-btn active" data-metric="actual"
-                                onclick="switchChartMetric(this, 'chart-phanhang-kenh')">Thực hiện</button>
+                                onclick="switchChartMetric(this, 'chart-makenh-kenh')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy"
-                                onclick="switchChartMetric(this, 'chart-phanhang-kenh')">YoY</button>
+                                onclick="switchChartMetric(this, 'chart-makenh-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
-                                onclick="switchChartMetric(this, 'chart-phanhang-kenh')">MoM</button>
+                                onclick="switchChartMetric(this, 'chart-makenh-kenh')">MoM</button>
                             <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-phanhang-kenh')">Thu nhập/kênh</button>
+                                onclick="switchChartMetric(this, 'chart-makenh-kenh')">Thu nhập/kênh</button>
                             <button class="metric-btn" data-metric="trend"
-                                onclick="showTrendFilter('chart-phanhang-kenh')">Xu hướng</button>
+                                onclick="showTrendFilter('chart-makenh-kenh')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
-                            <canvas id="chart-phanhang-kenh"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Chart 6: By Management Level -->
-                    <div class="chart-card-enhanced">
-                        <h3>Cắt lớp theo Cấp quản lý</h3>
-                        <div class="metric-toggle">
-                            <button class="metric-btn active" data-metric="actual"
-                                onclick="switchChartMetric(this, 'chart-capquanly-kenh')">Thực hiện</button>
-                            <button class="metric-btn" data-metric="yoy"
-                                onclick="switchChartMetric(this, 'chart-capquanly-kenh')">YoY</button>
-                            <button class="metric-btn" data-metric="mom"
-                                onclick="switchChartMetric(this, 'chart-capquanly-kenh')">MoM</button>
-                            <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-capquanly-kenh')">Thu nhập/kênh</button>
-                            <button class="metric-btn" data-metric="trend"
-                                onclick="showTrendFilter('chart-capquanly-kenh')">Xu hướng</button>
-                        </div>
-                        <div class="chart-container-enhanced">
-                            <canvas id="chart-capquanly-kenh"></canvas>
+                            <canvas id="chart-makenh-kenh"></canvas>
                         </div>
                     </div>
                 </div>

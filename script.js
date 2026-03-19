@@ -1281,25 +1281,34 @@ function renderCharts() {
         if (chartId.includes('-kenh') && currentKenhMetric === 'thu-nhap-kenh') {
             return 'Tỉ VNĐ';
         }
+        if (chartId.includes('-tb-phat-trien-moi')) {
+            if (currentThueBaoMetric === 'ty-le-dat-15c3d') {
+                return '%';
+            }
+            return 'M';
+        }
         return defaultUnit;
     }
 
     // 1. Chart: Theo Tỉnh/Thành phố (Tiêu dùng thực)
     createHorizontalBarChart('chart-tinh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [12.5, 14.2, 4.3, 3.8, 3.1, 3.3, 4.0], '#3b82f6', getUnitForChart('chart-tinh', 'Tỉ'));
 
-    // 2. Chart: Theo Gói cước (Tiêu dùng thực)
+    // 2. Chart: Cắt lớp tiêu dùng
+    createHorizontalBarChart('chart-cat-lop-tieu-dung', ['Thoại', 'SMS', 'Data', 'VAS', 'Khác'], [20.5, 5.2, 15.8, 2.1, 1.6], '#ef4444', getUnitForChart('chart-cat-lop-tieu-dung', 'Tỉ'));
+
+    // 3. Chart: Theo Gói cước (Tiêu dùng thực)
     createHorizontalBarChart('chart-goicuoc', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [15.2, 8.4, 6.1, 5.3, 4.2, 6.0], '#8b5cf6', getUnitForChart('chart-goicuoc', 'Tỉ'));
 
-    // 3. Chart: Theo Khu vực (Tiêu dùng thực)
+    // 4. Chart: Theo Khu vực (Tiêu dùng thực)
     createHorizontalBarChart('chart-khuvuc', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [16.8, 18.5, 6.4, 3.5], '#10b981', getUnitForChart('chart-khuvuc', 'Tỉ'));
 
-    // 4. Chart: Theo Tuổi thọ TB (Tiêu dùng thực)
+    // 5. Chart: Theo Tuổi thọ TB (Tiêu dùng thực)
     createHorizontalBarChart('chart-tuoitho', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [4.2, 5.6, 8.4, 15.3, 11.7], '#f43f5e', getUnitForChart('chart-tuoitho', 'Tỉ'));
 
-    // 5. Chart: Theo Kênh phát triển (Tiêu dùng thực)
+    // 6. Chart: Theo Kênh phát triển (Tiêu dùng thực)
     createHorizontalBarChart('chart-kenh', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [14.5, 12.1, 8.4, 4.3, 2.5, 3.4], '#f59e0b', getUnitForChart('chart-kenh', 'Tỉ'));
 
-    // 6. Chart: Theo Vị trí trạm (Tiêu dùng thực)
+    // 7. Chart: Theo Vị trí trạm (Tiêu dùng thực)
     createHorizontalBarChart('chart-tram', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [10.5, 8.2, 6.1, 12.3, 7.9], '#06b6d4', getUnitForChart('chart-tram', 'Tỉ'));
 
     // Subscriber (Thuê bao) charts
@@ -1309,6 +1318,14 @@ function renderCharts() {
     createHorizontalBarChart('chart-tuoitho-thue-bao', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', getUnitForChart('chart-tuoitho-thue-bao', 'M'));
     createHorizontalBarChart('chart-kenh-thue-bao', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', getUnitForChart('chart-kenh-thue-bao', 'M'));
     createHorizontalBarChart('chart-tram-thue-bao', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', getUnitForChart('chart-tram-thue-bao', 'M'));
+
+    // TB phát triển mới charts
+    createHorizontalBarChart('chart-tinh-tb-phat-trien-moi', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], '#3b82f6', getUnitForChart('chart-tinh-tb-phat-trien-moi', 'M'));
+    createHorizontalBarChart('chart-goicuoc-tb-phat-trien-moi', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', getUnitForChart('chart-goicuoc-tb-phat-trien-moi', 'M'));
+    createHorizontalBarChart('chart-khuvuc-tb-phat-trien-moi', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', getUnitForChart('chart-khuvuc-tb-phat-trien-moi', 'M'));
+    createHorizontalBarChart('chart-tuoitho-tb-phat-trien-moi', ['< 3 tháng', '3 - 6 tháng', '6 - 12 tháng', '1 - 3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', getUnitForChart('chart-tuoitho-tb-phat-trien-moi', 'M'));
+    createHorizontalBarChart('chart-kenh-tb-phat-trien-moi', ['Kênh số / App MyViettel', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing', 'Kênh Doanh nghiệp'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', getUnitForChart('chart-kenh-tb-phat-trien-moi', 'M'));
+    createHorizontalBarChart('chart-tram-tb-phat-trien-moi', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', getUnitForChart('chart-tram-tb-phat-trien-moi', 'M'));
 
     // Super App charts
     createHorizontalBarChart('chart-tinh-super-app', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.8, 2.1, 0.3, 0.2, 0.2, 0.25, 0.35], '#3b82f6', getUnitForChart('chart-tinh-super-app', 'M'));
@@ -1330,8 +1347,7 @@ function renderCharts() {
     createHorizontalBarChart('chart-loaikenh-kenh', ['Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Điểm bán', 'Kênh số / App', 'Telemarketing', 'Kênh Doanh nghiệp'], [120, 850, 3500, 450, 320, 210], '#8b5cf6', getUnitForChart('chart-loaikenh-kenh', 'kênh'));
     createHorizontalBarChart('chart-khuvuc-kenh', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1650, 1850, 640, 420], '#10b981', getUnitForChart('chart-khuvuc-kenh', 'kênh'));
     createHorizontalBarChart('chart-trangthai-kenh', ['Đang hoạt động', 'Tạm ngưng', 'Chờ đóng hồ sơ', 'Hết hạn Hợp đồng'], [4800, 450, 280, 100], '#f43f5e', getUnitForChart('chart-trangthai-kenh', 'kênh'));
-    createHorizontalBarChart('chart-phanhang-kenh', ['Hạng Vàng', 'Hạng Bạc', 'Hạng Đồng', 'Hạng Tiềm năng'], [850, 1200, 2200, 1380], '#f59e0b', getUnitForChart('chart-phanhang-kenh', 'kênh'));
-    createHorizontalBarChart('chart-capquanly-kenh', ['Tập đoàn', 'Tổng công ty', 'Chi nhánh Tỉnh', 'Phòng/Ban Huyện'], [45, 120, 1250, 4215], '#06b6d4', getUnitForChart('chart-capquanly-kenh', 'kênh'));
+    createHorizontalBarChart('chart-makenh-kenh', ['CHN001', 'DLU002', 'CTV003', 'KSN004', 'TEL005', 'KDN006', 'Khác'], [120, 850, 3500, 450, 320, 210, 180], '#8b5cf6', getUnitForChart('chart-makenh-kenh', 'kênh'));
 
     chartsInitialized = true;
 }
@@ -1351,6 +1367,23 @@ function getKenhMetricName(value) {
         'd2d': 'Kênh D2D',
         'co-thu-nhap': 'Kênh có thu nhập',
         'thu-nhap-kenh': 'Thu nhập kênh'
+    };
+    return names[value] || value;
+}
+
+let currentThueBaoMetric = 'phat-trien-moi';
+function updateThueBaoMetric(value) {
+    currentThueBaoMetric = value;
+    chartsInitialized = false;
+    renderCharts();
+    showToast(`Đã chuyển chỉ tiêu sang: ${getThueBaoMetricName(value)}`);
+}
+
+function getThueBaoMetricName(value) {
+    const names = {
+        'phat-trien-moi': 'TB phát triển mới',
+        'dat-15c3d': 'TB phát triển mới đạt 15c3d trong tháng',
+        'ty-le-dat-15c3d': 'Tỷ lệ TB mới đạt 15c3d'
     };
     return names[value] || value;
 }
