@@ -969,6 +969,22 @@ header {
     }
 }
 
+.btn-apply-filter {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.btn-apply-filter:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+
 /* Level 2: Enhanced Controls & Charts */
 .level2-controls {
     display: flex;
@@ -1327,7 +1343,7 @@ header {
 /* Ensure Download button always visible in modal */
 .download-modal .trend-modal-content {
     overflow-y: auto;
-    max-height: 90vh;
+    max-height: 70vh;
 }
 
 .download-modal .download-footer {
@@ -1365,8 +1381,9 @@ header {
 /* CONTENT */
 .modal-content {
     position: relative;
-    width: 720px;
+    width: min(900px, 90%);
     max-width: 95%;
+    max-height: 85vh;
     margin: 60px auto;
     background: white;
     border-radius: 16px;
@@ -1374,9 +1391,19 @@ header {
     animation: modalFade 0.25s ease;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-@keyframes modalFade {
+.modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: calc(85vh - 140px);
+}
+
+@keyframes modalFade  {
     from {
         opacity: 0;
         transform: translateY(20px) scale(0.98);

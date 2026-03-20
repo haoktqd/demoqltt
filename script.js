@@ -57,6 +57,8 @@ const marketDataDependencies = {
     // ... add more for other markets if needed
 };
 
+const arpuCategories = ['0-1', '1-2', '2-3', '3-5', '5plus'];
+
 const provinceStationData = {
     'Hà Nội': ['HN001', 'HN002', 'HN003', 'HN125', 'HN045'],
     'TP.HCM': ['HCM001', 'HCM002', 'HCM512', 'HCM012'],
@@ -87,11 +89,13 @@ function initCustomSelects() {
                 const checkboxes = optionsList.querySelectorAll('input[type="checkbox"]');
                 checkboxes.forEach(cb => cb.checked = allCheckbox.checked);
                 updateSelectHeader(select);
-
-                // If province changed, update stations
-                if (select.id === 'select-tinh') updateStationOptions();
             });
         }
+
+        // Keep dropdown open while selecting items (clicking inside should not close)
+        optionsList.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
 
         // Individual checkbox logic (event delegation)
         optionsList.addEventListener('change', (e) => {
@@ -103,9 +107,6 @@ function initCustomSelects() {
                     allCheckbox.checked = checkedCount === checkboxes.length;
                 }
                 updateSelectHeader(select);
-
-                // If province changed, update stations
-                if (select.id === 'select-tinh') updateStationOptions();
             }
         });
     });
@@ -134,6 +135,7 @@ function updateSelectHeader(select) {
 
 function handleMarketChange(market) {
     console.log('Market changed to:', market);
+    filterState.market = market;
     const data = marketDataDependencies[market] || marketDataDependencies['MYN'];
 
     // Update Province
@@ -147,6 +149,45 @@ function handleMarketChange(market) {
 
     // When market changes, always reset and update stations
     updateStationOptions();
+
+    // Do not auto-render charts for all other filters; only market changes is immediate
+    chartsInitialized = false;
+    renderCharts();
+}
+
+const filterState = {
+    market: 'VTC',
+    provinces: [],
+    regions: [],
+    packages: [],
+    channels: [],
+    stations: [],
+    tenure: []
+};
+
+function getSelectCheckedValues(selectId) {
+    const select = document.getElementById(selectId);
+    if (!select) return [];
+    return Array.from(select.querySelectorAll('.options-list input[type="checkbox"]:checked')).map(cb => cb.value);
+}
+
+function applyFilters() {
+    filterState.provinces = getSelectCheckedValues('select-tinh');
+    filterState.regions = getSelectCheckedValues('select-khuvuc');
+    filterState.packages = getSelectCheckedValues('select-goicuoc');
+    filterState.channels = getSelectCheckedValues('select-kenh');
+    filterState.stations = getSelectCheckedValues('select-tram');
+    filterState.tenure = getSelectCheckedValues('select-tuoitho');
+
+    // Update internal station options that depend on selected provinces
+    updateStationOptions();
+    // Ensure ARPU options are always available for filter row too
+    updateOptions('select-arpu', arpuCategories);
+
+    chartsInitialized = false;
+    renderCharts();
+
+    showToast('Bộ lọc đã được áp dụng');
 }
 
 function updateOptions(selectId, items) {
@@ -516,14 +557,35 @@ const trendModalConfig = {
 
 // Dataset used for "Tải dữ liệu" (download) functionality.
 // This is a minimal sample. Replace or extend with real backend data as needed.
-const downloadDataset = [
-    { factor: 'Hà Nội', slice: 'Tỉnh/Thành phố', date: '2024-03-16', tb15c3d: 12.5, luuLuong: 2500, tbMoi: 120, duLieu1: 56.3, duLieu2: 78.4 },
-    { factor: 'TP.HCM', slice: 'Tỉnh/Thành phố', date: '2024-03-16', tb15c3d: 14.2, luuLuong: 2800, tbMoi: 140, duLieu1: 63.1, duLieu2: 82.2 },
-    { factor: 'Đà Nẵng', slice: 'Tỉnh/Thành phố', date: '2024-03-16', tb15c3d: 4.3, luuLuong: 1200, tbMoi: 42, duLieu1: 29.4, duLieu2: 31.7 },
-    { factor: 'Kênh số/App', slice: 'Kênh phát triển', date: '2024-03-16', tb15c3d: 14.5, luuLuong: 3200, tbMoi: 180, duLieu1: 92.8, duLieu2: 104.5 },
-    { factor: 'Cửa hàng trực tiếp', slice: 'Kênh phát triển', date: '2024-03-16', tb15c3d: 12.1, luuLuong: 2700, tbMoi: 150, duLieu1: 79.2, duLieu2: 85.1 },
-    { factor: 'xyz', slice: 'abc', date: '2024-03-16', tb15c3d: 12.1, luuLuong: 2700, tbMoi: 150, duLieu1: 79.2, duLieu2: 85.1 }
+const sliceList = [
+  'Cắt lớp theo Tỉnh/TP',
+  'Cắt lớp Hướng tiêu dùng (thoại, sms…)',
+  'Cắt lớp Tuổi thọ TB',
+  'Cắt lớp ARPU',
+  'Cắt lớp Gói cước',
+  'Cắt lớp theo Khu vực',
+  'Cắt lớp theo Kênh phát triển',
+  'Cắt lớp theo vị trí trạm',
+  'Cắt lớp theo Trạng thái kênh',
+  'Cắt lớp theo Kênh',
+  'Cắt lớp theo mã kênh',
+  'Cắt lớp theo thu nhập kênh',
+  'Cắt lớp theo hạng khách hàng'
 ];
+
+const baseDate = '2024-03-16';
+
+const downloadDataset = sliceList.map((slice, index) => ({
+  factor: `Demo ${index + 1}`,
+  slice,
+  date: baseDate,
+  tb15c3d: 10 + index,
+  luuLuong: 2000 + index * 100,
+  tbMoi: 100 + index * 10,
+  duLieu1: 50 + index * 5,
+  duLieu2: 60 + index * 5
+}));
+
 
 let trendModalChartInstance = null;
 let trendModalState = {};
@@ -618,42 +680,11 @@ function closeTrendLegendPopup() {
     }
 }
 
-let downloadSliceState = {};
-
-function renderDownloadSliceFilters() {
-    const container = document.getElementById('download-slice-list');
-    if (!container) return;
-
-    const uniqueSlices = Array.from(new Set(downloadDataset.map(r => r.slice))).sort();
-    // Initialize selection state if not present
-    uniqueSlices.forEach(slice => {
-        if (downloadSliceState[slice] === undefined) {
-            downloadSliceState[slice] = true;
-        }
-    });
-
-    container.innerHTML = '';
-    uniqueSlices.forEach(slice => {
-        const checked = downloadSliceState[slice] ? 'checked' : '';
-        const label = document.createElement('label');
-        label.innerHTML = `
-            <input type="checkbox" ${checked} onchange="toggleDownloadSlice('${slice.replace(/'/g, "\\'")}')">
-            ${slice}
-        `;
-        container.appendChild(label);
-    });
-}
-
-function toggleDownloadSlice(slice) {
-    downloadSliceState[slice] = !downloadSliceState[slice];
-    renderDownloadSliceFilters();
-}
-
 function selectAllDownloadSlices(checked) {
-    Object.keys(downloadSliceState).forEach(slice => {
-        downloadSliceState[slice] = checked;
+    const sliceInputs = document.querySelectorAll('#download-slice-list input[type=checkbox]');
+    sliceInputs.forEach(input => {
+        input.checked = checked;
     });
-    renderDownloadSliceFilters();
 }
 
 function selectAllDownloadFields(checked) {
@@ -677,7 +708,6 @@ function openDownloadModal() {
         toInput.value = now.toISOString().slice(0, 10);
     }
 
-    renderDownloadSliceFilters();
     modal.classList.remove('hidden');
 }
 

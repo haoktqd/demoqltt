@@ -144,6 +144,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="filter-item">
+                        <label>ARPU:</label>
+                        <div class="custom-select" id="select-arpu">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-coins"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list">
+                                    <label><input type="checkbox" value="0-1" checked>$0 - $1</label>
+                                    <label><input type="checkbox" value="1-2" checked>$1 - $2</label>
+                                    <label><input type="checkbox" value="2-3" checked>$2 - $3</label>
+                                    <label><input type="checkbox" value="3-5" checked>$3 - $5</label>
+                                    <label><input type="checkbox" value="5plus" checked>$5+</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <button class="btn-apply-filter" onclick="applyFilters()">OK</button>
+                    </div>
                 </div>
             </header>
 
@@ -1748,13 +1767,27 @@
                 <!-- Slice -->
                 <div class="modal-section">
                     <div class="section-header">
-                        <h4>📊 Loại cắt lớp</h4>
+                        <h4>📊 Loại cắt lớp (chọn ít cắt lớp tránh quá tải dữ liệu)</h4>
                         <div>
                             <button onclick="selectAllDownloadSlices(true)">Chọn tất cả</button>
                             <button onclick="selectAllDownloadSlices(false)">Bỏ chọn</button>
                         </div>
                     </div>
-                    <div id="download-slice-list" class="checkbox-grid"></div>
+                    <div id="download-slice-list" class="checkbox-grid">
+                        <label><input type="checkbox" value="Cắt lớp theo Tỉnh/TP" checked> Cắt lớp theo Tỉnh/TP</label>
+                        <label><input type="checkbox" value="Cắt lớp Hướng tiêu dùng (thoại, sms…)"> Cắt lớp Hướng tiêu dùng (thoại, sms…)</label>
+                        <label><input type="checkbox" value="Cắt lớp Tuổi thọ TB"> Cắt lớp Tuổi thọ TB</label>
+                        <label><input type="checkbox" value="Cắt lớp ARPU" checked> Cắt lớp ARPU</label>
+                        <label><input type="checkbox" value="Cắt lớp Gói cước" checked> Cắt lớp Gói cước</label>
+                        <label><input type="checkbox" value="Cắt lớp theo Khu vực"> Cắt lớp theo Khu vực</label>
+                        <label><input type="checkbox" value="Cắt lớp theo Kênh phát triển"> Cắt lớp theo Kênh phát triển</label>
+                        <label><input type="checkbox" value="Cắt lớp theo vị trí trạm"> Cắt lớp theo vị trí trạm</label>
+                        <label><input type="checkbox" value="Cắt lớp theo Trạng thái kênh"> Cắt lớp theo Trạng thái kênh</label>
+                        <label><input type="checkbox" value="Cắt lớp theo Kênh"> Cắt lớp theo Kênh</label>
+                        <label><input type="checkbox" value="Cắt lớp theo mã kênh"> Cắt lớp theo mã kênh</label>
+                        <label><input type="checkbox" value="Cắt lớp theo thu nhập kênh"> Cắt lớp theo thu nhập kênh</label>
+                        <label><input type="checkbox" value="Cắt lớp theo hạng khách hàng"> Cắt lớp theo hạng khách hàng</label>
+                    </div>
                 </div>
 
                 <!-- Fields -->
@@ -1767,11 +1800,35 @@
                         </div>
                     </div>
                     <div id="download-field-list" class="checkbox-grid">
-                        <label><input type="checkbox" value="tb15c3d" checked> TB 15c3d</label>
-                        <label><input type="checkbox" value="luuLuong" checked> Lưu lượng</label>
-                        <label><input type="checkbox" value="tbMoi"> TB mới</label>
-                        <label><input type="checkbox" value="duLieu1"> Dữ liệu 1</label>
-                        <label><input type="checkbox" value="duLieu2"> Dữ liệu 2</label>
+                        <label><input type="checkbox" value="tieuDungThuc" checked> Tiêu dùng thực</label>
+                        <label><input type="checkbox" value="arpu"> ARPU</label>
+                        <label><input type="checkbox" value="tb15c3dTangThem"> TB 15c3d tăng thêm</label>
+                        <label><input type="checkbox" value="tb15c3dLuyKe"checked> TB 15c3d lũy kế</label>
+                        <label><input type="checkbox" value="tbPhatTrienMoi"> TB phát triển mới</label>
+                        <label><input type="checkbox" value="tbMoiDat15c3dTrongThang"> TB phát triển mới đạt 15c3d trong tháng</label>
+                        <label><input type="checkbox" value="tyLeTbMoiDat15c3d"> Tỷ lệ TB mới đạt 15c3d trong tháng</label>
+                        <label><input type="checkbox" value="tbRoiMang"> TB rời mạng</label>
+                        <label><input type="checkbox" value="luuLuongData"> Lưu lượng Data</label>
+                        <label><input type="checkbox" value="dou"> DOU</label>
+
+                        <label><input type="checkbox" value="kenhPhatTrienTb"> Kênh phát triển TB</label>
+                        <label><input type="checkbox" value="kenhDiemBanHoatDong"> Kênh điểm bán hoạt động</label>
+                        <label><input type="checkbox" value="kenhD2dHoatDong"> Kênh D2D hoạt động</label>
+                        <label><input type="checkbox" value="kenhCoThuNhap"> Kênh có thu nhập</label>
+                        <label><input type="checkbox" value="thuNhapKenh"> Thu nhập kênh</label>
+                        <label><input type="checkbox" value="thuNhapTren1Kenh"> Thu nhập trên 1 kênh</label>
+
+                        <label><input type="checkbox" value="tbSuperAppLogin"> TB super app (login)</label>
+                        <label><input type="checkbox" value="soLuongPhanAnh"> Số lượng phản ánh</label>
+                        <label><input type="checkbox" value="thoiGianXuLyPhanAnh"> Thời gian xử lý một phản ánh</label>
+                        <label><input type="checkbox" value="tyLePhanAnhKh"> Tỷ lệ phản ánh khách hàng</label>
+
+                        <label><input type="checkbox" value="nps"> NPS</label>
+                        <label><input type="checkbox" value="tyLeXuLyDungHan"> Tỷ lệ xử lý thành công trong hạn</label>
+                        <label><input type="checkbox" value="tyLeKetNoiTongDai"> Tỷ lệ kết nối thành công đến tổng đài</label>
+                        <label><input type="checkbox" value="csat"> CSAT</label>
+                        <label><input type="checkbox" value="ces"> CES</label>
+                        <label><input type="checkbox" value="tyLeRoiMangBqThang"> Tỷ lệ rời mạng bình quân tháng</label>
                     </div>
                 </div>
 
