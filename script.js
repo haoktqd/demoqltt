@@ -1499,18 +1499,18 @@ function renderCharts() {
     createHorizontalBarChart('chart-makenh-kenh', ['CHN001', 'DLU002', 'CTV003', 'KSN004', 'TEL005', 'KDN006', 'Khác'], [120, 850, 3500, 450, 320, 210, 180], '#8b5cf6', 'kênh');
     createHorizontalBarChart('chart-cat-lop-thu-nhap-kenh', ['<1tr', '1-5tr', '5-10tr', '10-20tr', '20-50tr', '>50tr'], [1200, 2500, 1800, 950, 420, 150], '#6366f1', 'kênh');
 
-    // 11. CX charts (Horizontal Bar Chart by Tier: Kim cương, Vàng, Bạc)
-    const tiers = ['Kim cương', 'Vàng', 'Bạc'];
+    // 11. CX charts (Horizontal Bar Chart by Tier: Toàn mạng, Kim cương, Vàng, Bạc)
+    const tiers = ['Toàn mạng', 'Kim cương', 'Vàng', 'Bạc'];
     const cxCards = [
-        { id: 'chart-feedback-count', label: 'khiếu nại', color: '#3b82f6', data: [120, 450, 890] },
-        { id: 'chart-resolution-time', label: 'giờ', color: '#8b5cf6', data: [2.5, 3.8, 5.2] },
-        { id: 'chart-feedback-rate', label: '%', color: '#10b981', data: [0.8, 1.2, 2.5] },
-        { id: 'chart-nps', label: 'điểm', color: '#f43f5e', data: [85, 72, 58] },
-        { id: 'chart-resolution', label: '%', color: '#f59e0b', data: [98, 94, 89] },
-        { id: 'chart-setup', label: '%', color: '#06b6d4', data: [99, 98, 96] },
-        { id: 'chart-csat', label: '%', color: '#14b8a6', data: [92, 85, 78] },
-        { id: 'chart-ces', label: 'điểm', color: '#6366f1', data: [4.6, 4.1, 3.8] },
-        { id: 'chart-churn-rate', label: '%', color: '#ef4444', data: [0.5, 1.2, 3.4] }
+        { id: 'chart-feedback-count', label: 'khiếu nại', color: '#3b82f6', data: [1460, 120, 450, 890] },
+        { id: 'chart-resolution-time', label: 'giờ', color: '#8b5cf6', data: [4.2, 2.5, 3.8, 5.2] },
+        { id: 'chart-feedback-rate', label: '%', color: '#10b981', data: [1.6, 0.8, 1.2, 2.5] },
+        { id: 'chart-nps', label: 'điểm', color: '#f43f5e', data: [75, 85, 72, 58] },
+        { id: 'chart-resolution', label: '%', color: '#f59e0b', data: [93, 98, 94, 89] },
+        { id: 'chart-setup', label: '%', color: '#06b6d4', data: [97.5, 99, 98, 96] },
+        { id: 'chart-csat', label: '%', color: '#14b8a6', data: [86, 92, 85, 78] },
+        { id: 'chart-ces', label: 'điểm', color: '#6366f1', data: [4.1, 4.6, 4.1, 3.8] },
+        { id: 'chart-churn-rate', label: '%', color: '#ef4444', data: [1.8, 0.5, 1.2, 3.4] }
     ];
 
     cxCards.forEach(cx => {
