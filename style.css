@@ -2,25 +2,36 @@
 
 :root {
     /* Sáng (Light Mode) Theme Palette */
-    --bg-main: #f1f5f9;      /* Nền trang */
-    --bg-card: #ffffff;      /* Nền card */
-    --bg-sidebar: #ffffff;   /* Nền sidebar */
-    
-    --text-main: #0f172a;    /* Chữ chính */
-    --text-muted: #64748b;   /* Chữ phụ, mờ */
-    --text-label: #475569;   /* Label */
-    
-    --primary: #2563eb;      /* Xanh dương chủ đạo */
+    --bg-main: #f1f5f9;
+    /* Nền trang */
+    --bg-card: #ffffff;
+    /* Nền card */
+    --bg-sidebar: #ffffff;
+    /* Nền sidebar */
+
+    --text-main: #0f172a;
+    /* Chữ chính */
+    --text-muted: #64748b;
+    /* Chữ phụ, mờ */
+    --text-label: #475569;
+    /* Label */
+
+    --primary: #2563eb;
+    /* Xanh dương chủ đạo */
     --primary-light: #eff6ff;
     --primary-hover: #1d4ed8;
-    
-    --success: #16a34a;      /* Xanh lá - Tốt/Tăng trưởng */
-    --danger: #dc2626;       /* Đỏ - Giảm/Cảnh báo */
-    --warning: #d97706;      /* Vàng cam - Chú ý */
-    
-    --border: #e2e8f0;       /* Viền phân cách */
-    --border-light: #f1f5f9; 
-    
+
+    --success: #16a34a;
+    /* Xanh lá - Tốt/Tăng trưởng */
+    --danger: #dc2626;
+    /* Đỏ - Giảm/Cảnh báo */
+    --warning: #d97706;
+    /* Vàng cam - Chú ý */
+
+    --border: #e2e8f0;
+    /* Viền phân cách */
+    --border-light: #f1f5f9;
+
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -46,13 +57,16 @@ body {
     width: 6px;
     height: 6px;
 }
+
 ::-webkit-scrollbar-track {
     background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
@@ -64,13 +78,15 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 255px; /* Adjusting original 250px slightly for balance */
+    width: 255px;
+    /* Adjusting original 250px slightly for balance */
     background-color: var(--bg-sidebar);
     border-right: 1px solid var(--border);
     padding: 24px 0;
     display: flex;
     flex-direction: column;
-    z-index: 100; /* Ensure it stays above other elements */
+    z-index: 100;
+    /* Ensure it stays above other elements */
     transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: sticky;
     top: 0;
@@ -308,14 +324,14 @@ header {
     transition: all 0.2s ease;
     box-shadow: var(--shadow-sm);
 }
- 
+
 .btn-definition:hover {
     background-color: var(--primary);
     color: white;
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
 }
- 
+
 .btn-definition i {
     font-size: 14px;
 }
@@ -430,8 +446,15 @@ header {
 }
 
 @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .select-options label {
@@ -512,10 +535,13 @@ header {
 .header-actions .btn-download {
     padding: 8px 14px;
     font-size: 13px;
-    text-align: center;        /* căn giữa ngang */
+    text-align: center;
+    /* căn giữa ngang */
     display: flex;
-    align-items: center;       /* căn giữa dọc */
-    justify-content: center;   /* căn giữa ngang (flex) */
+    align-items: center;
+    /* căn giữa dọc */
+    justify-content: center;
+    /* căn giữa ngang (flex) */
 }
 
 /* AI Chat Button */
@@ -548,9 +574,20 @@ header {
 }
 
 @keyframes pulse-ai {
-    0% { transform: scale(1); text-shadow: 0 0 0 rgba(255, 255, 255, 0); }
-    50% { transform: scale(1.2); text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
-    100% { transform: scale(1); text-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        transform: scale(1.2);
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
 }
 
 /* Views */
@@ -570,19 +607,28 @@ header {
 .section-title {
     margin-bottom: 24px;
 }
+
 .section-title h2 {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 4px;
 }
+
 .section-title p {
     color: var(--text-muted);
     font-size: 14px;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Level 1: Cards Grid */
@@ -659,13 +705,40 @@ header {
 }
 
 /* Custom Icon Colors (Light mode variants) */
-.ic-users { background-color: #f3e8ff; color: #7e22ce; }
-.ic-new { background-color: #dcfce7; color: #15803d; }
-.ic-churn { background-color: #fee2e2; color: #b91c1c; }
-.ic-data { background-color: #fef3c7; color: #b45309; }
-.ic-channel { background-color: #fce7f3; color: #be185d; }
-.ic-app { background-color: #e0f2fe; color: #0369a1; }
-.ic-cx { background-color: #ecfccb; color: #4d7c0f; }
+.ic-users {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+}
+
+.ic-new {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.ic-churn {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.ic-data {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.ic-channel {
+    background-color: #fce7f3;
+    color: #be185d;
+}
+
+.ic-app {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.ic-cx {
+    background-color: #ecfccb;
+    color: #4d7c0f;
+}
 
 .card-top h3 {
     font-size: 16px;
@@ -762,10 +835,21 @@ header {
     font-weight: 600;
 }
 
-.val.positive { color: var(--success); }
-.val.negative { color: var(--danger); }
-.val.warning { color: var(--warning); }
-.val.neutral { color: var(--text-muted); }
+.val.positive {
+    color: var(--success);
+}
+
+.val.negative {
+    color: var(--danger);
+}
+
+.val.warning {
+    color: var(--warning);
+}
+
+.val.neutral {
+    color: var(--text-muted);
+}
 
 
 /* Level 2: Charts */
@@ -782,7 +866,7 @@ header {
     border: 1px solid var(--border);
     box-shadow: var(--shadow-md);
     position: sticky;
-    top: -16px;
+    top: -32px;
     z-index: 100;
 }
 
@@ -879,6 +963,7 @@ header {
     .charts-grid {
         grid-template-columns: 1fr;
     }
+
     .chart-card-wide {
         grid-column: span 1;
     }
@@ -1038,8 +1123,10 @@ header {
 
 /* Download modal specific tweaks */
 .download-modal .trend-modal-content {
-    width: 900px;       /* tăng độ rộng */
-    max-width: 95%;     /* responsive */
+    width: 900px;
+    /* tăng độ rộng */
+    max-width: 95%;
+    /* responsive */
 }
 
 .download-modal .trend-modal-body {
@@ -1047,7 +1134,8 @@ header {
     flex-direction: column;
     gap: 20px;
     padding: 18px 20px;
-    padding-bottom: 80px; /* Thêm khoảng trống phía dưới để không bị nút che */
+    padding-bottom: 80px;
+    /* Thêm khoảng trống phía dưới để không bị nút che */
 }
 
 .download-modal .download-section {
@@ -1125,7 +1213,7 @@ header {
     justify-content: flex-end;
     align-items: center;
     padding: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
 }
 
@@ -1252,7 +1340,7 @@ header {
     justify-content: flex-end;
     align-items: center;
     padding: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
 }
 
@@ -1289,8 +1377,15 @@ header {
 }
 
 @keyframes modalFade {
-    from { opacity: 0; transform: translateY(20px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* HEADER */

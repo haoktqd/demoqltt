@@ -529,6 +529,13 @@
                             <option value="monthly" selected>Hàng tháng</option>
                         </select>
                     </div>
+                    <div class="control-group" id="metric-selector-tieu-dung-thuc">
+                        <label for="filter-metric-tieu-dung-thuc">Lựa chọn chỉ tiêu:</label>
+                        <select id="filter-metric-tieu-dung-thuc" onchange="updateTieuDungMetric(this.value)">
+                            <option value="actual">Tiêu dùng thực</option>
+                            <option value="arpu">ARPU</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Enhanced Charts with Metrics -->
@@ -553,7 +560,7 @@
 
                     <!-- Chart 2: By Consumption Layer -->
                     <div class="chart-card-enhanced">
-                        <h3>Cắt lớp tiêu dùng</h3>
+                        <h3>Cắt lớp hướng tiêu dùng</h3>
                         <div class="metric-toggle">
                             <button class="metric-btn active" data-metric="actual"
                                 onclick="switchChartMetric(this, 'chart-cat-lop-tieu-dung')">Thực hiện</button>
@@ -657,6 +664,25 @@
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tram"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 8: By ARPU -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo ARPU</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-arpu-tieu-dung-thuc')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-arpu-tieu-dung-thuc')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-arpu-tieu-dung-thuc')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-arpu-tieu-dung-thuc')">Xu
+                                hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-arpu-tieu-dung-thuc"></canvas>
                         </div>
                     </div>
                 </div>
@@ -805,6 +831,24 @@
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tram-thue-bao"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 7: By ARPU -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo ARPU</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-arpu-thue-bao')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-arpu-thue-bao')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-arpu-thue-bao')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-arpu-thue-bao')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-arpu-thue-bao"></canvas>
                         </div>
                     </div>
                 </div>
@@ -956,6 +1000,24 @@
                             <canvas id="chart-tram-tb-phat-trien-moi"></canvas>
                         </div>
                     </div>
+
+                    <!-- Chart 7: By ARPU -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo ARPU</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-arpu-tb-phat-trien-moi')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-arpu-tb-phat-trien-moi')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-arpu-tb-phat-trien-moi')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-arpu-tb-phat-trien-moi')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-arpu-tb-phat-trien-moi"></canvas>
+                        </div>
+                    </div>
                 </div>
 
             </section>
@@ -1009,8 +1071,6 @@
                                 onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-tinh-luu-luong')">Xu hướng</button>
-                            <button class="metric-btn" data-metric="ll-tb"
-                                onclick="switchChartMetric(this, 'chart-tinh-luu-luong')">LL/TB</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tinh-luu-luong"></canvas>
@@ -1029,8 +1089,6 @@
                                 onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-goicuoc-luu-luong')">Xu hướng</button>
-                            <button class="metric-btn" data-metric="ll-tb"
-                                onclick="switchChartMetric(this, 'chart-goicuoc-luu-luong')">LL/TB</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-goicuoc-luu-luong"></canvas>
@@ -1049,8 +1107,6 @@
                                 onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-khuvuc-luu-luong')">Xu hướng</button>
-                            <button class="metric-btn" data-metric="ll-tb"
-                                onclick="switchChartMetric(this, 'chart-khuvuc-luu-luong')">LL/TB</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-khuvuc-luu-luong"></canvas>
@@ -1069,8 +1125,6 @@
                                 onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-tuoitho-luu-luong')">Xu hướng</button>
-                            <button class="metric-btn" data-metric="ll-tb"
-                                onclick="switchChartMetric(this, 'chart-tuoitho-luu-luong')">LL/TB</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tuoitho-luu-luong"></canvas>
@@ -1089,8 +1143,6 @@
                                 onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-kenh-luu-luong')">Xu hướng</button>
-                            <button class="metric-btn" data-metric="ll-tb"
-                                onclick="switchChartMetric(this, 'chart-kenh-luu-luong')">LL/TB</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-kenh-luu-luong"></canvas>
@@ -1109,11 +1161,27 @@
                                 onclick="switchChartMetric(this, 'chart-tram-luu-luong')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-tram-luu-luong')">Xu hướng</button>
-                            <button class="metric-btn" data-metric="ll-tb"
-                                onclick="switchChartMetric(this, 'chart-tram-luu-luong')">LL/TB</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-tram-luu-luong"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 7: By ARPU -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo ARPU</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-arpu-luu-luong')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-arpu-luu-luong')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-arpu-luu-luong')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-arpu-luu-luong')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-arpu-luu-luong"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1153,6 +1221,16 @@
                     <!-- Chart 1: Số lượng phản ánh -->
                     <div class="chart-card-enhanced">
                         <h3>Số lượng Phản ánh</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-feedback-count')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-feedback-count')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-feedback-count')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-feedback-count')">Xu hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-feedback-count"></canvas>
                         </div>
@@ -1161,6 +1239,16 @@
                     <!-- Chart 2: Thời gian xử lý một phản ánh -->
                     <div class="chart-card-enhanced">
                         <h3>Thời gian Xử lý Một Phản ánh</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-resolution-time')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-resolution-time')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-resolution-time')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-resolution-time')">Xu hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-resolution-time"></canvas>
                         </div>
@@ -1169,6 +1257,16 @@
                     <!-- Chart 3: Tỷ lệ phản ánh khách hàng -->
                     <div class="chart-card-enhanced">
                         <h3>Tỷ lệ Phản ánh Khách hàng</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-feedback-rate')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-feedback-rate')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-feedback-rate')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-feedback-rate')">Xu hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-feedback-rate"></canvas>
                         </div>
@@ -1177,6 +1275,16 @@
                     <!-- Chart 4: NPS Score -->
                     <div class="chart-card-enhanced">
                         <h3>NPS - Net Promoter Score</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-nps')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-nps')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-nps')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-nps')">Xu
+                                hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-nps"></canvas>
                         </div>
@@ -1185,6 +1293,16 @@
                     <!-- Chart 5: Tỷ lệ xử lý thành công trong hạn -->
                     <div class="chart-card-enhanced">
                         <h3>Tỷ lệ Xử lý Thành công Trong Hạn</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-resolution')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-resolution')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-resolution')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-resolution')">Xu hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-resolution"></canvas>
                         </div>
@@ -1193,6 +1311,16 @@
                     <!-- Chart 6: Tỷ lệ kết nối thành công đến tổng đài -->
                     <div class="chart-card-enhanced">
                         <h3>Tỷ lệ Kết nối Thành công Đến Tổng đài</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-setup')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-setup')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-setup')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-setup')">Xu
+                                hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-setup"></canvas>
                         </div>
@@ -1201,6 +1329,16 @@
                     <!-- Chart 7: CSAT -->
                     <div class="chart-card-enhanced">
                         <h3>CSAT - Customer Satisfaction</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-csat')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-csat')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-csat')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-csat')">Xu
+                                hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-csat"></canvas>
                         </div>
@@ -1209,6 +1347,16 @@
                     <!-- Chart 8: CES -->
                     <div class="chart-card-enhanced">
                         <h3>CES - Customer Effort Score</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-ces')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-ces')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-ces')">MoM</button>
+                            <button class="metric-btn" data-metric="trend" onclick="showTrendFilter('chart-ces')">Xu
+                                hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-ces"></canvas>
                         </div>
@@ -1217,6 +1365,16 @@
                     <!-- Chart 9: Tỷ lệ rời mạng bình quân tháng -->
                     <div class="chart-card-enhanced">
                         <h3>Tỷ lệ Rời Mạng Bình Quân Tháng</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-churn-rate')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-churn-rate')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-churn-rate')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-churn-rate')">Xu hướng</button>
+                        </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-churn-rate"></canvas>
                         </div>
@@ -1259,6 +1417,7 @@
                             <option value="d2d">Kênh D2D hoạt động</option>
                             <option value="co-thu-nhap">Kênh có thu nhập</option>
                             <option value="thu-nhap-kenh">Thu nhập kênh</option>
+                            <option value="thu-nhap-tren-kenh">Thu nhập trên mỗi kênh</option>
                         </select>
                     </div>
                 </div>
@@ -1275,8 +1434,6 @@
                                 onclick="switchChartMetric(this, 'chart-tinh-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
                                 onclick="switchChartMetric(this, 'chart-tinh-kenh')">MoM</button>
-                            <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-tinh-kenh')">Thu nhập/kênh</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-tinh-kenh')">Xu hướng</button>
                         </div>
@@ -1295,8 +1452,6 @@
                                 onclick="switchChartMetric(this, 'chart-loaikenh-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
                                 onclick="switchChartMetric(this, 'chart-loaikenh-kenh')">MoM</button>
-                            <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-loaikenh-kenh')">Thu nhập/kênh</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-loaikenh-kenh')">Xu hướng</button>
                         </div>
@@ -1315,8 +1470,6 @@
                                 onclick="switchChartMetric(this, 'chart-khuvuc-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
                                 onclick="switchChartMetric(this, 'chart-khuvuc-kenh')">MoM</button>
-                            <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-khuvuc-kenh')">Thu nhập/kênh</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-khuvuc-kenh')">Xu hướng</button>
                         </div>
@@ -1335,8 +1488,6 @@
                                 onclick="switchChartMetric(this, 'chart-trangthai-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
                                 onclick="switchChartMetric(this, 'chart-trangthai-kenh')">MoM</button>
-                            <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-trangthai-kenh')">Thu nhập/kênh</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-trangthai-kenh')">Xu hướng</button>
                         </div>
@@ -1355,13 +1506,29 @@
                                 onclick="switchChartMetric(this, 'chart-makenh-kenh')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
                                 onclick="switchChartMetric(this, 'chart-makenh-kenh')">MoM</button>
-                            <button class="metric-btn" data-metric="rev"
-                                onclick="switchChartMetric(this, 'chart-makenh-kenh')">Thu nhập/kênh</button>
                             <button class="metric-btn" data-metric="trend"
                                 onclick="showTrendFilter('chart-makenh-kenh')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
                             <canvas id="chart-makenh-kenh"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 6: By Income Layer -->
+                    <div class="chart-card-enhanced">
+                        <h3>Cắt lớp theo Thu nhập kênh</h3>
+                        <div class="metric-toggle">
+                            <button class="metric-btn active" data-metric="actual"
+                                onclick="switchChartMetric(this, 'chart-cat-lop-thu-nhap-kenh')">Thực hiện</button>
+                            <button class="metric-btn" data-metric="yoy"
+                                onclick="switchChartMetric(this, 'chart-cat-lop-thu-nhap-kenh')">YoY</button>
+                            <button class="metric-btn" data-metric="mom"
+                                onclick="switchChartMetric(this, 'chart-cat-lop-thu-nhap-kenh')">MoM</button>
+                            <button class="metric-btn" data-metric="trend"
+                                onclick="showTrendFilter('chart-cat-lop-thu-nhap-kenh')">Xu hướng</button>
+                        </div>
+                        <div class="chart-container-enhanced">
+                            <canvas id="chart-cat-lop-thu-nhap-kenh"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1416,21 +1583,21 @@
                         </div>
                     </div>
 
-                    <!-- Chart 2: By Package -->
+                    <!-- Chart 2: By ARPU -->
                     <div class="chart-card-enhanced">
-                        <h3>Cắt lớp theo Gói cước</h3>
+                        <h3>Cắt lớp theo ARPU</h3>
                         <div class="metric-toggle">
                             <button class="metric-btn active" data-metric="actual"
-                                onclick="switchChartMetric(this, 'chart-goicuoc-super-app')">Thực hiện</button>
+                                onclick="switchChartMetric(this, 'chart-arpu-super-app')">Thực hiện</button>
                             <button class="metric-btn" data-metric="yoy"
-                                onclick="switchChartMetric(this, 'chart-goicuoc-super-app')">YoY</button>
+                                onclick="switchChartMetric(this, 'chart-arpu-super-app')">YoY</button>
                             <button class="metric-btn" data-metric="mom"
-                                onclick="switchChartMetric(this, 'chart-goicuoc-super-app')">MoM</button>
+                                onclick="switchChartMetric(this, 'chart-arpu-super-app')">MoM</button>
                             <button class="metric-btn" data-metric="trend"
-                                onclick="showTrendFilter('chart-goicuoc-super-app')">Xu hướng</button>
+                                onclick="showTrendFilter('chart-arpu-super-app')">Xu hướng</button>
                         </div>
                         <div class="chart-container-enhanced">
-                            <canvas id="chart-goicuoc-super-app"></canvas>
+                            <canvas id="chart-arpu-super-app"></canvas>
                         </div>
                     </div>
 
