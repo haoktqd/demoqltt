@@ -44,13 +44,28 @@
         <!-- Main Content -->
         <main class="main-content">
             <header>
-                <div class="header-left">
-                    <h1 id="page-title">Báo cáo Kinh doanh thị trường</h1>
-                    <p>Cập nhật số liệu hàng ngày</p>
-                    <div class="header-filter">
+                <div class="header-main">
+                    <div class="header-title-area">
+                        <h1 id="page-title">Báo cáo Kinh doanh thị trường</h1>
+                        <p>Cập nhật số liệu hàng ngày</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-definition" onclick="openDefinitionModal()">
+                            <i class="fas fa-info-circle"></i> Định nghĩa/Hướng dẫn
+                        </button>
+                        <button class="btn-ai-chat" onclick="alert('Tính năng AI Chat đang được phát triển')">
+                            <i class="fas fa-sparkles"></i> AI Chat
+                        </button>
+                        <button class="btn-download" onclick="openDownloadModal()"><i class="fas fa-download"></i> Tải
+                            dữ liệu</button>
+                    </div>
+                </div>
+
+                <div class="header-filter-row">
+                    <div class="filter-item">
                         <label for="market-select">Thị trường:</label>
-                        <select id="market-select">
-                            <option value="VTC">VTC</option>
+                        <select id="market-select" onchange="handleMarketChange(this.value)">
+                            <option value="VTC" selected>VTC</option>
                             <option value="STL">STL</option>
                             <option value="VTL">VTL</option>
                             <option value="MYN">MYN</option>
@@ -61,14 +76,73 @@
                             <option value="VTP">VTP</option>
                         </select>
                     </div>
-                </div>
-                <div class="header-right">
-                    <div class="header-actions">
-                        <button class="btn-ai-chat" onclick="alert('Tính năng AI Chat đang được phát triển')">
-                            <i class="fas fa-sparkles"></i> AI Chat
-                        </button>
-                        <button class="btn-download" onclick="openDownloadModal()"><i class="fas fa-download"></i> Tải
-                            dữ liệu</button>
+                    <div class="filter-separator"></div>
+                    <div class="filter-item">
+                        <label>Tỉnh:</label>
+                        <div class="custom-select" id="select-tinh">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-filter"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Khu vực:</label>
+                        <div class="custom-select" id="select-khuvuc">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-chart-area"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Gói cước:</label>
+                        <div class="custom-select" id="select-goicuoc">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-box"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Tuổi thọ:</label>
+                        <div class="custom-select" id="select-tuoitho">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-clock"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list">
+                                    <label><input type="checkbox" value="0-3">
+                                        < 3 tháng</label>
+                                            <label><input type="checkbox" value="3-6"> 3-6 tháng</label>
+                                            <label><input type="checkbox" value="6-12"> 6-12 tháng</label>
+                                            <label><input type="checkbox" value="12-36"> 1-3 năm</label>
+                                            <label><input type="checkbox" value="over36"> > 3 năm</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Kênh phát triển:</label>
+                        <div class="custom-select" id="select-kenh">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-network-wired"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Vị trí trạm:</label>
+                        <div class="custom-select" id="select-tram">
+                            <div class="select-header"><span>Tất cả</span> <i class="fas fa-broadcast-tower"></i></div>
+                            <div class="select-options">
+                                <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
+                                <div class="options-list"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -211,7 +285,7 @@
                     </div>
 
                     <!-- Card 4 -->
-                    <div class="card clickable" onclick="openLevel2('thue-bao')">
+                    <div class="card clickable" onclick="openLevel2('thue-bao', 'churn')">
                         <div class="click-hint"><i class="fas fa-search-plus"></i> Xem phân tích cắt lớp</div>
                         <div class="card-top">
                             <div class="card-icon ic-churn"><i class="fas fa-user-minus"></i></div>
@@ -594,7 +668,7 @@
                 <div class="action-bar">
                     <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Quay lại Level
                         1</button>
-                    <h2>Drill-down: Phân tích Cắt lớp Thuê bao (Level 2)</h2>
+                    <h2 id="level2-thue-bao-title">Drill-down: Phân tích Cắt lớp Thuê bao (Level 2)</h2>
                 </div>
 
                 <!-- Filter Controls -->
@@ -615,7 +689,7 @@
                             <option value="monthly" selected>Hàng tháng</option>
                         </select>
                     </div>
-                    <div class="control-group">
+                    <div class="control-group" id="metric-selector-thue-bao">
                         <label for="filter-metric-thue-bao">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-thue-bao" onchange="updateThueBao15c3dMetric(this.value)">
                             <option value="tang-them">TB 15c3d tăng thêm</option>
@@ -910,6 +984,13 @@
                             <option value="daily">Hàng ngày</option>
                             <option value="weekly">Hàng tuần</option>
                             <option value="monthly" selected>Hàng tháng</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="filter-metric-luu-luong">Lựa chọn chỉ tiêu:</label>
+                        <select id="filter-metric-luu-luong" onchange="updateLuuLuongMetric(this.value)">
+                            <option value="data">Lưu lượng data</option>
+                            <option value="dou">DOU</option>
                         </select>
                     </div>
                 </div>

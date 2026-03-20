@@ -11,9 +11,173 @@ document.addEventListener('DOMContentLoaded', () => {
             window.dispatchEvent(new Event('resize'));
         });
     }
+
+    // Initialize custom multi-selects
+    initCustomSelects();
+    
+    // Initial data load for MYN (default)
+    handleMarketChange('MYN');
 });
 
-function openLevel2(cardId) {
+// Market Dependencies Data
+const marketDataDependencies = {
+    'MYN': {
+        provinces: ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'],
+        regions: ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'],
+        packages: ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'ST120', 'ST150'],
+        channels: ['Kênh số / App', 'Cửa hàng trực tiếp', 'Đại lý ủy quyền', 'CTV / Bán hàng lưu động', 'Telemarketing']
+    },
+    'VTC': {
+        provinces: ['Phnom Penh', 'Siem Reap', 'Battambang', 'Sihanoukville'],
+        regions: ['East', 'West', 'Sihanouk', 'Capital'],
+        packages: ['C5', 'C10', 'C20', 'UNLI1', 'UNLI2'],
+        channels: ['Direct Sales', 'Retail', 'Super App', 'B2B']
+    },
+    'STL': {
+        provinces: ['Luang Prabang', 'Vientiane', 'Savannakhet', 'Champasak'],
+        regions: ['North', 'Central', 'South'],
+        packages: ['LAO5', 'LAO10', 'LAO-UNLI'],
+        channels: ['Shop', 'Agent', 'D2D']
+    }
+    // ... add more for other markets if needed
+};
+
+const provinceStationData = {
+    'Hà Nội': ['HN001', 'HN002', 'HN003', 'HN125', 'HN045'],
+    'TP.HCM': ['HCM001', 'HCM002', 'HCM512', 'HCM012'],
+    'Đà Nẵng': ['DN001', 'DN002', 'DN088'],
+    'Phnom Penh': ['PP001', 'PP002', 'PP003'],
+    'Vientiane': ['VT001', 'VT002']
+};
+
+function initCustomSelects() {
+    const selects = document.querySelectorAll('.custom-select');
+    
+    selects.forEach(select => {
+        const header = select.querySelector('.select-header');
+        const allCheckbox = select.querySelector('.all-opt input');
+        const optionsList = select.querySelector('.options-list');
+        
+        // Toggle dropdown visibility
+        header.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Close other dropdowns
+            selects.forEach(s => { if (s !== select) s.classList.remove('active'); });
+            select.classList.toggle('active');
+        });
+
+        // "All" checkbox logic
+        if (allCheckbox) {
+            allCheckbox.addEventListener('change', () => {
+                const checkboxes = optionsList.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = allCheckbox.checked);
+                updateSelectHeader(select);
+                
+                // If province changed, update stations
+                if (select.id === 'select-tinh') updateStationOptions();
+            });
+        }
+
+        // Individual checkbox logic (event delegation)
+        optionsList.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox') {
+                const checkboxes = optionsList.querySelectorAll('input[type="checkbox"]');
+                const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+                
+                if (allCheckbox) {
+                    allCheckbox.checked = checkedCount === checkboxes.length;
+                }
+                updateSelectHeader(select);
+                
+                // If province changed, update stations
+                if (select.id === 'select-tinh') updateStationOptions();
+            }
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+        selects.forEach(s => s.classList.remove('active'));
+    });
+}
+
+function updateSelectHeader(select) {
+    const headerSpan = select.querySelector('.select-header span');
+    const checkboxes = select.querySelectorAll('.options-list input[type="checkbox"]');
+    const checked = Array.from(checkboxes).filter(cb => cb.checked);
+    
+    if (checked.length === 0) {
+        headerSpan.textContent = "Chưa chọn";
+    } else if (checked.length === checkboxes.length) {
+        headerSpan.textContent = "Tất cả (" + checked.length + ")";
+    } else if (checked.length === 1) {
+        headerSpan.textContent = checked[0].parentElement.textContent.trim();
+    } else {
+        headerSpan.textContent = "Đã chọn " + checked.length;
+    }
+}
+
+function handleMarketChange(market) {
+    console.log('Market changed to:', market);
+    const data = marketDataDependencies[market] || marketDataDependencies['MYN'];
+    
+    // Update Province
+    updateOptions('select-tinh', data.provinces);
+    // Update Region
+    updateOptions('select-khuvuc', data.regions);
+    // Update Package
+    updateOptions('select-goicuoc', data.packages);
+    // Update Channels
+    updateOptions('select-kenh', data.channels);
+    
+    // When market changes, always reset and update stations
+    updateStationOptions();
+}
+
+function updateOptions(selectId, items) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    
+    const list = select.querySelector('.options-list');
+    const allCheckbox = select.querySelector('.all-opt input');
+    
+    list.innerHTML = '';
+    items.forEach(item => {
+        const label = document.createElement('label');
+        label.innerHTML = `<input type="checkbox" value="${item}" checked> ${item}`;
+        list.appendChild(label);
+    });
+    
+    if (allCheckbox) allCheckbox.checked = true;
+    updateSelectHeader(select);
+}
+
+function updateStationOptions() {
+    const provinceSelect = document.getElementById('select-tinh');
+    const checkedProvinces = Array.from(provinceSelect.querySelectorAll('.options-list input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+    
+    let stations = [];
+    checkedProvinces.forEach(p => {
+        if (provinceStationData[p]) {
+            stations = [...stations, ...provinceStationData[p]];
+        }
+    });
+
+    // Remove duplicates
+    stations = Array.from(new Set(stations));
+    
+    // If none found (common in mock), add some dummy ones based on provinces
+    if (stations.length === 0 && checkedProvinces.length > 0) {
+        checkedProvinces.forEach(p => {
+            for(let i=1; i<=3; i++) stations.push(p.substring(0,3).toUpperCase() + "00" + i);
+        });
+    }
+
+    updateOptions('select-tram', stations);
+}
+
+function openLevel2(cardId, subType) {
     // Hide all level 2 sections
     const allLevel2 = document.querySelectorAll('.level2-section');
     allLevel2.forEach(el => {
@@ -24,6 +188,20 @@ function openLevel2(cardId) {
     // Show selected level 2 section
     const selectedLevel2 = document.getElementById('level2-' + cardId);
     if (selectedLevel2) {
+        // Handle subType logic
+        if (cardId === 'thue-bao') {
+            const metricSelector = document.getElementById('metric-selector-thue-bao');
+            const level2Title = document.getElementById('level2-thue-bao-title');
+            
+            if (subType === 'churn') {
+                if (metricSelector) metricSelector.style.display = 'none';
+                if (level2Title) level2Title.textContent = 'Drill-down: Phân tích Cắt lớp TB rời mạng (Level 2)';
+            } else {
+                if (metricSelector) metricSelector.style.display = 'block';
+                if (level2Title) level2Title.textContent = 'Drill-down: Phân tích Cắt lớp Thuê bao (Level 2)';
+            }
+        }
+
         const level1 = document.getElementById('level1-view');
         
         level1.style.opacity = '0';
@@ -1371,6 +1549,22 @@ function getKenhMetricName(value) {
     return names[value] || value;
 }
 
+let currentLuuLuongMetric = 'data';
+function updateLuuLuongMetric(value) {
+    currentLuuLuongMetric = value;
+    chartsInitialized = false;
+    renderCharts();
+    showToast(`Đã chuyển chỉ tiêu sang: ${getLuuLuongMetricName(value)}`);
+}
+
+function getLuuLuongMetricName(value) {
+    const names = {
+        'data': 'Lưu lượng data',
+        'dou': 'DOU'
+    };
+    return names[value] || value;
+}
+
 let currentThueBaoMetric = 'phat-trien-moi';
 let currentThueBao15c3dMetric = 'tang-them';
 function updateThueBaoMetric(value) {
@@ -1420,6 +1614,10 @@ function showToast(message) {
     toast.textContent = message;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
+}
+
+function openDefinitionModal() {
+    showToast("Tính năng Định nghĩa & Hướng dẫn đang được xây dựng!");
 }
 
 // Add animation to CSS
