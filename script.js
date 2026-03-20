@@ -57,7 +57,21 @@ const marketDataDependencies = {
     // ... add more for other markets if needed
 };
 
-const arpuCategories = ['0-1', '1-2', '2-3', '3-5', '5plus'];
+const tenureCategories = [
+    { value: '0-3', label: '< 3 tháng' },
+    { value: '3-6', label: '3-6 tháng' },
+    { value: '6-12', label: '6-12 tháng' },
+    { value: '12-36', label: '1-3 năm' },
+    { value: 'over36', label: '> 3 năm' }
+];
+
+const arpuCategories = [
+    { value: '0-1', label: '$0 - $1' },
+    { value: '1-2', label: '$1 - $2' },
+    { value: '2-3', label: '$2 - $3' },
+    { value: '3-5', label: '$3 - $5' },
+    { value: '5plus', label: '$5+' }
+];
 
 const provinceStationData = {
     'Hà Nội': ['HN001', 'HN002', 'HN003', 'HN125', 'HN045'],
@@ -147,6 +161,10 @@ function handleMarketChange(market) {
     // Update Channels
     updateOptions('select-kenh', data.channels);
 
+    // Keep Tenure + ARPU in sync too like Province
+    updateOptions('select-tuoitho', tenureCategories);
+    updateOptions('select-arpu', arpuCategories);
+
     // When market changes, always reset and update stations
     updateStationOptions();
 
@@ -162,7 +180,8 @@ const filterState = {
     packages: [],
     channels: [],
     stations: [],
-    tenure: []
+    tenure: [],
+    arpu: []
 };
 
 function getSelectCheckedValues(selectId) {
@@ -178,11 +197,10 @@ function applyFilters() {
     filterState.channels = getSelectCheckedValues('select-kenh');
     filterState.stations = getSelectCheckedValues('select-tram');
     filterState.tenure = getSelectCheckedValues('select-tuoitho');
+    filterState.arpu = getSelectCheckedValues('select-arpu');
 
     // Update internal station options that depend on selected provinces
     updateStationOptions();
-    // Ensure ARPU options are always available for filter row too
-    updateOptions('select-arpu', arpuCategories);
 
     chartsInitialized = false;
     renderCharts();
@@ -199,8 +217,11 @@ function updateOptions(selectId, items) {
 
     list.innerHTML = '';
     items.forEach(item => {
+        const value = (typeof item === 'object' && item.value) ? item.value : item;
+        const labelText = (typeof item === 'object' && item.label) ? item.label : item;
+
         const label = document.createElement('label');
-        label.innerHTML = `<input type="checkbox" value="${item}" checked> ${item}`;
+        label.innerHTML = `<input type="checkbox" value="${value}" checked> ${labelText}`;
         list.appendChild(label);
     });
 
