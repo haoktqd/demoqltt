@@ -63,18 +63,27 @@
 
                 <div class="header-filter-row">
                     <div class="filter-item">
-                        <label for="market-select">Thị trường:</label>
-                        <select id="market-select" onchange="handleMarketChange(this.value)">
-                            <option value="VTC" selected>VTC</option>
-                            <option value="STL">STL</option>
-                            <option value="VTL">VTL</option>
-                            <option value="MYN">MYN</option>
-                            <option value="VBD">VBD</option>
-                            <option value="MOV">MOV</option>
-                            <option value="VTZ">VTZ</option>
-                            <option value="NCM">NCM</option>
-                            <option value="VTP">VTP</option>
-                        </select>
+                        <label>Thị trường:</label>
+                        <div class="custom-select" id="select-market">
+                            <div class="select-header"><span>VTC</span> <i class="fas fa-globe"></i></div>
+                            <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
+                                <div class="options-list">
+                                    <label><input type="radio" name="market" value="VTC" checked> VTC</label>
+                                    <label><input type="radio" name="market" value="STL"> STL</label>
+                                    <label><input type="radio" name="market" value="VTL"> VTL</label>
+                                    <label><input type="radio" name="market" value="MYN"> MYN</label>
+                                    <label><input type="radio" name="market" value="VBD"> VBD</label>
+                                    <label><input type="radio" name="market" value="MOV"> MOV</label>
+                                    <label><input type="radio" name="market" value="VTZ"> VTZ</label>
+                                    <label><input type="radio" name="market" value="NCM"> NCM</label>
+                                    <label><input type="radio" name="market" value="VTP"> VTP</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="filter-separator"></div>
                     <div class="filter-item">
@@ -82,6 +91,10 @@
                         <div class="custom-select" id="select-tinh">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-filter"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list"></div>
                             </div>
@@ -92,6 +105,10 @@
                         <div class="custom-select" id="select-khuvuc">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-chart-area"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list"></div>
                             </div>
@@ -102,6 +119,10 @@
                         <div class="custom-select" id="select-goicuoc">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-box"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list"></div>
                             </div>
@@ -112,14 +133,17 @@
                         <div class="custom-select" id="select-tuoitho">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-clock"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list">
-                                    <label><input type="checkbox" value="0-3">
-                                        < 3 tháng</label>
-                                            <label><input type="checkbox" value="3-6"> 3-6 tháng</label>
-                                            <label><input type="checkbox" value="6-12"> 6-12 tháng</label>
-                                            <label><input type="checkbox" value="12-36"> 1-3 năm</label>
-                                            <label><input type="checkbox" value="over36"> > 3 năm</label>
+                                    <label><input type="checkbox" value="0-3"> < 3 tháng</label>
+                                    <label><input type="checkbox" value="3-6"> 3-6 tháng</label>
+                                    <label><input type="checkbox" value="6-12"> 6-12 tháng</label>
+                                    <label><input type="checkbox" value="12-36"> 1-3 năm</label>
+                                    <label><input type="checkbox" value="over36"> > 3 năm</label>
                                 </div>
                             </div>
                         </div>
@@ -129,6 +153,10 @@
                         <div class="custom-select" id="select-kenh">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-network-wired"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list"></div>
                             </div>
@@ -139,6 +167,10 @@
                         <div class="custom-select" id="select-tram">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-broadcast-tower"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list"></div>
                             </div>
@@ -149,6 +181,10 @@
                         <div class="custom-select" id="select-arpu">
                             <div class="select-header"><span>Tất cả</span> <i class="fas fa-coins"></i></div>
                             <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list">
                                     <label><input type="checkbox" value="0-1" checked>$0 - $1</label>

@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize custom multi-selects
     initCustomSelects();
 
-    // Initial data load for MYN (default)
-    handleMarketChange('MYN');
+    // Initial data load for VTC (default)
+    handleMarketChange('VTC');
 });
 
 // Global state for Cross-filtering
@@ -88,6 +88,7 @@ function initCustomSelects() {
         const header = select.querySelector('.select-header');
         const allCheckbox = select.querySelector('.all-opt input');
         const optionsList = select.querySelector('.options-list');
+        const searchInput = select.querySelector('.select-search input');
 
         // Toggle dropdown visibility
         header.addEventListener('click', (e) => {
@@ -95,7 +96,30 @@ function initCustomSelects() {
             // Close other dropdowns
             selects.forEach(s => { if (s !== select) s.classList.remove('active'); });
             select.classList.toggle('active');
+            
+            // Focus search input when opening
+            if (select.classList.contains('active') && searchInput) {
+                searchInput.value = '';
+                const labels = optionsList.querySelectorAll('label');
+                labels.forEach(l => l.style.display = 'flex');
+                setTimeout(() => searchInput.focus(), 100);
+            }
         });
+
+        // Search logic
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                const labels = optionsList.querySelectorAll('label');
+                labels.forEach(label => {
+                    const text = label.textContent.toLowerCase();
+                    label.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            });
+
+            // Prevent closing when clicking search input
+            searchInput.addEventListener('click', (e) => e.stopPropagation());
+        }
 
         // "All" checkbox logic
         if (allCheckbox) {
@@ -111,18 +135,28 @@ function initCustomSelects() {
             e.stopPropagation();
         });
 
-        // Individual checkbox logic (event delegation)
+        // Individual change logic (event delegation)
         optionsList.addEventListener('change', (e) => {
-            if (e.target.type === 'checkbox') {
+            if (e.target.type === 'checkbox' || e.target.type === 'radio') {
                 const checkboxes = optionsList.querySelectorAll('input[type="checkbox"]');
                 const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
 
                 if (allCheckbox) {
                     allCheckbox.checked = checkedCount === checkboxes.length;
                 }
+                
+                // If it's the market radio, trigger market change
+                if (e.target.name === 'market' && e.target.type === 'radio') {
+                    handleMarketChange(e.target.value);
+                    select.classList.remove('active'); // Close on select for market
+                }
+
                 updateSelectHeader(select);
             }
         });
+        
+        // Initial header sync
+        updateSelectHeader(select);
     });
 
     // Close dropdowns when clicking outside
@@ -133,12 +167,20 @@ function initCustomSelects() {
 
 function updateSelectHeader(select) {
     const headerSpan = select.querySelector('.select-header span');
+    
+    // Check for radio buttons first (Market)
+    const radioChecked = select.querySelector('.options-list input[type="radio"]:checked');
+    if (radioChecked) {
+        headerSpan.textContent = radioChecked.parentElement.textContent.trim();
+        return;
+    }
+
     const checkboxes = select.querySelectorAll('.options-list input[type="checkbox"]');
     const checked = Array.from(checkboxes).filter(cb => cb.checked);
 
     if (checked.length === 0) {
         headerSpan.textContent = "Chưa chọn";
-    } else if (checked.length === checkboxes.length) {
+    } else if (checked.length === checkboxes.length && checkboxes.length > 0) {
         headerSpan.textContent = "Tất cả (" + checked.length + ")";
     } else if (checked.length === 1) {
         headerSpan.textContent = checked[0].parentElement.textContent.trim();
@@ -214,6 +256,12 @@ function updateOptions(selectId, items) {
 
     const list = select.querySelector('.options-list');
     const allCheckbox = select.querySelector('.all-opt input');
+    const searchInput = select.querySelector('.select-search input');
+
+    // Clear search when updating options
+    if (searchInput) {
+        searchInput.value = '';
+    }
 
     list.innerHTML = '';
     items.forEach(item => {

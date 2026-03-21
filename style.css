@@ -486,6 +486,38 @@ header {
     overflow-y: auto;
 }
 
+.select-search {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+}
+
+.select-search i {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.select-search input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 12px;
+    outline: none;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.select-search input:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
 .select-options input[type="checkbox"] {
     width: 16px;
     height: 16px;
