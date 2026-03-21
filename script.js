@@ -12,8 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize custom multi-selects
+    // Initialize global multi-selects
     initCustomSelects();
+
+    // Initialize global date filters (last 30 days)
+    const dateFrom = document.getElementById('global-date-from');
+    const dateTo = document.getElementById('global-date-to');
+    if (dateFrom && dateTo) {
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now);
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        dateTo.value = now.toISOString().split('T')[0];
+        dateFrom.value = thirtyDaysAgo.toISOString().split('T')[0];
+    }
 
     // Initial data load for VTC (default)
     handleMarketChange('VTC');
@@ -213,6 +224,7 @@ function handleMarketChange(market) {
     // Do not auto-render charts for all other filters; only market changes is immediate
     chartsInitialized = false;
     renderCharts();
+    renderHierarchyTable();
 }
 
 const filterState = {
@@ -223,7 +235,9 @@ const filterState = {
     channels: [],
     stations: [],
     tenure: [],
-    arpu: []
+    arpu: [],
+    dateFrom: '',
+    dateTo: ''
 };
 
 function getSelectCheckedValues(selectId) {
@@ -240,6 +254,8 @@ function applyFilters() {
     filterState.stations = getSelectCheckedValues('select-tram');
     filterState.tenure = getSelectCheckedValues('select-tuoitho');
     filterState.arpu = getSelectCheckedValues('select-arpu');
+    filterState.dateFrom = document.getElementById('global-date-from')?.value || '';
+    filterState.dateTo = document.getElementById('global-date-to')?.value || '';
 
     // Update internal station options that depend on selected provinces
     updateStationOptions();
@@ -765,6 +781,16 @@ function openDownloadModal() {
     const modal = document.getElementById('download-modal');
     if (!modal) return;
 
+    // Sync Market dropdown with global filterState
+    const marketSelect = document.getElementById('download-select-market');
+    if (marketSelect) {
+        const radio = marketSelect.querySelector(`input[value="${filterState.market}"]`);
+        if (radio) {
+            radio.checked = true;
+            updateSelectHeader(marketSelect);
+        }
+    }
+
     const now = new Date();
     const prior = new Date(now);
     prior.setDate(prior.getDate() - 30);
@@ -804,6 +830,8 @@ function downloadSelectedData() {
         const toInput = document.getElementById('download-date-to');
         const sliceInputs = Array.from(document.querySelectorAll('#download-slice-list input[type=checkbox]'));
         const fieldInputs = Array.from(document.querySelectorAll('#download-field-list input[type=checkbox]'));
+        const marketRadio = document.querySelector('#download-select-market input[type="radio"]:checked');
+        const selectedMarket = marketRadio ? marketRadio.value : '';
 
         const selectedSlices = sliceInputs.filter(i => i.checked).map(i => i.value);
         const selectedFields = fieldInputs.filter(i => i.checked).map(i => i.value);
@@ -816,7 +844,7 @@ function downloadSelectedData() {
         }
 
         // 👉 giả lập download (bạn giữ logic CSV cũ nếu muốn)
-        console.log('Downloading...', selectedSlices, selectedFields);
+        console.log(`Downloading Market: ${selectedMarket}`, selectedSlices, selectedFields);
 
         btn.innerHTML = '<i class="fas fa-file-csv"></i> Tải CSV';
         btn.disabled = false;
@@ -1660,3 +1688,101 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+/* ===== HIERARCHY TREE TABLE LOGIC ===== */
+let expandedRows = new Set();
+
+function renderHierarchyTable() {
+    const tableBody = document.getElementById('hierarchy-table-body');
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+
+    const market = filterState.market;
+    const data = marketDataDependencies[market] || marketDataDependencies['MYN'];
+    let provinces = data.provinces || [];
+
+    provinces.forEach(province => {
+        const provinceRowId = `p:${province}`;
+        renderHierarchyRow(tableBody, province, 0, provinceRowId, 'fas fa-map-marker-alt');
+
+        if (expandedRows.has(provinceRowId)) {
+            tenureCategories.forEach(tenure => {
+                const tenureRowId = `${provinceRowId}|t:${tenure.label}`;
+                renderHierarchyRow(tableBody, tenure.label, 1, tenureRowId, 'fas fa-hourglass-half');
+
+                if (expandedRows.has(tenureRowId)) {
+                    arpuCategories.forEach(arpu => {
+                        const arpuRowId = `${tenureRowId}|a:${arpu.label}`;
+                        renderHierarchyRow(tableBody, arpu.label, 2, arpuRowId, 'fas fa-coins');
+
+                        if (expandedRows.has(arpuRowId)) {
+                            const packages = data.packages || [];
+                            packages.forEach(pkg => {
+                                const pkgRowId = `${arpuRowId}|pkg:${pkg}`;
+                                renderHierarchyRow(tableBody, pkg, 3, pkgRowId, 'fas fa-cube', false);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+function renderHierarchyRow(container, label, level, rowId, iconClass, canExpand = true) {
+    const isExpanded = expandedRows.has(rowId);
+    const row = document.createElement('tr');
+    row.className = `node-level-${level}`;
+
+    // Deterministic mock data generator
+    const hash = (str) => {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = ((h << 5) - h) + str.charCodeAt(i) | 0;
+        return Math.abs(h);
+    };
+    const h = hash(rowId);
+    
+    const lũy_kế = (h % 2000) + 500;
+    const yoy = ((h % 200) / 10 - 10).toFixed(1);
+    const mom = ((h % 100) / 10 - 5).toFixed(1);
+    const tiêu_dùng = (h % 400) + 50;
+    const td_yoy = ((h % 180) / 10 - 9).toFixed(1);
+    const td_mom = ((h % 90) / 10 - 4.5).toFixed(1);
+
+    const formatGrowthVal = (val, asPercentage = true) => {
+        const floatVal = parseFloat(val);
+        if (floatVal > 0) return `<span class="growth-positive">▲ ${asPercentage ? val + '%' : Math.round(val)}</span>`;
+        if (floatVal < 0) return `<span class="growth-negative">▼ ${asPercentage ? Math.abs(val) + '%' : Math.abs(Math.round(val))}</span>`;
+        return `<span style="color: var(--text-muted)">- ${asPercentage ? '0.0%' : '0'}</span>`;
+    };
+
+    row.innerHTML = `
+        <td>
+            <div class="tree-node">
+                ${canExpand ? `
+                    <div class="tree-toggle" onclick="toggleHierarchyRow('${rowId}')">
+                        <i class="fas fa-${isExpanded ? 'minus' : 'plus'}"></i>
+                    </div>
+                ` : '<div class="tree-indent"></div>'}
+                <i class="${iconClass} tree-icon"></i>
+                <span>${label}</span>
+            </div>
+        </td>
+        <td class="num-val">${formatNumber(lũy_kế / (level + 1), 0)}</td>
+        <td class="num-val">${formatGrowthVal(yoy, false)}</td>
+        <td class="num-val">${formatGrowthVal(mom, false)}</td>
+        <td class="num-val">${formatNumber(tiêu_dùng / (level + 1), 1)}</td>
+        <td class="num-val">${formatGrowthVal(td_yoy, true)}</td>
+        <td class="num-val">${formatGrowthVal(td_mom, true)}</td>
+    `;
+    container.appendChild(row);
+}
+
+function toggleHierarchyRow(rowId) {
+    if (expandedRows.has(rowId)) expandedRows.delete(rowId);
+    else expandedRows.add(rowId);
+    renderHierarchyTable();
+}
+
+// Auto-init on load if not already called
+window.addEventListener('load', renderHierarchyTable);

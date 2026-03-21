@@ -196,6 +196,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="filter-separator"></div>
+                    <div class="filter-item">
+                        <label>Từ ngày:</label>
+                        <input type="date" id="global-date-from" class="header-date-input">
+                    </div>
+                    <div class="filter-item">
+                        <label>Đến ngày:</label>
+                        <input type="date" id="global-date-to" class="header-date-input">
+                    </div>
+
                     <div class="filter-item">
                         <button class="btn-apply-filter" onclick="applyFilters()">OK</button>
                     </div>
@@ -551,11 +561,33 @@
                     </div>
 
                 </div>
-                <div class="download-section">
-                    <button class="btn-download" onclick="openDownloadModal()">
-                        <i class="fas fa-download"></i> Tải dữ liệu
-                    </button>
+
+                <!-- Bảng phân tích cắt lớp đa tầng -->
+                <div class="hierarchy-table-container">
+                    <div class="table-header-area">
+                        <h2>Bảng phân tích cắt lớp đa chiều</h2>
+                        <p>Thứ tự tầng: Tỉnh/TP → Tuổi thọ → ARPU → Gói cước</p>
+                    </div>
+                    <div class="table-scroll-wrapper">
+                        <table class="hierarchy-tree-table" id="hierarchy-table">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 320px;">Cắt lớp (Hierarchy)</th>
+                                    <th class="num-val">Tb 15c3d lũy kế</th>
+                                    <th class="num-val">15c3d YoY</th>
+                                    <th class="num-val">15c3d MoM</th>
+                                    <th class="num-val">Tiêu dùng thực</th>
+                                    <th class="num-val">Tiêu dùng thực YoY</th>
+                                    <th class="num-val">Tiêu dùng thực MoM</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hierarchy-table-body">
+                                <!-- Content will be injected by script.js -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </section>
 
             <!-- Level 2: Detail Drilldown (Tiêu dùng thực) -->
@@ -568,22 +600,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from">Từ ngày:</label>
-                        <input type="date" id="date-from">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to">Đến ngày:</label>
-                        <input type="date" id="date-to">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity">Mức chi tiết:</label>
-                        <select id="filter-granularity">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                     <div class="control-group" id="metric-selector-tieu-dung-thuc">
                         <label for="filter-metric-tieu-dung-thuc">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-tieu-dung-thuc" onchange="updateTieuDungMetric(this.value)">
@@ -754,22 +772,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from-thue-bao">Từ ngày:</label>
-                        <input type="date" id="date-from-thue-bao">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to-thue-bao">Đến ngày:</label>
-                        <input type="date" id="date-to-thue-bao">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity-thue-bao">Mức chi tiết:</label>
-                        <select id="filter-granularity-thue-bao">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                     <div class="control-group" id="metric-selector-thue-bao">
                         <label for="filter-metric-thue-bao">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-thue-bao" onchange="updateThueBao15c3dMetric(this.value)">
@@ -920,22 +924,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from-tb-phat-trien-moi">Từ ngày:</label>
-                        <input type="date" id="date-from-tb-phat-trien-moi">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to-tb-phat-trien-moi">Đến ngày:</label>
-                        <input type="date" id="date-to-tb-phat-trien-moi">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity-tb-phat-trien-moi">Mức chi tiết:</label>
-                        <select id="filter-granularity-tb-phat-trien-moi">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                     <div class="control-group">
                         <label for="filter-metric-tb-phat-trien-moi">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-tb-phat-trien-moi" onchange="updateThueBaoMetric(this.value)">
@@ -1087,22 +1077,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from-luu-luong">Từ ngày:</label>
-                        <input type="date" id="date-from-luu-luong">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to-luu-luong">Đến ngày:</label>
-                        <input type="date" id="date-to-luu-luong">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity-luu-luong">Mức chi tiết:</label>
-                        <select id="filter-granularity-luu-luong">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                     <div class="control-group">
                         <label for="filter-metric-luu-luong">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-luu-luong" onchange="updateLuuLuongMetric(this.value)">
@@ -1253,22 +1229,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from-trai-nghiem">Từ ngày:</label>
-                        <input type="date" id="date-from-trai-nghiem">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to-trai-nghiem">Đến ngày:</label>
-                        <input type="date" id="date-to-trai-nghiem">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity-trai-nghiem">Mức chi tiết:</label>
-                        <select id="filter-granularity-trai-nghiem">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                 </div>
 
                 <!-- Metrics Overview -->
@@ -1448,22 +1410,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from-kenh">Từ ngày:</label>
-                        <input type="date" id="date-from-kenh">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to-kenh">Đến ngày:</label>
-                        <input type="date" id="date-to-kenh">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity-kenh">Mức chi tiết:</label>
-                        <select id="filter-granularity-kenh">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                     <div class="control-group">
                         <label for="filter-metric-kenh">Lựa chọn chỉ tiêu:</label>
                         <select id="filter-metric-kenh" onchange="updateKenhMetric(this.value)">
@@ -1600,22 +1548,8 @@
 
                 <!-- Filter Controls -->
                 <div class="level2-controls">
-                    <div class="control-group">
-                        <label for="date-from-super-app">Từ ngày:</label>
-                        <input type="date" id="date-from-super-app">
-                    </div>
-                    <div class="control-group">
-                        <label for="date-to-super-app">Đến ngày:</label>
-                        <input type="date" id="date-to-super-app">
-                    </div>
-                    <div class="control-group">
-                        <label for="filter-granularity-super-app">Mức chi tiết:</label>
-                        <select id="filter-granularity-super-app">
-                            <option value="daily">Hàng ngày</option>
-                            <option value="weekly">Hàng tuần</option>
-                            <option value="monthly" selected>Hàng tháng</option>
-                        </select>
-                    </div>
+
+
                 </div>
 
                 <!-- Enhanced Charts with Metrics -->
@@ -1789,6 +1723,33 @@
 
             <!-- Body -->
             <div class="modal-body">
+
+                <!-- Market Selection -->
+                <div class="modal-section">
+                    <h4>🌍 Thị trường</h4>
+                    <div class="filter-item">
+                        <div class="custom-select" id="download-select-market">
+                            <div class="select-header"><span>VTC</span> <i class="fas fa-globe"></i></div>
+                            <div class="select-options">
+                                <div class="select-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Tìm kiếm...">
+                                </div>
+                                <div class="options-list">
+                                    <label><input type="radio" name="download-market" value="VTC" checked> VTC</label>
+                                    <label><input type="radio" name="download-market" value="STL"> STL</label>
+                                    <label><input type="radio" name="download-market" value="VTL"> VTL</label>
+                                    <label><input type="radio" name="download-market" value="MYN"> MYN</label>
+                                    <label><input type="radio" name="download-market" value="VBD"> VBD</label>
+                                    <label><input type="radio" name="download-market" value="MOV"> MOV</label>
+                                    <label><input type="radio" name="download-market" value="VTZ"> VTZ</label>
+                                    <label><input type="radio" name="download-market" value="NCM"> NCM</label>
+                                    <label><input type="radio" name="download-market" value="VTP"> VTP</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Date -->
                 <div class="modal-section">
