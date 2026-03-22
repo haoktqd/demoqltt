@@ -280,12 +280,26 @@ function updateOptions(selectId, items) {
     }
 
     list.innerHTML = '';
-    items.forEach(item => {
+
+    // Prepend "Toàn mạng" and "Tổng" options as requested
+    const specialOptions = [
+        { value: 'TOTAL_NETWORK', label: 'Toàn mạng' },
+        { value: 'GRAND_TOTAL', label: 'Tổng' }
+    ];
+
+    [...specialOptions, ...items].forEach(item => {
         const value = (typeof item === 'object' && item.value) ? item.value : item;
         const labelText = (typeof item === 'object' && item.label) ? item.label : item;
 
         const label = document.createElement('label');
-        label.innerHTML = `<input type="checkbox" value="${value}" checked> ${labelText}`;
+        // If it's a special option, maybe style it differently
+        if (value === 'TOTAL_NETWORK' || value === 'GRAND_TOTAL') {
+            label.style.fontWeight = '700';
+            label.style.color = 'var(--primary)';
+            label.innerHTML = `<input type="checkbox" value="${value}"> ${labelText}`;
+        } else {
+            label.innerHTML = `<input type="checkbox" value="${value}" checked> ${labelText}`;
+        }
         list.appendChild(label);
     });
 
@@ -1490,21 +1504,23 @@ function renderCXTrendCharts() {
 }
 
 // Helper to create a horizontal bar chart safely with Cross-filtering support
-const createHorizontalBarChart = (canvasId, labels, data, accentColor, unitLabel) => {
+const createHorizontalBarChart = (canvasId, labels, data, accentColor, unitLabel, customColors = null) => {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
 
     // Apply filtering if a label is active
     let displayData = [...data];
     let displayLabels = [...labels];
-    let displayColors = data.map(() => accentColor);
+    let displayColors = customColors || data.map(() => accentColor);
 
     if (activeFilterLabel) {
         const labelIndex = labels.indexOf(activeFilterLabel);
         if (labelIndex !== -1) {
-            displayColors = labels.map((l, i) => i === labelIndex ? accentColor : '#e2e8f0');
+            displayColors = labels.map((l, i) => i === labelIndex ? (customColors ? customColors[i] : accentColor) : '#e2e8f0');
         } else {
             // Dim data if filter doesn't apply to this chart
+            // But keep Toàn mạng and Tổng bright if they are the first two bars?
+            // Actually, let's just use the standard dimming but check for the label
             displayData = data.map(v => v * (0.15 + Math.random() * 0.3));
         }
     }
@@ -1573,75 +1589,98 @@ function renderCharts() {
         return defaultUnit;
     }
 
-    // 1. Consumer charts
-    const isARPU = currentTieuDungMetric === 'arpu';
-    createHorizontalBarChart('chart-tinh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], isARPU ? [4.2, 4.8, 3.5, 3.2, 2.8, 2.9, 3.4] : [12.5, 14.2, 4.3, 3.8, 3.1, 3.3, 4.0], '#3b82f6', getUnitForChart('chart-tinh', 'Tỉ'));
-    createHorizontalBarChart('chart-cat-lop-tieu-dung', ['Thoại', 'SMS', 'Data', 'VAS', 'Khác'], isARPU ? [2.5, 0.8, 5.2, 1.2, 0.5] : [20.5, 5.2, 15.8, 2.1, 1.6], '#ef4444', getUnitForChart('chart-cat-lop-tieu-dung', 'Tỉ'));
-    createHorizontalBarChart('chart-goicuoc', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], isARPU ? [5.5, 4.2, 3.8, 2.5, 4.0, 3.0] : [15.2, 8.4, 6.1, 5.3, 4.2, 6.0], '#8b5cf6', getUnitForChart('chart-goicuoc', 'Tỉ'));
-    createHorizontalBarChart('chart-khuvuc', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], isARPU ? [4.0, 4.5, 3.2, 2.8] : [16.8, 18.5, 6.4, 3.5], '#10b981', getUnitForChart('chart-khuvuc', 'Tỉ'));
-    createHorizontalBarChart('chart-tuoitho', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], isARPU ? [2.1, 3.4, 4.2, 5.5, 4.8] : [4.2, 5.6, 8.4, 15.3, 11.7], '#f43f5e', getUnitForChart('chart-tuoitho', 'Tỉ'));
-    createHorizontalBarChart('chart-kenh', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], isARPU ? [5.2, 4.8, 3.5, 2.8, 2.1, 3.2] : [14.5, 12.1, 8.4, 4.3, 2.5, 3.4], '#f59e0b', getUnitForChart('chart-kenh', 'Tỉ'));
-    createHorizontalBarChart('chart-tram', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], isARPU ? [4.5, 3.8, 3.2, 5.1, 3.5] : [10.5, 8.2, 6.1, 12.3, 7.9], '#06b6d4', getUnitForChart('chart-tram', 'Tỉ'));
-    createHorizontalBarChart('chart-arpu-tieu-dung-thuc', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [1.5, 2.8, 15.6, 18.2, 5.4, 1.7], '#14b8a6', getUnitForChart('chart-arpu-tieu-dung-thuc', 'Tỉ'));
+    // Helper to prepend "Toàn mạng" and "Tổng" bars
+    // Labels array, Data array, accentColor for segments, optional wholeValue
+    const withSummary = (canvasId, labels, data, accentColor, unitLabel, customWhole = null) => {
+        const total = data.reduce((a, b) => a + b, 0);
+        const whole = customWhole || total * 1.12; // Mock: Whole is slightly more than total
+        
+        const summaryLabels = ['Toàn mạng', 'Tổng', ...labels];
+        const summaryData = [whole, total, ...data];
+        
+        // Colors: Grey for Whole, Darker for Total, accentColor for segments
+        const summaryColors = ['#94a3b8', '#1e293b', ...data.map(() => accentColor)];
+        
+        createHorizontalBarChart(canvasId, summaryLabels, summaryData, accentColor, unitLabel, summaryColors);
+    };
 
-    // 2. Subscriber charts
-    createHorizontalBarChart('chart-tinh-thue-bao', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], '#3b82f6', 'M');
-    createHorizontalBarChart('chart-goicuoc-thue-bao', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', 'M');
-    createHorizontalBarChart('chart-khuvuc-thue-bao', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', 'M');
-    createHorizontalBarChart('chart-tuoitho-thue-bao', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', 'M');
-    createHorizontalBarChart('chart-kenh-thue-bao', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', 'M');
-    createHorizontalBarChart('chart-tram-thue-bao', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', 'M');
-    createHorizontalBarChart('chart-arpu-thue-bao', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [0.8, 1.2, 5.5, 4.0, 0.8, 0.2], '#14b8a6', 'M');
+    // 1. Consumer charts (Tiêu dùng thực)
+    const isARPU = currentTieuDungMetric === 'actual'; // check actual vs arpu
+    const tdUnit = getUnitForChart('chart-tinh', 'Tỉ');
+    const tdColor = '#3b82f6';
+
+    withSummary('chart-tinh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], currentTieuDungMetric === 'arpu' ? [4.2, 4.8, 3.5, 3.2, 2.8, 2.9, 3.4] : [12.5, 14.2, 4.3, 3.8, 3.1, 3.3, 4.0], tdColor, tdUnit);
+    withSummary('chart-cat-lop-tieu-dung', ['Thoại', 'SMS', 'Data', 'VAS', 'Khác'], currentTieuDungMetric === 'arpu' ? [2.5, 0.8, 5.2, 1.2, 0.5] : [20.5, 5.2, 15.8, 2.1, 1.6], '#ef4444', tdUnit);
+    withSummary('chart-goicuoc', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], currentTieuDungMetric === 'arpu' ? [5.5, 4.2, 3.8, 2.5, 4.0, 3.0] : [15.2, 8.4, 6.1, 5.3, 4.2, 6.0], '#8b5cf6', tdUnit);
+    withSummary('chart-khuvuc', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], currentTieuDungMetric === 'arpu' ? [4.0, 4.5, 3.2, 2.8] : [16.8, 18.5, 6.4, 3.5], '#10b981', tdUnit);
+    withSummary('chart-tuoitho', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], currentTieuDungMetric === 'arpu' ? [2.1, 3.4, 4.2, 5.5, 4.8] : [4.2, 5.6, 8.4, 15.3, 11.7], '#f43f5e', tdUnit);
+    withSummary('chart-kenh', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], currentTieuDungMetric === 'arpu' ? [5.2, 4.8, 3.5, 2.8, 2.1, 3.2] : [14.5, 12.1, 8.4, 4.3, 2.5, 3.4], '#f59e0b', tdUnit);
+    withSummary('chart-tram', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], currentTieuDungMetric === 'arpu' ? [4.5, 3.8, 3.2, 5.1, 3.5] : [10.5, 8.2, 6.1, 12.3, 7.9], '#06b6d4', tdUnit);
+    withSummary('chart-arpu-tieu-dung-thuc', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [1.5, 2.8, 15.6, 18.2, 5.4, 1.7], '#14b8a6', tdUnit);
+
+    // 2. Subscriber charts (Thuê bao)
+    const tbUnit = 'M';
+    const tbColor = '#3b82f6';
+    const isLũyKế = currentThueBao15c3dMetric === 'luy-ke';
+
+    withSummary('chart-tinh-thue-bao', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], isLũyKế ? [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45] : [0.12, 0.15, 0.05, 0.04, 0.03, 0.03, 0.04], tbColor, tbUnit);
+    withSummary('chart-goicuoc-thue-bao', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], isLũyKế ? [1.5, 0.8, 0.6, 0.5, 0.4, 0.6] : [0.15, 0.08, 0.06, 0.05, 0.04, 0.06], '#8b5cf6', tbUnit);
+    withSummary('chart-khuvuc-thue-bao', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], isLũyKế ? [1.7, 1.9, 0.7, 0.3] : [0.17, 0.2, 0.07, 0.03], '#10b981', tbUnit);
+    withSummary('chart-tuoitho-thue-bao', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], isLũyKế ? [0.4, 0.6, 0.9, 1.5, 1.3] : [0.04, 0.06, 0.09, 0.15, 0.13], '#f43f5e', tbUnit);
+    withSummary('chart-kenh-thue-bao', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], isLũyKế ? [1.45, 1.21, 0.84, 0.43, 0.25, 0.34] : [0.14, 0.12, 0.08, 0.04, 0.02, 0.03], '#f59e0b', tbUnit);
+    withSummary('chart-tram-thue-bao', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], isLũyKế ? [1.1, 0.8, 0.6, 1.3, 0.7] : [0.11, 0.08, 0.06, 0.13, 0.07], '#06b6d4', tbUnit);
+    withSummary('chart-arpu-thue-bao', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], isLũyKế ? [0.8, 1.2, 5.5, 4.0, 0.8, 0.2] : [0.08, 0.12, 0.15, 0.1, 0.05, 0.02], '#14b8a6', tbUnit);
 
     // 3. New Sub charts
-    createHorizontalBarChart('chart-tinh-tb-phat-trien-moi', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], '#3b82f6', 'M');
-    createHorizontalBarChart('chart-goicuoc-tb-phat-trien-moi', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', 'M');
-    createHorizontalBarChart('chart-khuvuc-tb-phat-trien-moi', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', 'M');
-    createHorizontalBarChart('chart-tuoitho-tb-phat-trien-moi', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', 'M');
-    createHorizontalBarChart('chart-kenh-tb-phat-trien-moi', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', 'M');
-    createHorizontalBarChart('chart-tram-tb-phat-trien-moi', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', 'M');
-    createHorizontalBarChart('chart-arpu-tb-phat-trien-moi', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [0.5, 0.7, 1.8, 1.0, 0.15, 0.05], '#14b8a6', 'M');
+    const ptmUnit = 'M';
+    withSummary('chart-tinh-tb-phat-trien-moi', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.2, 1.4, 0.5, 0.4, 0.3, 0.35, 0.45], tbColor, ptmUnit);
+    withSummary('chart-goicuoc-tb-phat-trien-moi', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [1.5, 0.8, 0.6, 0.5, 0.4, 0.6], '#8b5cf6', ptmUnit);
+    withSummary('chart-khuvuc-tb-phat-trien-moi', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1.7, 1.9, 0.7, 0.3], '#10b981', ptmUnit);
+    withSummary('chart-tuoitho-tb-phat-trien-moi', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [0.4, 0.6, 0.9, 1.5, 1.3], '#f43f5e', ptmUnit);
+    withSummary('chart-kenh-tb-phat-trien-moi', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [1.45, 1.21, 0.84, 0.43, 0.25, 0.34], '#f59e0b', ptmUnit);
+    withSummary('chart-tram-tb-phat-trien-moi', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [1.1, 0.8, 0.6, 1.3, 0.7], '#06b6d4', ptmUnit);
+    withSummary('chart-arpu-tb-phat-trien-moi', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [0.5, 0.7, 1.8, 1.0, 0.15, 0.05], '#14b8a6', ptmUnit);
 
     // 4. Super App charts
-    createHorizontalBarChart('chart-tinh-super-app', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.8, 2.1, 0.3, 0.2, 0.2, 0.25, 0.35], '#3b82f6', 'M');
-    createHorizontalBarChart('chart-arpu-super-app', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [0.4, 0.6, 1.2, 0.9, 0.3, 0.1], '#14b8a6', 'M');
-    createHorizontalBarChart('chart-khuvuc-super-app', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [2.5, 2.8, 0.5, 0.2], '#10b981', 'M');
-    createHorizontalBarChart('chart-tuoitho-super-app', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [0.6, 0.8, 1.2, 2.0, 1.8], '#f43f5e', 'M');
-    createHorizontalBarChart('chart-kenh-super-app', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [2.1, 1.8, 1.2, 0.6, 0.3, 0.5], '#f59e0b', 'M');
+    withSummary('chart-tinh-super-app', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [1.8, 2.1, 0.3, 0.2, 0.2, 0.25, 0.35], '#3b82f6', 'M');
+    withSummary('chart-arpu-super-app', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [0.4, 0.6, 1.2, 0.9, 0.3, 0.1], '#14b8a6', 'M');
+    withSummary('chart-khuvuc-super-app', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [2.5, 2.8, 0.5, 0.2], '#10b981', 'M');
+    withSummary('chart-tuoitho-super-app', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [0.6, 0.8, 1.2, 2.0, 1.8], '#f43f5e', 'M');
+    withSummary('chart-kenh-super-app', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [2.1, 1.8, 1.2, 0.6, 0.3, 0.5], '#f59e0b', 'M');
 
-    // 5. Data Traffic charts (GB)
-    createHorizontalBarChart('chart-tinh-luu-luong', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [2500, 2800, 950, 820, 670, 740, 890], '#3b82f6', 'GB');
-    createHorizontalBarChart('chart-goicuoc-luu-luong', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [2800, 1600, 1200, 900, 720, 1100], '#8b5cf6', 'GB');
-    createHorizontalBarChart('chart-khuvuc-luu-luong', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [3100, 3300, 1200, 620], '#10b981', 'GB');
-    createHorizontalBarChart('chart-tuoitho-luu-luong', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [780, 940, 1200, 1900, 1600], '#f43f5e', 'GB');
-    createHorizontalBarChart('chart-kenh-luu-luong', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [2900, 2500, 1800, 950, 520, 670], '#f59e0b', 'GB');
-    createHorizontalBarChart('chart-tram-luu-luong', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [2000, 1500, 1200, 2500, 1300], '#06b6d4', 'GB');
-    createHorizontalBarChart('chart-arpu-luu-luong', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [200, 500, 3100, 2800, 1200, 600], '#14b8a6', 'GB');
+    // 5. Data Traffic charts (GB/PB)
+    const trafficUnit = 'GB';
+    withSummary('chart-tinh-luu-luong', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [2500, 2800, 950, 820, 670, 740, 890], '#3b82f6', trafficUnit);
+    withSummary('chart-goicuoc-luu-luong', ['V120', 'ST90', 'MIMAX70', 'UMAX50', 'V90', 'Khác'], [2800, 1600, 1200, 900, 720, 1100], '#8b5cf6', trafficUnit);
+    withSummary('chart-khuvuc-luu-luong', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [3100, 3300, 1200, 620], '#10b981', trafficUnit);
+    withSummary('chart-tuoitho-luu-luong', ['< 3 tháng', '3-6 tháng', '6-12 tháng', '1-3 năm', '> 3 năm'], [780, 940, 1200, 1900, 1600], '#f43f5e', trafficUnit);
+    withSummary('chart-kenh-luu-luong', ['App', 'CH Trực tiếp', 'Đại lý', 'CTV', 'Tele', 'B2B'], [2900, 2500, 1800, 950, 520, 670], '#f59e0b', trafficUnit);
+    withSummary('chart-tram-luu-luong', ['ABC123', 'BBC124', 'XCB1235', 'XCBxyz', 'Khác'], [2000, 1500, 1200, 2500, 1300], '#06b6d4', trafficUnit);
+    withSummary('chart-arpu-luu-luong', ['0-0.5$', '0.5-1$', '1-2$', '2-5$', '5-10$', '>10$'], [200, 500, 3100, 2800, 1200, 600], '#14b8a6', trafficUnit);
 
     // 6. Channel (Kênh) charts
-    createHorizontalBarChart('chart-tinh-kenh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [850, 920, 310, 280, 220, 240, 290], '#3b82f6', 'kênh');
-    createHorizontalBarChart('chart-loaikenh-kenh', ['Trực tiếp', 'Đại lý', 'CTV', 'App', 'Tele', 'B2B'], [120, 850, 3500, 450, 320, 210], '#8b5cf6', 'kênh');
-    createHorizontalBarChart('chart-khuvuc-kenh', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1650, 1850, 640, 420], '#10b981', 'kênh');
-    createHorizontalBarChart('chart-trangthai-kenh', ['Hoạt động', 'Tạm ngưng', 'Chờ đóng', 'Hết hạn'], [4800, 450, 280, 100], '#f43f5e', 'kênh');
-    createHorizontalBarChart('chart-makenh-kenh', ['CHN001', 'DLU002', 'CTV003', 'KSN004', 'TEL005', 'KDN006', 'Khác'], [120, 850, 3500, 450, 320, 210, 180], '#8b5cf6', 'kênh');
-    createHorizontalBarChart('chart-cat-lop-thu-nhap-kenh', ['<1tr', '1-5tr', '5-10tr', '10-20tr', '20-50tr', '>50tr'], [1200, 2500, 1800, 950, 420, 150], '#6366f1', 'kênh');
+    withSummary('chart-tinh-kenh', ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Đồng Nai', 'Bình Dương'], [850, 920, 310, 280, 220, 240, 290], '#3b82f6', 'kênh');
+    withSummary('chart-loaikenh-kenh', ['Trực tiếp', 'Đại lý', 'CTV', 'App', 'Tele', 'B2B'], [120, 850, 3500, 450, 320, 210], '#8b5cf6', 'kênh');
+    withSummary('chart-khuvuc-kenh', ['Miền Bắc', 'Miền Nam', 'Miền Trung', 'Miền Tây'], [1650, 1850, 640, 420], '#10b981', 'kênh');
+    withSummary('chart-trangthai-kenh', ['Hoạt động', 'Tạm ngưng', 'Chờ đóng', 'Hết hạn'], [4800, 450, 280, 100], '#f43f5e', 'kênh');
+    withSummary('chart-makenh-kenh', ['CHN001', 'DLU002', 'CTV003', 'KSN004', 'TEL005', 'KDN006', 'Khác'], [120, 850, 3500, 450, 320, 210, 180], '#8b5cf6', 'kênh');
+    withSummary('chart-cat-lop-thu-nhap-kenh', ['<1tr', '1-5tr', '5-10tr', '10-20tr', '20-50tr', '>50tr'], [1200, 2500, 1800, 950, 420, 150], '#6366f1', 'kênh');
 
-    // 11. CX charts (Horizontal Bar Chart by Tier: Toàn mạng, Kim cương, Vàng, Bạc)
-    const tiers = ['Toàn mạng', 'Kim cương', 'Vàng', 'Bạc'];
+    // 11. CX charts
     const cxCards = [
-        { id: 'chart-feedback-count', label: 'khiếu nại', color: '#3b82f6', data: [1460, 120, 450, 890] },
-        { id: 'chart-resolution-time', label: 'giờ', color: '#8b5cf6', data: [4.2, 2.5, 3.8, 5.2] },
-        { id: 'chart-feedback-rate', label: '%', color: '#10b981', data: [1.6, 0.8, 1.2, 2.5] },
-        { id: 'chart-nps', label: 'điểm', color: '#f43f5e', data: [75, 85, 72, 58] },
-        { id: 'chart-resolution', label: '%', color: '#f59e0b', data: [93, 98, 94, 89] },
-        { id: 'chart-setup', label: '%', color: '#06b6d4', data: [97.5, 99, 98, 96] },
-        { id: 'chart-csat', label: '%', color: '#14b8a6', data: [86, 92, 85, 78] },
-        { id: 'chart-ces', label: 'điểm', color: '#6366f1', data: [4.1, 4.6, 4.1, 3.8] },
-        { id: 'chart-churn-rate', label: '%', color: '#ef4444', data: [1.8, 0.5, 1.2, 3.4] }
+        { id: 'chart-feedback-count', label: 'khiếu nại', color: '#3b82f6', data: [120, 450, 890], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-resolution-time', label: 'giờ', color: '#8b5cf6', data: [2.5, 3.8, 5.2], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-feedback-rate', label: '%', color: '#10b981', data: [0.8, 1.2, 2.5], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-nps', label: 'điểm', color: '#f43f5e', data: [85, 72, 58], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-resolution', label: '%', color: '#f59e0b', data: [98, 94, 89], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-setup', label: '%', color: '#06b6d4', data: [99, 98, 96], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-csat', label: '%', color: '#14b8a6', data: [92, 85, 78], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-ces', label: 'điểm', color: '#6366f1', data: [4.6, 4.1, 3.8], categories: ['Kim cương', 'Vàng', 'Bạc'] },
+        { id: 'chart-churn-rate', label: '%', color: '#ef4444', data: [0.5, 1.2, 3.4], categories: ['Kim cương', 'Vàng', 'Bạc'] }
     ];
 
     cxCards.forEach(cx => {
-        createHorizontalBarChart(cx.id, tiers, cx.data, cx.color, cx.label);
+        withSummary(cx.id, cx.categories, cx.data, cx.color, cx.label);
     });
 
     chartsInitialized = true;
