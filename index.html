@@ -72,8 +72,10 @@
                                     <input type="text" placeholder="Tìm kiếm...">
                                 </div>
                                 <div class="options-list">
-                                    <label style="font-weight: 700; color: var(--primary)"><input type="radio" name="market" value="TOTAL_NETWORK"> Toàn mạng</label>
-                                    <label style="font-weight: 700; color: var(--primary); margin-bottom: 8px;"><input type="radio" name="market" value="GRAND_TOTAL"> Tổng</label>
+                                    <label style="font-weight: 700; color: var(--primary)"><input type="radio"
+                                            name="market" value="TOTAL_NETWORK"> Toàn mạng</label>
+                                    <label style="font-weight: 700; color: var(--primary); margin-bottom: 8px;"><input
+                                            type="radio" name="market" value="GRAND_TOTAL"> Tổng</label>
                                     <label><input type="radio" name="market" value="VTC" checked> VTC</label>
                                     <label><input type="radio" name="market" value="STL"> STL</label>
                                     <label><input type="radio" name="market" value="VTL"> VTL</label>
@@ -141,11 +143,12 @@
                                 </div>
                                 <label class="all-opt"><input type="checkbox" checked> (Tất cả)</label>
                                 <div class="options-list">
-                                    <label><input type="checkbox" value="0-3"> < 3 tháng</label>
-                                    <label><input type="checkbox" value="3-6"> 3-6 tháng</label>
-                                    <label><input type="checkbox" value="6-12"> 6-12 tháng</label>
-                                    <label><input type="checkbox" value="12-36"> 1-3 năm</label>
-                                    <label><input type="checkbox" value="over36"> > 3 năm</label>
+                                    <label><input type="checkbox" value="0-3">
+                                        < 3 tháng</label>
+                                            <label><input type="checkbox" value="3-6"> 3-6 tháng</label>
+                                            <label><input type="checkbox" value="6-12"> 6-12 tháng</label>
+                                            <label><input type="checkbox" value="12-36"> 1-3 năm</label>
+                                            <label><input type="checkbox" value="over36"> > 3 năm</label>
                                 </div>
                             </div>
                         </div>
@@ -1660,26 +1663,50 @@
                 <button class="trend-modal-close" onclick="closeTrendModal()" aria-label="Đóng">×</button>
             </div>
             <div class="trend-modal-body">
-                <div class="trend-modal-filters">
-                    <!-- Chọn kiểu hiển thị -->
-                    <div class="control-group">
-                        <label for="trend-display-mode">Chọn kiểu hiển thị:</label>
-                        <select id="trend-display-mode" onchange="updateTrendDisplayMode()">
-                            <option value="sum">Tổng (hiện tại + cùng kỳ)</option>
-                            <option value="byCategory">Theo nhân tố (mỗi đường 1 legend)</option>
-                        </select>
+                <div class="trend-modal-filters-new">
+                    <div class="filter-card">
+                        <div class="filter-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="filter-info">
+                            <label for="trend-metric-type">Lựa chọn chỉ tiêu</label>
+                            <select id="trend-metric-type" onchange="updateTrendChart()">
+                                <option value="value">Giá trị</option>
+                                <option value="yoy">YoY (%)</option>
+                                <option value="mom">MoM (%)</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <!-- Chọn legend button -->
-                    <div class="control-group">
-                        <label>Chọn legend:</label>
-                        <button class="btn-legend-select" onclick="openTrendLegendPopup()">
-                            <i class="fas fa-list"></i> Chọn các legend mong muốn
-                        </button>
+                    <div class="filter-card">
+                        <div class="filter-icon"><i class="fas fa-layer-group"></i></div>
+                        <div class="filter-info">
+                            <label for="trend-display-mode">Kiểu hiển thị</label>
+                            <select id="trend-display-mode" onchange="updateTrendDisplayMode()">
+                                <option value="byPeriod">Theo Kỳ (Trong kỳ vs Cùng kỳ)</option>
+                                <option value="byCategory">Theo Nhân tố (Tách lớp)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-card clickable" onclick="openTrendLegendPopup()">
+                        <div class="filter-icon"><i class="fas fa-filter"></i></div>
+                        <div class="filter-info">
+                            <label>Chọn Legend</label>
+                            <div class="pseudo-select">
+                                <span>Cấu hình bộ lọc</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="trend-modal-chart">
-                    <canvas id="trend-modal-canvas"></canvas>
+                <div class="trend-modal-visual-container">
+                    <div class="trend-modal-chart">
+                        <canvas id="trend-modal-canvas"></canvas>
+                    </div>
+                    <div class="trend-modal-table-container">
+                        <div id="trend-data-table-wrapper">
+                            <!-- Table will be rendered here by JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1774,18 +1801,23 @@
                     </div>
                     <div id="download-slice-list" class="checkbox-grid">
                         <label><input type="checkbox" value="Cắt lớp theo Tỉnh/TP" checked> Cắt lớp theo Tỉnh/TP</label>
-                        <label><input type="checkbox" value="Cắt lớp Hướng tiêu dùng (thoại, sms…)"> Cắt lớp Hướng tiêu dùng (thoại, sms…)</label>
+                        <label><input type="checkbox" value="Cắt lớp Hướng tiêu dùng (thoại, sms…)"> Cắt lớp Hướng tiêu
+                            dùng (thoại, sms…)</label>
                         <label><input type="checkbox" value="Cắt lớp Tuổi thọ TB"> Cắt lớp Tuổi thọ TB</label>
                         <label><input type="checkbox" value="Cắt lớp ARPU" checked> Cắt lớp ARPU</label>
                         <label><input type="checkbox" value="Cắt lớp Gói cước" checked> Cắt lớp Gói cước</label>
                         <label><input type="checkbox" value="Cắt lớp theo Khu vực"> Cắt lớp theo Khu vực</label>
-                        <label><input type="checkbox" value="Cắt lớp theo Kênh phát triển"> Cắt lớp theo Kênh phát triển</label>
+                        <label><input type="checkbox" value="Cắt lớp theo Kênh phát triển"> Cắt lớp theo Kênh phát
+                            triển</label>
                         <label><input type="checkbox" value="Cắt lớp theo vị trí trạm"> Cắt lớp theo vị trí trạm</label>
-                        <label><input type="checkbox" value="Cắt lớp theo Trạng thái kênh"> Cắt lớp theo Trạng thái kênh</label>
+                        <label><input type="checkbox" value="Cắt lớp theo Trạng thái kênh"> Cắt lớp theo Trạng thái
+                            kênh</label>
                         <label><input type="checkbox" value="Cắt lớp theo Kênh"> Cắt lớp theo Kênh</label>
                         <label><input type="checkbox" value="Cắt lớp theo mã kênh"> Cắt lớp theo mã kênh</label>
-                        <label><input type="checkbox" value="Cắt lớp theo thu nhập kênh"> Cắt lớp theo thu nhập kênh</label>
-                        <label><input type="checkbox" value="Cắt lớp theo hạng khách hàng"> Cắt lớp theo hạng khách hàng</label>
+                        <label><input type="checkbox" value="Cắt lớp theo thu nhập kênh"> Cắt lớp theo thu nhập
+                            kênh</label>
+                        <label><input type="checkbox" value="Cắt lớp theo hạng khách hàng"> Cắt lớp theo hạng khách
+                            hàng</label>
                     </div>
                 </div>
 
@@ -1802,10 +1834,12 @@
                         <label><input type="checkbox" value="tieuDungThuc" checked> Tiêu dùng thực</label>
                         <label><input type="checkbox" value="arpu"> ARPU</label>
                         <label><input type="checkbox" value="tb15c3dTangThem"> TB 15c3d tăng thêm</label>
-                        <label><input type="checkbox" value="tb15c3dLuyKe"checked> TB 15c3d lũy kế</label>
+                        <label><input type="checkbox" value="tb15c3dLuyKe" checked> TB 15c3d lũy kế</label>
                         <label><input type="checkbox" value="tbPhatTrienMoi"> TB phát triển mới</label>
-                        <label><input type="checkbox" value="tbMoiDat15c3dTrongThang"> TB phát triển mới đạt 15c3d trong tháng</label>
-                        <label><input type="checkbox" value="tyLeTbMoiDat15c3d"> Tỷ lệ TB mới đạt 15c3d trong tháng</label>
+                        <label><input type="checkbox" value="tbMoiDat15c3dTrongThang"> TB phát triển mới đạt 15c3d trong
+                            tháng</label>
+                        <label><input type="checkbox" value="tyLeTbMoiDat15c3d"> Tỷ lệ TB mới đạt 15c3d trong
+                            tháng</label>
                         <label><input type="checkbox" value="tbRoiMang"> TB rời mạng</label>
                         <label><input type="checkbox" value="luuLuongData"> Lưu lượng Data</label>
                         <label><input type="checkbox" value="dou"> DOU</label>
@@ -1824,7 +1858,8 @@
 
                         <label><input type="checkbox" value="nps"> NPS</label>
                         <label><input type="checkbox" value="tyLeXuLyDungHan"> Tỷ lệ xử lý thành công trong hạn</label>
-                        <label><input type="checkbox" value="tyLeKetNoiTongDai"> Tỷ lệ kết nối thành công đến tổng đài</label>
+                        <label><input type="checkbox" value="tyLeKetNoiTongDai"> Tỷ lệ kết nối thành công đến tổng
+                            đài</label>
                         <label><input type="checkbox" value="csat"> CSAT</label>
                         <label><input type="checkbox" value="ces"> CES</label>
                         <label><input type="checkbox" value="tyLeRoiMangBqThang"> Tỷ lệ rời mạng bình quân tháng</label>

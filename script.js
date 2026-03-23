@@ -586,6 +586,15 @@ const trendModalConfig = {
             'Cần Thơ': [0.23, 0.24, 0.23, 0.25, 0.24, 0.25, 0.26, 0.27, 0.26, 0.28, 0.29, 0.30, 0.30, 0.29, 0.30, 0.31, 0.32, 0.33],
             'Đồng Nai': [0.26, 0.27, 0.26, 0.28, 0.27, 0.28, 0.29, 0.30, 0.29, 0.31, 0.32, 0.33, 0.33, 0.32, 0.33, 0.34, 0.35, 0.36],
             'Bình Dương': [0.32, 0.33, 0.32, 0.34, 0.33, 0.34, 0.35, 0.36, 0.35, 0.37, 0.38, 0.39, 0.39, 0.38, 0.39, 0.40, 0.41, 0.42]
+        },
+        previous2: {
+            'Hà Nội': [1.00, 1.02, 1.05, 1.08, 1.10, 1.11, 1.13, 1.14, 1.12, 1.15, 1.17, 1.19, 1.18, 1.15, 1.16, 1.17, 1.20, 1.22],
+            'TP.HCM': [1.10, 1.12, 1.15, 1.18, 1.20, 1.21, 1.23, 1.24, 1.22, 1.25, 1.27, 1.29, 1.28, 1.25, 1.26, 1.27, 1.30, 1.32],
+            'Đà Nẵng': [0.28, 0.29, 0.31, 0.33, 0.34, 0.35, 0.36, 0.37, 0.35, 0.37, 0.38, 0.39, 0.39, 0.38, 0.39, 0.40, 0.41, 0.42],
+            'Hải Phòng': [0.24, 0.25, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32, 0.30, 0.32, 0.33, 0.34, 0.34, 0.33, 0.34, 0.35, 0.36, 0.37],
+            'Cần Thơ': [0.18, 0.19, 0.21, 0.23, 0.24, 0.25, 0.26, 0.27, 0.25, 0.27, 0.28, 0.29, 0.29, 0.28, 0.29, 0.30, 0.31, 0.32],
+            'Đồng Nai': [0.22, 0.23, 0.25, 0.27, 0.28, 0.29, 0.30, 0.31, 0.29, 0.31, 0.32, 0.33, 0.33, 0.32, 0.33, 0.34, 0.35, 0.36],
+            'Bình Dương': [0.28, 0.29, 0.31, 0.33, 0.34, 0.35, 0.36, 0.37, 0.35, 0.37, 0.38, 0.39, 0.39, 0.38, 0.39, 0.40, 0.41, 0.42]
         }
     },
     'chart-tinh-super-app': {
@@ -608,6 +617,24 @@ const trendModalConfig = {
             'Cần Thơ': [0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.05],
             'Đồng Nai': [0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.05],
             'Bình Dương': [0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
+        },
+        previous2: {
+            'Hà Nội': [0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.20, 0.21, 0.21, 0.22, 0.23, 0.24, 0.24, 0.25, 0.25, 0.26, 0.26, 0.27],
+            'TP.HCM': [0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.23, 0.24, 0.24, 0.25, 0.26, 0.27, 0.27, 0.28, 0.28, 0.29, 0.29, 0.30],
+            'Đà Nẵng': [0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.05, 0.05, 0.05, 0.05, 0.06, 0.06, 0.06, 0.06],
+            'Hải Phòng': [0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04],
+            'Cần Thơ': [0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04],
+            'Đồng Nai': [0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04],
+            'Bình Dương': [0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04]
+        },
+        previous2: {
+            'Hà Nội': [0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.20, 0.21, 0.21, 0.22, 0.23, 0.24, 0.24, 0.25, 0.25, 0.26, 0.26, 0.27],
+            'TP.HCM': [0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.23, 0.24, 0.24, 0.25, 0.26, 0.27, 0.27, 0.28, 0.28, 0.29, 0.29, 0.30],
+            'Đà Nẵng': [0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.05, 0.05, 0.05, 0.05, 0.06, 0.06, 0.06, 0.06],
+            'Hải Phòng': [0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04],
+            'Cần Thơ': [0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04],
+            'Đồng Nai': [0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04],
+            'Bình Dương': [0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04]
         }
     },
     'chart-feedback-count': {
@@ -707,7 +734,8 @@ function openTrendModal(chartId) {
     // Initialize selection state (all on by default)
     if (!trendModalState[chartId]) {
         trendModalState[chartId] = {
-            mode: 'sum',
+            metric: 'value',
+            mode: 'byPeriod',
             selectedCategories: config.categories.reduce((acc, c) => {
                 acc[c] = true;
                 return acc;
@@ -715,9 +743,12 @@ function openTrendModal(chartId) {
         };
     }
 
-    if (displayModeSelect) {
-        displayModeSelect.value = trendModalState[chartId].mode || 'sum';
-    }
+    // Sync dropdowns
+    const metricSelect = document.getElementById('trend-metric-type');
+    const modeSelect = document.getElementById('trend-display-mode');
+
+    if (metricSelect) metricSelect.value = trendModalState[chartId].metric || 'value';
+    if (modeSelect) modeSelect.value = trendModalState[chartId].mode || 'byPeriod';
 
     // Render the chart
     renderTrendModalChart(chartId);
@@ -868,6 +899,15 @@ function downloadSelectedData() {
     }, 1200);
 }
 
+function updateTrendChart() {
+    if (!currentTrendModalChartId) return;
+    const metricSelect = document.getElementById('trend-metric-type');
+    if (!metricSelect) return;
+
+    trendModalState[currentTrendModalChartId].metric = metricSelect.value;
+    renderTrendModalChart(currentTrendModalChartId);
+}
+
 function updateTrendDisplayMode() {
     if (!currentTrendModalChartId) return;
     const select = document.getElementById('trend-display-mode');
@@ -909,9 +949,27 @@ function renderTrendModalChart(chartId) {
 
     const labels = generateMonthLabels();
     const selectedCategories = trendModalState[chartId].selectedCategories;
-    const displayMode = trendModalState[chartId]?.mode || 'sum';
+    const displayMode = trendModalState[chartId]?.mode || 'byPeriod';
+    const metricType = trendModalState[chartId]?.metric || 'value';
 
-    const sumSeries = (dataMap) => {
+    const calculateMetric = (series, previousSeries = null) => {
+        if (metricType === 'yoy' && previousSeries) {
+            return series.map((v, i) => {
+                const prev = previousSeries[i];
+                return prev ? ((v - prev) / prev * 100) : 0;
+            });
+        }
+        if (metricType === 'mom') {
+            return series.map((v, i) => {
+                if (i === 0) return 0;
+                const prev = series[i - 1];
+                return prev ? ((v - prev) / prev * 100) : 0;
+            });
+        }
+        return series; // 'value'
+    };
+
+    const sumMap = (dataMap) => {
         const totals = Array(labels.length).fill(0);
         Object.entries(dataMap).forEach(([cat, series]) => {
             if (!selectedCategories[cat]) return;
@@ -927,66 +985,111 @@ function renderTrendModalChart(chartId) {
 
     if (displayMode === 'byCategory') {
         const palette = [
-            '#2563eb', '#f97316', '#10b981', '#818cf8', '#eab308', '#ec4899', '#22c55e', '#8b5cf6'
+            '#2563eb', '#f59e0b', '#10b981', '#6366f1', '#ec4899', '#14b8a6', '#f43f5e', '#a855f7'
         ];
 
         Object.entries(config.current).forEach(([category, series], idx) => {
             if (!selectedCategories[category]) return;
 
             const color = palette[idx % palette.length];
+            const displayData = calculateMetric(series, config.previous[category]);
+            
             datasets.push({
                 label: category,
-                data: series,
+                data: displayData,
                 borderColor: color,
-                backgroundColor: `${color}40`,
+                backgroundColor: `${color}15`,
                 borderWidth: 2.5,
-                fill: false,
-                tension: 0.3,
+                fill: true,
+                cubicInterpolationMode: 'monotone',
+                tension: 0.4,
                 pointRadius: 3,
-                pointHoverRadius: 6
+                pointHoverRadius: 6,
+                pointBackgroundColor: color,
+                pointBorderWidth: 1,
+                pointBorderColor: '#fff'
             });
         });
-
-        if (!datasets.length) {
-            // If nothing selected, render an empty dataset to keep chart responsive
-            datasets.push({
-                label: 'Không có dữ liệu',
-                data: [],
-                borderColor: '#cbd5e1',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.3
-            });
-        }
     } else {
-        // Default: sum across selected categories (current vs same period last year)
-        const currentSeries = sumSeries(config.current);
-        const previousSeries = sumSeries(config.previous);
+        // Mode: byPeriod (Current, Previous, Previous 2y)
+        const currentSum = sumMap(config.current);
+        const previousSum = sumMap(config.previous);
+        
+        // Ensure previous2Sum is distinct even if not provided in config
+        let previous2Sum;
+        if (config.previous2) {
+            previous2Sum = sumMap(config.previous2);
+        } else {
+            // Mock: Previous 2 years is roughly 90% of previous year with some jitter
+            previous2Sum = previousSum.map(v => v * (0.85 + Math.random() * 0.1));
+        }
 
+        const currentData = calculateMetric(currentSum, previousSum);
+        const previousData = calculateMetric(previousSum, previous2Sum);
+        
+        // For previous2, we compare with an even older period (mocked)
+        const previous3Sum = previous2Sum.map(v => v * 0.9);
+        const previous2Data = calculateMetric(previous2Sum, previous3Sum);
+
+        // Current Year line
         datasets.push({
-            label: 'Thực hiện hiện tại',
-            data: currentSeries,
+            label: 'Trong kỳ',
+            data: currentData,
             borderColor: '#2563eb',
-            backgroundColor: 'rgba(37, 99, 235, 0.15)',
-            borderWidth: 2.5,
-            fill: false,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 6
+            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            pointBackgroundColor: '#2563eb',
+            pointBorderWidth: 2,
+            pointBorderColor: '#fff',
+            zIndex: 3
         });
+
+        // Previous Year line
         datasets.push({
             label: 'Cùng kỳ năm trước',
-            data: previousSeries,
+            data: previousData,
             borderColor: '#f59e0b',
-            backgroundColor: 'rgba(245, 158, 11, 0.15)',
+            backgroundColor: 'rgba(245, 158, 11, 0.05)',
             borderWidth: 2,
             fill: false,
-            tension: 0.3,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
             borderDash: [5, 5],
-            pointRadius: 2,
-            pointHoverRadius: 5
+            pointRadius: 2.5,
+            pointHoverRadius: 5,
+            pointBackgroundColor: '#f59e0b',
+            zIndex: 2
+        });
+
+        // 2 Years Ago line
+        datasets.push({
+            label: 'Cùng kỳ 2 năm trước',
+            data: previous2Data,
+            borderColor: '#8b5cf6',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            fill: false,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
+            borderDash: [3, 3],
+            pointRadius: 2.5,
+            pointHoverRadius: 5,
+            pointBackgroundColor: '#8b5cf6',
+            zIndex: 1
         });
     }
+ 
+    if (!datasets.length) {
+        datasets.push({ label: 'Không có dữ liệu', data: [], borderColor: '#cbd5e1' });
+    }
+
+    // Auto-render the side table
+    renderTrendDataTable(labels, datasets);
 
     // Destroy existing chart instance if exists
     if (trendModalChartInstance) {
@@ -1025,19 +1128,15 @@ function renderTrendModalChart(chartId) {
                     displayColors: true,
                     callbacks: {
                         label: function (context) {
-                            return formatNumber(context.raw);
+                            const chartId = currentTrendModalChartId;
+                            const metricType = trendModalState[chartId]?.metric || 'value';
+                            const suffix = (metricType === 'yoy' || metricType === 'mom') ? '%' : '';
+                            return context.dataset.label + ': ' + formatNumber(context.raw) + suffix;
                         }
                     }
                 },
                 datalabels: {
-                    anchor: 'end',
-                    align: 'top',
-                    offset: -4,
-                    font: { size: 11, weight: '600' },
-                    color: '#0f172a',
-                    formatter: function (value) {
-                        return formatNumber(value);
-                    }
+                    display: false // Hide datalabels as they overlap, use side table instead
                 }
             },
             scales: {
@@ -1047,12 +1146,55 @@ function renderTrendModalChart(chartId) {
                     ticks: { color: '#64748b', font: { size: 11 }, maxTicksLimit: 6 }
                 },
                 x: {
-                    grid: { display: false, borderColor: '#e2e8f0' },
-                    ticks: { color: '#64748b', font: { size: 10 }, maxRotation: 45, minRotation: 0 }
+                    display: true,
+                    grid: { display: true, color: '#f1f5f9', borderColor: '#e2e8f0' },
+                    ticks: { display: true, color: '#64748b', font: { size: 10 }, maxRotation: 45, minRotation: 0 }
                 }
             }
         }
     });
+}
+
+function renderTrendDataTable(labels, datasets) {
+    const wrapper = document.getElementById('trend-data-table-wrapper');
+    if (!wrapper) return;
+
+    const chartId = currentTrendModalChartId;
+    const metricType = trendModalState[chartId]?.metric || 'value';
+    const suffix = (metricType === 'yoy' || metricType === 'mom') ? '%' : '';
+
+    let html = `<table class="trend-data-table">
+        <thead>
+            <tr>
+                <th>Tháng / Phân lớp</th>
+                <th style="text-align: right">Giá trị</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    // Months in reverse order (newest first)
+    const reversedLabels = [...labels].reverse();
+    const reversedIdx = labels.map((_, i) => i).reverse();
+
+    reversedIdx.forEach((idx) => {
+        const label = labels[idx];
+        html += `<tr class="month-row" style="background:#f8fafc; font-weight: bold"><td colspan="2"><i class="far fa-calendar-alt"></i> ${label}</td></tr>`;
+        datasets.forEach(ds => {
+            const val = ds.data[idx];
+            if (val === undefined || isNaN(val)) return;
+            
+            html += `<tr>
+                <td>
+                    <span class="series-indicator" style="background: ${ds.borderColor}"></span>
+                    ${ds.label}
+                </td>
+                <td class="val-col">${formatNumber(val)}${suffix}</td>
+            </tr>`;
+        });
+    });
+
+    html += `</tbody></table>`;
+    wrapper.innerHTML = html;
 }
 
 // Chart.js Configuration & Rendering Logic (Light Mode)
@@ -1547,6 +1689,11 @@ const createHorizontalBarChart = (canvasId, labels, data, accentColor, unitLabel
             indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    right: 60
+                }
+            },
             onClick: (e) => {
                 const chart = trendChartInstances[canvasId];
                 const points = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
@@ -1565,7 +1712,27 @@ const createHorizontalBarChart = (canvasId, labels, data, accentColor, unitLabel
                     anchor: 'end',
                     align: 'end',
                     font: { weight: 'bold', size: 11 },
-                    formatter: (value) => formatNumber(value) + (unitLabel || '')
+                    formatter: (value, context) => {
+                        const label = context.chart.data.labels[context.dataIndex];
+                        const formattedValue = formatNumber(value) + (unitLabel || '');
+                        
+                        // Find index of 'Tổng'
+                        const totalIndex = context.chart.data.labels.indexOf('Tổng');
+                        
+                        if (label === 'Toàn mạng') return formattedValue;
+                        
+                        if (label === 'Tổng') return `${formattedValue} (100%)`;
+                        
+                        if (totalIndex !== -1) {
+                            const totalValue = context.chart.data.datasets[0].data[totalIndex];
+                            if (totalValue > 0) {
+                                const pct = ((value / totalValue) * 100).toFixed(1);
+                                return `${formattedValue} (${pct}%)`;
+                            }
+                        }
+                        
+                        return formattedValue;
+                    }
                 }
             },
             scales: {
